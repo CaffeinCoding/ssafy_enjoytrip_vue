@@ -51,22 +51,28 @@
         </a>
       </drop-down>
       <drop-down
-              tag="li"
-              title="Examples"
-              icon="now-ui-icons design_image"
-              class="nav-item"
+        tag="li"
+        title="User"
+        icon="now-ui-icons design_image"
+        class="nav-item"
       >
         <nav-link to="/landing">
           <i class="now-ui-icons education_paper"></i> Landing
         </nav-link>
         <nav-link to="/login">
-          <i class="now-ui-icons users_circle-08"></i> Login
+          <i class="now-ui-icons users_circle-08"></i> Sign In
+        </nav-link>
+        <nav-link to="/signup">
+          <i class="now-ui-icons users_single-02"></i> Sign Up
         </nav-link>
         <nav-link to="/profile">
           <i class="now-ui-icons users_single-02"></i> Profile
         </nav-link>
+        <nav-link to="/logout">
+          <i class="now-ui-icons users_single-02"></i> Logout
+        </nav-link>
       </drop-down>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a
           class="nav-link btn btn-neutral"
           href="https://www.creative-tim.com/product/vue-now-ui-kit-pro"
@@ -75,22 +81,17 @@
           <i class="now-ui-icons arrows-1_share-66"></i>
           <p>Upgrade to PRO</p>
         </a>
-      </li>
+      </li> -->
 
       <li class="nav-item">
-        <a
-          class="nav-link"
-          rel="tooltip"
-          title="Follow us on Twitter"
-          data-placement="bottom"
-          href="https://twitter.com/CreativeTim"
-          target="_blank"
-        >
-          <i class="fab fa-twitter"></i>
-          <p class="d-lg-none d-xl-none">Twitter</p>
-        </a>
+        <router-link :to="`/board`">
+          <a class="nav-link" target="_blank">
+            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+            <p>여행피드</p>
+          </a>
+        </router-link>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a
           class="nav-link"
           rel="tooltip"
@@ -115,26 +116,26 @@
           <i class="fab fa-instagram"></i>
           <p class="d-lg-none d-xl-none">Instagram</p>
         </a>
-      </li>
+      </li> -->
     </template>
   </navbar>
 </template>
 
 <script>
-import { DropDown, Navbar, NavLink } from '@/components';
-import { Popover } from 'element-ui';
+import { DropDown, Navbar, NavLink } from "@/components";
+import { Popover } from "element-ui";
 export default {
-  name: 'main-navbar',
+  name: "main-navbar",
   props: {
     transparent: Boolean,
-    colorOnScroll: Number
+    colorOnScroll: Number,
   },
   components: {
     DropDown,
     Navbar,
     NavLink,
-    [Popover.name]: Popover
-  }
+    [Popover.name]: Popover,
+  },
 };
 </script>
 

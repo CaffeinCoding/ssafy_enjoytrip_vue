@@ -2,7 +2,6 @@
   <div>
     <div class="page-header clear-filter">
       <carousel-section></carousel-section>
-
       <div class="container">
         <div class="content-center brand">
           <img class="n-logo" src="img/now-logo.png" alt="" />

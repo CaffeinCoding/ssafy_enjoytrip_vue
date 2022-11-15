@@ -1,7 +1,10 @@
 <template>
   <div
     class="section section-signup"
-    style="background-image: url('img/bg11.jpg'); background-size: cover; background-position: top center; min-height: 700px;"
+    :style="`background-image: url('img/bg11.jpg');
+      background-size: cover;
+      background-position: top center;
+      min-height: ${windowHeight}px;`"
   >
     <div class="container">
       <div class="row">
@@ -68,14 +71,34 @@
   </div>
 </template>
 <script>
-import { Card, FormGroupInput, Button } from '@/components';
+import { Card, FormGroupInput, Button } from "@/components";
 
 export default {
+  data() {
+    return {
+      windowHeight: window.innerHeight - 69,
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
+  },
+
+  methods: {
+    onResize() {
+      this.windowHeight = window.innerHeight - 69;
+    },
+  },
   components: {
     Card,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
-  }
+    [FormGroupInput.name]: FormGroupInput,
+  },
 };
 </script>
 <style></style>
