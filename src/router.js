@@ -4,6 +4,7 @@ import Index from './pages/Index.vue';
 import Landing from './pages/Landing.vue';
 import Login from './pages/Login.vue';
 import Profile from './pages/Profile.vue';
+import SignupForm from './pages/components/SignupForm.vue';
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
 
@@ -11,6 +12,7 @@ Vue.use(Router);
 
 export default new Router({
   linkExactActiveClass: 'active',
+  mode:'history',
   routes: [
     {
       path: '/',
@@ -46,7 +48,49 @@ export default new Router({
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: 'black' }
       }
-    }
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      components: { default: SignupForm, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 400 },
+        footer: { backgroundColor: 'black' }
+      }
+    },
+    {
+      path: "/board",
+      name: "board",
+      component: () => import("@/pages/AppBoard"),
+      redirect: "/board/list",
+      children: [
+        {
+          path: "list",
+          name: "boardlist",
+          component: () => import("@/pages/components/board/BoardList"),
+        },
+        {
+          path: "write",
+          name: "boardwrite",
+          component: () => import("@/pages/components/board/BoardWrite"),
+        },
+        {
+          path: "view/:articleno",
+          name: "boardview",
+          component: () => import("@/pages/components/board/BoardView"),
+        },
+        {
+          path: "modify/:articleno",
+          name: "boardmodify",
+          component: () => import("@/pages/components/board/BoardModify"),
+        },
+        {
+          path: "delete/:articleno",
+          name: "boarddelete",
+          component: () => import("@/pages/components/board/BoardDelete"),
+        },
+      ],
+    },
   ],
   scrollBehavior: to => {
     if (to.hash) {
