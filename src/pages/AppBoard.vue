@@ -1,8 +1,9 @@
 <template>
-  <div class="page-header">
-    <div class="container">
-      <h2>Vue를 이용한 게시판</h2>
-      <router-view></router-view>
+  <div>
+    <div class="page-header clear-filter">
+      <div class="container">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -13,4 +14,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.page-header {
+  background-color: #eeeeee;
+}
+</style>
