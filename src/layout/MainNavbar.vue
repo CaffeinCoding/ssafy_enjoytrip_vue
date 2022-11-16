@@ -86,7 +86,7 @@
       <li class="nav-item">
         <router-link :to="`/board`">
           <a class="nav-link" target="_blank">
-            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+            <i class="now-ui-icons media-1_camera-compact"></i>
             <p>여행피드</p>
           </a>
         </router-link>
