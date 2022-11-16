@@ -2,7 +2,7 @@
   <navbar position="fixed" type="primary" menu-classes="ml-auto">
     <template slot-scope="{ toggle, isToggled }">
       <router-link v-popover:popover1 class="navbar-brand" to="/presentation">
-        My Site Name
+        EnjoyTrip
       </router-link>
       <el-popover
         ref="popover1"
@@ -11,9 +11,6 @@
         width="200"
         trigger="hover"
       >
-        <div class="popover-body">
-          Designed by Invision. Coded by Creative Tim
-        </div>
       </el-popover>
     </template>
     <template slot="navbar-menu">
@@ -27,18 +24,18 @@
 </template>
 
 <script>
-import { DropDown, NavbarToggleButton, Navbar, NavLink } from '@/components';
-import { Popover } from 'element-ui';
+import { DropDown, NavbarToggleButton, Navbar, NavLink } from "@/components";
+import { Popover } from "element-ui";
 
 export default {
-  name: 'main-navbar',
+  name: "main-navbar",
   components: {
     DropDown,
     Navbar,
     NavbarToggleButton,
     NavLink,
-    [Popover.name]: Popover
-  }
+    [Popover.name]: Popover,
+  },
 };
 </script>
 

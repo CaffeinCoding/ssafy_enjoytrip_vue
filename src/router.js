@@ -1,67 +1,82 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Index from './pages/Index.vue';
-import Landing from './pages/Landing.vue';
-import Login from './pages/Login.vue';
-import Profile from './pages/Profile.vue';
-import SignupForm from './pages/components/SignupForm.vue';
-import MainNavbar from './layout/MainNavbar.vue';
-import MainFooter from './layout/MainFooter.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import Index from "./pages/Index.vue";
+import Landing from "./pages/Landing.vue";
+import Login from "./pages/Login.vue";
+import Profile from "./pages/Profile.vue";
+import SignupForm from "./pages/components/SignupForm.vue";
+import MainNavbar from "./layout/MainNavbar.vue";
+import MainFooter from "./layout/MainFooter.vue";
+
+// EnjoyTrip
+import AppBoard from "@/pages/AppBoard";
 
 Vue.use(Router);
 
 export default new Router({
-  linkExactActiveClass: 'active',
-  mode:'history',
+  linkExactActiveClass: "active",
+  mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'index',
+      path: "/",
+      name: "index",
       components: { default: Index, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
-      }
+        footer: { backgroundColor: "black" },
+      },
     },
     {
-      path: '/landing',
-      name: 'landing',
+      path: "/landing",
+      name: "landing",
       components: { default: Landing, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
-      }
+        footer: { backgroundColor: "black" },
+      },
     },
     {
-      path: '/login',
-      name: 'login',
+      path: "/login",
+      name: "login",
       components: { default: Login, header: MainNavbar },
       props: {
-        header: { colorOnScroll: 400 }
-      }
+        header: { colorOnScroll: 400 },
+      },
     },
     {
-      path: '/profile',
-      name: 'profile',
+      path: "/profile",
+      name: "profile",
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
-      }
+        footer: { backgroundColor: "black" },
+      },
     },
     {
-      path: '/signup',
-      name: 'signup',
-      components: { default: SignupForm, header: MainNavbar, footer: MainFooter },
+      path: "/signup",
+      name: "signup",
+      components: {
+        default: SignupForm,
+        header: MainNavbar,
+        footer: MainFooter,
+      },
       props: {
         header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
-      }
+        footer: { backgroundColor: "black" },
+      },
     },
     {
       path: "/board",
       name: "board",
-      component: () => import("@/pages/AppBoard"),
+      components: {
+        default: AppBoard,
+        header: MainNavbar,
+        footer: MainFooter,
+      },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
       redirect: "/board/list",
       children: [
         {
@@ -92,11 +107,11 @@ export default new Router({
       ],
     },
   ],
-  scrollBehavior: to => {
+  scrollBehavior: (to) => {
     if (to.hash) {
       return { selector: to.hash };
     } else {
       return { x: 0, y: 0 };
     }
-  }
+  },
 });
