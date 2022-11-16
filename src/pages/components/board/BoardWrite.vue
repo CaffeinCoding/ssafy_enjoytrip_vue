@@ -1,112 +1,48 @@
 <template>
-  <div class="section section-tabs">
-    <div class="container">
-      <!-- <div class="regist">
-        <h1 class="underline">SSAFY 게시글 작성</h1>
-        <div class="regist_form">
-          <label for="userid">작성자</label>
-
-          <fg-input
-            placeholder="작성자"
-            id="userid"
-            v-model="userid"
-            ref="userid"
-          ></fg-input>
-          <label for="subject">제목</label>
-          <fg-input
-            placeholder="제목"
-            id="subject"
-            v-model="subject"
-            ref="subject"
-          ></fg-input>
-          <label for="content">내용</label>
-          <br />
-          <div class="textarea-container">
-            <textarea
-              id="content"
-              v-model="content"
-              class="form-control"
-              name="name"
-              rows="4"
-              cols="80"
-              placeholder="내용"
-            ></textarea>
+  <div class="container">
+    <div class="title">
+      <h4>여행공유게시판</h4>
+    </div>
+    <div class="row">
+      <div class="col-md-10 ml-auto col-xl-6 mr-auto">
+        <p class="category">글쓰기</p>
+        <!-- Nav tabs -->
+        <card>
+          <div class="regist">
+            <div class="regist_form">
+              <label for="userid" class="category">작성자</label>
+              <fg-input
+                placeholder="작성자"
+                id="userid"
+                v-model="userid"
+                ref="userid"
+              ></fg-input>
+              <label for="subject" class="category">제목</label>
+              <fg-input
+                placeholder="제목"
+                id="subject"
+                v-model="subject"
+                ref="subject"
+              ></fg-input>
+              <label for="content" class="category">내용</label>
+              <br />
+              <div class="textarea-container">
+                <textarea
+                  id="content"
+                  v-model="content"
+                  class="form-control"
+                  name="name"
+                  rows="100"
+                  cols="80"
+                  placeholder="내용"
+                ></textarea>
+              </div>
+              <br />
+              <n-button type="primary" round @click="checkValue">등록</n-button>
+              <n-button type="primary" round @click="moveList">목록</n-button>
+            </div>
           </div>
-          <br />
-          <n-button type="primary" round @click="checkValue">등록</n-button>
-          <n-button type="primary" round @click="moveList">목록</n-button>
-        </div>
-      </div> -->
-
-      <div class="title">
-        <h4>여행공유게시판</h4>
-      </div>
-      <div class="row">
-        <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-          <p class="category">글쓰기</p>
-          <!-- Nav tabs -->
-          <card>
-            <tabs
-              slot="raw-content"
-              tab-content-classes="tab-content-padding text-center"
-            >
-              <tab-pane>
-                <template slot="label">
-                  <i class="now-ui-icons objects_umbrella-13"></i> Home
-                </template>
-                <p>
-                  I think that’s a responsibility that I have, to push
-                  possibilities, to show people, this is the level that things
-                  could be at. So when you get something that has the name Kanye
-                  West on it, it’s supposed to be pushing the furthest
-                  possibilities. I will be the leader of a company that ends up
-                  being worth billions of dollars, because I got the answers. I
-                  understand culture. I am the nucleus.
-                </p>
-              </tab-pane>
-              <tab-pane>
-                <template slot="label">
-                  <i class="now-ui-icons shopping_cart-simple"></i> Profile
-                </template>
-                <p>
-                  I will be the leader of a company that ends up being worth
-                  billions of dollars, because I got the answers. I understand
-                  culture. I am the nucleus. I think that’s a responsibility
-                  that I have, to push possibilities, to show people, this is
-                  the level that things could be at. I think that’s a
-                  responsibility that I have, to push possibilities, to show
-                  people, this is the level that things could be at.
-                </p>
-              </tab-pane>
-              <tab-pane>
-                <template slot="label">
-                  <i class="now-ui-icons shopping_shop"></i> Messages
-                </template>
-                <p>
-                  I think that’s a responsibility that I have, to push
-                  possibilities, to show people, this is the level that things
-                  could be at. So when you get something that has the name Kanye
-                  West on it, it’s supposed to be pushing the furthest
-                  possibilities. I will be the leader of a company that ends up
-                  being worth billions of dollars, because I got the answers. I
-                  understand culture. I am the nucleus.
-                </p>
-              </tab-pane>
-              <tab-pane>
-                <template slot="label">
-                  <i class="now-ui-icons ui-2_settings-90"></i> Settings
-                </template>
-                <p>
-                  "I will be the leader of a company that ends up being worth
-                  billions of dollars, because I got the answers. I understand
-                  culture. I am the nucleus. I think that’s a responsibility
-                  that I have, to push possibilities, to show people, this is
-                  the level that things could be at."
-                </p>
-              </tab-pane>
-            </tabs>
-          </card>
-        </div>
+        </card>
       </div>
     </div>
   </div>
@@ -183,4 +119,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* .container {
+  background: #eeeeee;
+} */
+.category {
+  text-transform: capitalize;
+  font-weight: 700;
+  color: #9a9a9a;
+}
+textarea.form-control {
+  min-height: 300px;
+}
+</style>
