@@ -50,23 +50,20 @@
       <drop-down
         tag="li"
         title="User"
-        icon="now-ui-icons design_image"
+        icon="now-ui-icons users_single-02"
         class="nav-item"
       >
-        <nav-link to="/landing">
-          <i class="now-ui-icons education_paper"></i> Landing
-        </nav-link>
         <nav-link to="/login">
-          <i class="now-ui-icons users_circle-08"></i> Sign In
+          <i class="now-ui-icons ui-1_lock-circle-open"></i> Sign In
         </nav-link>
         <nav-link to="/signup">
-          <i class="now-ui-icons users_single-02"></i> Sign Up
+          <i class="now-ui-icons users_circle-08"></i> Sign Up
         </nav-link>
         <nav-link to="/profile">
           <i class="now-ui-icons users_single-02"></i> Profile
         </nav-link>
         <nav-link to="/logout">
-          <i class="now-ui-icons users_single-02"></i> Logout
+          <i class="now-ui-icons media-1_button-power"></i> Logout
         </nav-link>
       </drop-down>
       <!-- <li class="nav-item">

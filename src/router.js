@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Index from "./pages/Index.vue";
 import Landing from "./pages/Landing.vue";
 import Login from "./pages/Login.vue";
-import Profile from "./pages/Profile.vue";
+import UserProfile from "./pages/components/user/UserProfile.vue";
 import SignupForm from "./pages/components/SignupForm.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
@@ -47,7 +47,7 @@ export default new Router({
     {
       path: "/profile",
       name: "profile",
-      components: { default: Profile, header: MainNavbar, footer: MainFooter },
+      components: { default: UserProfile, header: MainNavbar, footer: MainFooter },
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" },

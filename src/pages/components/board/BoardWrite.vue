@@ -3,7 +3,7 @@
     <div class="title">
       <h4>여행공유게시판</h4>
     </div>
-    <div class="row">
+    <b-row>
       <div class="col-md-10 ml-auto col-xl-6 mr-auto">
         <p class="category">글쓰기</p>
         <!-- Nav tabs -->
@@ -24,6 +24,7 @@
                 v-model="subject"
                 ref="subject"
               ></fg-input>
+
               <label for="content" class="category">내용</label>
               <br />
               <div class="textarea-container">
@@ -38,13 +39,22 @@
                 ></textarea>
               </div>
               <br />
+              <div class="input-group">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="inputGroupFile04"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                />
+              </div>
               <n-button type="primary" round @click="checkValue">등록</n-button>
               <n-button type="primary" round @click="moveList">목록</n-button>
             </div>
           </div>
         </card>
       </div>
-    </div>
+    </b-row>
   </div>
 </template>
 
@@ -120,12 +130,15 @@ export default {
 </script>
 
 <style scoped>
-/* .container {
-  background: #eeeeee;
-} */
 .category {
   text-transform: capitalize;
   font-weight: 700;
+  color: #9a9a9a;
+  text-align: left;
+}
+.title {
+  text-transform: capitalize;
+  font-weight: bold;
   color: #9a9a9a;
 }
 textarea.form-control {

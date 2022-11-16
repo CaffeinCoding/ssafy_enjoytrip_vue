@@ -12,37 +12,37 @@
           <template slot="header">
             <h3 class="card-title title-up">Sign Up</h3>
             <div class="social-line">
-              <a
+              <!-- <a
                 href="#pablo"
                 class="btn btn-neutral btn-facebook btn-icon btn-round"
               >
                 <i class="fab fa-facebook-square"></i>
-              </a>
+              </a> -->
               <a
                 href="#pablo"
                 class="btn btn-neutral btn-twitter btn-icon btn-lg btn-round"
               >
                 <i class="fab fa-twitter"></i>
               </a>
-              <a
+              <!-- <a
                 href="#pablo"
                 class="btn btn-neutral btn-google btn-icon btn-round"
               >
                 <i class="fab fa-google-plus"></i>
-              </a>
+              </a> -->
             </div>
           </template>
           <template>
             <fg-input
               class="no-border"
-              placeholder="First Name..."
+              placeholder="ID"
               addon-left-icon="now-ui-icons users_circle-08"
             >
             </fg-input>
 
             <fg-input
               class="no-border"
-              placeholder="Last Name..."
+              placeholder="Password"
               addon-left-icon="now-ui-icons text_caps-small"
             >
             </fg-input>
@@ -53,6 +53,22 @@
               addon-left-icon="now-ui-icons ui-1_email-85"
             >
             </fg-input>
+            <fg-input
+              class="no-border"
+              placeholder="Age"
+              addon-left-icon="now-ui-icons ui-1_email-85"
+            >
+            </fg-input>
+
+            <div class="input-group">
+              <input
+                type="file"
+                class="form-control"
+                id="inputGroupFile04"
+                aria-describedby="inputGroupFileAddon04"
+                aria-label="Upload"
+              />
+            </div>
           </template>
           <div class="card-footer text-center">
             <n-button type="neutral" round size="lg">Get Started</n-button>
