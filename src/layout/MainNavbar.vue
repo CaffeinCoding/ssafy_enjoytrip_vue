@@ -96,6 +96,14 @@
           </a>
         </router-link>
       </li>
+
+      <li class="nav-item">
+        <router-link to="/tour/plan">
+          <a class="nav-link" target="_blank">
+            <p>여행계획</p>
+          </a>
+        </router-link>
+      </li>
       <!-- <li class="nav-item">
         <a
           class="nav-link"

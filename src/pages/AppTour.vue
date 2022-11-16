@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header">
+  <div class="section" style="min-height: 900px">
     <div class="container">
       <router-view></router-view>
     </div>

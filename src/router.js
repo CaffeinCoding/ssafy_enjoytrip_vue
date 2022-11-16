@@ -125,6 +125,11 @@ export default new Router({
           name: "tourplace",
           component: () => import("@/pages/components/tour/TourPlace"),
         },
+        {
+          path: "plan",
+          name: "tourplan",
+          component: () => import("@/pages/components/tour/TourPlan"),
+        },
       ],
     },
   ],
