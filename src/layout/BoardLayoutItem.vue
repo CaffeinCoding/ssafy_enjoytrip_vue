@@ -2,7 +2,7 @@
   <tr>
     <td>{{ article.articleno }}</td>
     <td>
-      <router-link :to="`/board/view/${article.articleno}`">
+      <router-link :to="link">
         {{ article.subject }}
       </router-link>
     </td>
@@ -14,9 +14,10 @@
 
 <script>
 export default {
-  name: "BoardListItem",
+  name: "BoardLayoutItem",
   props: {
     article: Object,
+    link: String,
   },
 };
 </script>

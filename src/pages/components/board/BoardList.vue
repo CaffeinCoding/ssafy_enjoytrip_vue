@@ -4,46 +4,19 @@
     <div style="text-align: right">
       <n-button type="primary" round @click="moveWrite">글작성</n-button>
     </div>
-    <div v-if="articles.length">
-      <table id="article-list">
-        <colgroup>
-          <col style="width: 5%" />
-          <col style="width: 65%" />
-          <col style="width: 10%" />
-          <col style="width: 5%" />
-          <col style="width: 15%" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>조회수</th>
-            <th>작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          <board-list-item
-            v-for="article in articles"
-            :key="article.articleno"
-            :article="article"
-          ></board-list-item>
-        </tbody>
-      </table>
-    </div>
-    <div class="text-center" v-else>게시글이 없습니다.</div>
+    <board-layout :articles="articles" :baseLink="`/board/view`"></board-layout>
   </div>
 </template>
 
 <script>
 // import http from "@/util/http-common";
-import BoardListItem from "@/pages/components/board/BoardListItem";
+import BoardLayout from "@/layout/BoardLayout";
 import { Button } from "@/components";
 export default {
   name: "BoardList",
   components: {
-    BoardListItem,
     [Button.name]: Button,
+    BoardLayout,
   },
   data() {
     return {
