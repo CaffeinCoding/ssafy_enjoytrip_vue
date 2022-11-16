@@ -10,6 +10,7 @@ import MainFooter from "./layout/MainFooter.vue";
 
 // EnjoyTrip
 import AppBoard from "@/pages/AppBoard";
+import AppTour from "@/pages/AppTour";
 
 Vue.use(Router);
 
@@ -103,6 +104,26 @@ export default new Router({
           path: "delete/:articleno",
           name: "boarddelete",
           component: () => import("@/pages/components/board/BoardDelete"),
+        },
+      ],
+    },
+    {
+      path: "/tour",
+      name: "tour",
+      components: {
+        default: AppTour,
+        header: MainNavbar,
+        footer: MainFooter,
+      },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
+      children: [
+        {
+          path: "place",
+          name: "tourplace",
+          component: () => import("@/pages/components/tour/TourPlace"),
         },
       ],
     },

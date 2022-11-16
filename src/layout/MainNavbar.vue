@@ -88,6 +88,14 @@
           </a>
         </router-link>
       </li>
+
+      <li class="nav-item">
+        <router-link to="/tour/place">
+          <a class="nav-link" target="_blank">
+            <p>장소검색</p>
+          </a>
+        </router-link>
+      </li>
       <!-- <li class="nav-item">
         <a
           class="nav-link"
