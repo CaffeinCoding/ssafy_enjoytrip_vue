@@ -1,30 +1,31 @@
 <template>
-  <div class="container">
-    <div class="title">
-      <h4>여행공유게시판</h4>
-    </div>
-    <b-row>
-      <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-        <p class="category">글쓰기</p>
-        <!-- Nav tabs -->
-        <card>
-          <div class="regist">
-            <div class="regist_form">
-              <label for="userid" class="category">작성자</label>
+  <div class="row">
+    <div class="col-md-15 ml-auto col-xl-15 mr-auto">
+      <card>
+        <div class="regist mt-3 mb-5">
+          <div class="regist_form">
+            <h4 class="category mb-4">글쓰기</h4>
+            <div class="regist-title">
+              <label for="userid" class="category ml-3">작성자</label>
+
               <fg-input
                 placeholder="작성자"
                 id="userid"
                 v-model="userid"
                 ref="userid"
               ></fg-input>
-              <label for="subject" class="category">제목</label>
+            </div>
+            <div class="regist-title">
+              <label for="subject" class="category ml-3">제목</label>
+
               <fg-input
                 placeholder="제목"
                 id="subject"
                 v-model="subject"
                 ref="subject"
               ></fg-input>
-
+            </div>
+            <div class="regist-title ml-3">
               <label for="content" class="category">내용</label>
               <br />
               <div class="textarea-container">
@@ -38,23 +39,27 @@
                   placeholder="내용"
                 ></textarea>
               </div>
-              <br />
-              <div class="input-group">
-                <input
-                  type="file"
-                  class="form-control"
-                  id="inputGroupFile04"
-                  aria-describedby="inputGroupFileAddon04"
-                  aria-label="Upload"
-                />
-              </div>
-              <n-button type="primary" round @click="checkValue">등록</n-button>
-              <n-button type="primary" round @click="moveList">목록</n-button>
+            </div>
+            <br />
+            <div class="input-group ml-3">
+              <input
+                type="file"
+                class="form-control"
+                id="inputGroupFile04"
+                aria-describedby="inputGroupFileAddon04"
+                aria-label="Upload"
+              />
             </div>
           </div>
-        </card>
-      </div>
-    </b-row>
+        </div>
+      </card>
+      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3"
+        >등록</n-button
+      >
+      <n-button type="primary" round @click="moveList" class="btn-list ml-3"
+        >목록</n-button
+      >
+    </div>
   </div>
 </template>
 
@@ -134,7 +139,6 @@ export default {
   text-transform: capitalize;
   font-weight: 700;
   color: #9a9a9a;
-  text-align: left;
 }
 .title {
   text-transform: capitalize;
@@ -142,6 +146,11 @@ export default {
   color: #9a9a9a;
 }
 textarea.form-control {
-  min-height: 300px;
+  min-height: 200px;
+}
+.regist-title {
+  text-align: left;
+  padding-left: 20px;
+  margin-bottom: 20px;
 }
 </style>

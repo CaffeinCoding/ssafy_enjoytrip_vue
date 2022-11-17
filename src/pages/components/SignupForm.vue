@@ -12,24 +12,7 @@
           <template slot="header">
             <h3 class="card-title title-up">Sign Up</h3>
             <div class="social-line">
-              <!-- <a
-                href="#pablo"
-                class="btn btn-neutral btn-facebook btn-icon btn-round"
-              >
-                <i class="fab fa-facebook-square"></i>
-              </a> -->
-              <a
-                href="#pablo"
-                class="btn btn-neutral btn-twitter btn-icon btn-lg btn-round"
-              >
-                <i class="fab fa-twitter"></i>
-              </a>
-              <!-- <a
-                href="#pablo"
-                class="btn btn-neutral btn-google btn-icon btn-round"
-              >
-                <i class="fab fa-google-plus"></i>
-              </a> -->
+              <div class="logo-container mt-4"></div>
             </div>
           </template>
           <template>
@@ -71,7 +54,21 @@
             </div>
           </template>
           <div class="card-footer text-center">
-            <n-button type="neutral" round size="lg">Get Started</n-button>
+            <div class="row mx-1">
+              <a
+                href="#pablo"
+                class="col btn btn-neutral btn-round btn-lg btn-block"
+                >Get Started</a
+              >
+              <div
+                class="col-2 ml-2 btn btn-icon btn-round btn-neutral"
+                id="btn-kakao-background"
+              >
+                <div id="btn-kakao">
+                  <img v-lazy="'img/kakaotalk_logo_icon.png'" alt="" />
+                </div>
+              </div>
+            </div>
           </div>
         </card>
       </div>
@@ -117,4 +114,22 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+#btn-kakao {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#btn-kakao-background {
+  min-height: 50px;
+  min-width: 50px;
+  max-height: 50px;
+  max-width: 50px;
+  /* margin-bottom: 40px; */
+}
+.card-signup::v-deep .card-header {
+  padding: 24px;
+}
+</style>
