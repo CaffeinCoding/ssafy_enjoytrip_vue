@@ -47,7 +47,11 @@ export default new Router({
     {
       path: "/profile",
       name: "profile",
-      components: { default: UserProfile, header: MainNavbar, footer: MainFooter },
+      components: {
+        default: UserProfile,
+        header: MainNavbar,
+        footer: MainFooter,
+      },
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" },
@@ -62,7 +66,7 @@ export default new Router({
         footer: MainFooter,
       },
       props: {
-        header: { colorOnScroll: 400 },
+        header: { colorOnScroll: 0 },
         footer: { backgroundColor: "black" },
       },
     },
@@ -129,6 +133,11 @@ export default new Router({
           path: "plan",
           name: "tourplan",
           component: () => import("@/pages/components/tour/TourPlan"),
+        },
+        {
+          path: "list",
+          name: "tourplaclist",
+          component: () => import("@/pages/components/tour/TourPlanList"),
         },
       ],
     },

@@ -1,5 +1,46 @@
 <template>
-  <div id="map"></div>
+  <div id="map">
+    <div class="row justify-content-end" id="info-bar">
+      <div class="col-sm-2 py-2">
+        <select class="form-control" id="select-state">
+          <option value="" disabled selected style="display: none">
+            시/도 선택
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-2 py-2">
+        <select class="form-control" id="select-region">
+          <option value="" disabled selected style="display: none">
+            구/군 선택
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-2 py-2">
+        <select class="form-control" id="select-content">
+          <option value="" selected>전체</option>
+        </select>
+      </div>
+      <form class="row mx-3" @submit.prevent="test">
+        <div class="col-auto my-2 form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="place-input"
+            placeholder="장소 검색"
+          />
+        </div>
+        <div class="col-auto form-group">
+          <button
+            type="submit"
+            class="btn btn-round btn-primary"
+            id="place-search-btn"
+          >
+            검색
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -13,13 +54,9 @@ export default {
         maximumAge: 0,
         timeout: Infinity,
       },
-      latitude: 0,
-      longitude: 0,
     };
   },
   mounted() {
-    // this.getLocation();
-    console.log("mounted");
     if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
       script.onload = () => kakao.maps.load(this.initMap);
@@ -31,10 +68,6 @@ export default {
       this.initMap();
     }
   },
-  async created() {
-    console.log("created");
-    await this.getLocation();
-  },
   methods: {
     initMap() {
       const container = document.getElementById("map");
@@ -43,14 +76,10 @@ export default {
         level: 5,
       };
 
-      //지도 객체를 등록합니다.
-      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, mapOptions);
-      //   this.map.setCenter(new kakao.maps.LatLng(this.latitude, this.longitude));
+      this.getLocation();
     },
     getLocation() {
-      console.log(navigator);
-      console.log("getLocation");
       navigator.geolocation.getCurrentPosition(
         this.getCoord,
         this.getError,
@@ -58,22 +87,41 @@ export default {
       );
     },
     getCoord(response) {
-      return () => {
-        console.log("getCoord");
-        const { coords } = response;
-        this.latitude = coords.latitude;
-        this.longitude = coords.longitude;
-        this.map.setCenter(
-          new kakao.maps.LatLng(this.latitude, this.longitude),
-        );
-      };
+      const { coords } = response;
+      this.map.setCenter(
+        new kakao.maps.LatLng(coords.latitude, coords.longitude),
+      );
     },
     getError(error) {
       console.log(error.code);
       console.log(error.message);
     },
+    test() {
+      console.log("test");
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form-group {
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-bottom: 0;
+}
+#info-bar {
+  z-index: 99;
+  position: relative;
+  opacity: 0.8;
+  background: rgb(255, 255, 255);
+}
+#info-bar:hover {
+  opacity: 1;
+}
+#info-bar:focus-within {
+  opacity: 1;
+}
+#place-input {
+  font-size: 15px;
+}
+</style>

@@ -12,4 +12,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.section {
+  padding-bottom: 0;
+}
+</style>

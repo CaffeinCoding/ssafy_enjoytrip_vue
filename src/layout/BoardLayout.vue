@@ -1,15 +1,15 @@
 <template>
   <div>
     <div v-if="articles.length">
-      <table id="article-list">
+      <table class="table table-hover table-bordered" id="article-list">
         <colgroup>
-          <col style="width: 5%" />
-          <col style="width: 65%" />
           <col style="width: 10%" />
-          <col style="width: 5%" />
+          <col style="width: 50%" />
+          <col style="width: 15%" />
+          <col style="width: 10%" />
           <col style="width: 15%" />
         </colgroup>
-        <thead>
+        <thead class="thead-light">
           <tr>
             <th>번호</th>
             <th>제목</th>
@@ -46,4 +46,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#article-list {
+  text-align: center;
+  border-left: none;
+  border-right: none;
+}
+</style>
