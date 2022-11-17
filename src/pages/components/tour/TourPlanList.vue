@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="title text-center">
-      <h4>여행계획 공유</h4>
+    <div>
+      <p class="view-name text-center">여행계획 공유</p>
     </div>
     <div class="text-right">
       <router-link to="/tour/plan" class="btn btn-round btn-primary"
@@ -36,4 +36,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.view-name {
+  font-weight: bold;
+  font-size: 1.7rem;
+}
+</style>

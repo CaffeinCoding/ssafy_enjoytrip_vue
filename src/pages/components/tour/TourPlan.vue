@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <p class="page-name text-center">여행 계획</p>
+      <p class="view-name text-center">여행 계획</p>
     </div>
     <div class="row">
       <div class="col-lg-9">
@@ -67,7 +67,7 @@ export default {
   color: #1e4356;
   position: relative;
 }
-.page-name {
+.view-name {
   font-weight: bold;
   font-size: 1.7rem;
 }

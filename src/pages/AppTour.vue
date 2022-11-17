@@ -1,7 +1,7 @@
 <template>
-  <div class="section" style="min-height: 900px">
+  <div class="page-header clear-filter">
     <div class="container">
-      <router-view></router-view>
+      <router-view class="tour-router-view"></router-view>
     </div>
   </div>
 </template>
@@ -13,7 +13,14 @@ export default {
 </script>
 
 <style scoped>
-.section {
+.page-header {
+  min-height: 900px;
+}
+.page-header > .container {
   padding-bottom: 0;
+  padding-top: 8vh;
+}
+.tour-router-view {
+  color: black;
 }
 </style>

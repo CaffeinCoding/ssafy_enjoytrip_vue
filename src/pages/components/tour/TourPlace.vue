@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <p class="page-name text-center">여행지 검색</p>
+      <p class="view-name text-center">여행지 검색</p>
     </div>
     <kakao-map style="width: 100%; height: 700px"></kakao-map>
   </div>
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style scoped>
-.page-name {
+.view-name {
   font-weight: bold;
   font-size: 1.7rem;
 }
