@@ -49,7 +49,10 @@ export default {
 <style scoped>
 #article-list {
   text-align: center;
-  border-left: none;
-  border-right: none;
+  border-left: hidden;
+  border-right: hidden;
+}
+.thead-light th {
+  border-bottom-color: gray;
 }
 </style>

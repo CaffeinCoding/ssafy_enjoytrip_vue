@@ -110,6 +110,10 @@
   &[filter-color="orange"] {
     @include linear-gradient(rgba($black-color, 0.2), rgba(224, 23, 3, 0.6));
   }
+
+  &[filter-color="turquoise"] {
+    @include linear-gradient(rgba($black-color, 0.2), rgba(69, 181, 170, 0.6));
+  }
 }
 
 .section-story-overview {

@@ -3,6 +3,11 @@
     <div class="title text-center">
       <h4>여행계획 공유</h4>
     </div>
+    <div class="text-right">
+      <router-link to="/tour/plan" class="btn btn-round btn-primary"
+        >여행계획 작성</router-link
+      >
+    </div>
     <board-layout :articles="articles"></board-layout>
   </div>
 </template>
