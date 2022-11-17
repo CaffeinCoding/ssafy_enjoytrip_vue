@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="page-header clear-filter">
+    <div class="page-header clear-filter" style="min-height: 900px">
       <div class="container">
         <router-view></router-view>
       </div>
@@ -15,7 +15,10 @@ export default {
 </script>
 
 <style scoped>
-.page-header {
-  background-color: #eeeeee;
+.section {
+  padding-bottom: 0;
+}
+.page-header > .container {
+  padding-bottom: 0;
 }
 </style>

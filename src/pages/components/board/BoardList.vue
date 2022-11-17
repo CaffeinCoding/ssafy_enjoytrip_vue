@@ -16,15 +16,79 @@
           :gutter="{ default: '15px', 700: '5px' }"
           class="card-style"
         >
-          <div v-for="(item, index) in 100" :key="index">
-            <router-link to="view/1">
-              <card>
-                <img src="@/assets/bg1.jpg" />
-                <h4 class="card-title">제목</h4>
-                <p class="card-text">내용</p>
-              </card>
-            </router-link>
-          </div>
+          <!-- <div v-for="(item, index) in 100" :key="index"> -->
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg1.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg3.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/test1.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg4.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/test2.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg5.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg6.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg7.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg8.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+          <router-link to="view/1">
+            <card class="board-card">
+              <img src="@/assets/bg11.jpg" />
+              <h4 class="card-title">제목</h4>
+              <p class="card-text">내용</p>
+            </card>
+          </router-link>
+
+          <!-- </div> -->
         </masonry>
       </ul>
     </div>
@@ -124,7 +188,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card-style > div > div {
   border-radius: 5px;
   /* padding: 5px; */
@@ -142,5 +206,9 @@ export default {
 
 .list::-webkit-scrollbar {
   display: none;
+}
+.board-card::v-deep .card-body {
+  padding: 0px;
+  padding-bottom: 20px;
 }
 </style>
