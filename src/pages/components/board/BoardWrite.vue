@@ -8,22 +8,12 @@
             <div class="regist-title">
               <label for="userid" class="category ml-3">작성자</label>
 
-              <fg-input
-                placeholder="작성자"
-                id="userid"
-                v-model="userid"
-                ref="userid"
-              ></fg-input>
+              <fg-input placeholder="작성자" id="userid" v-model="userid" ref="userid"></fg-input>
             </div>
             <div class="regist-title">
               <label for="subject" class="category ml-3">제목</label>
 
-              <fg-input
-                placeholder="제목"
-                id="subject"
-                v-model="subject"
-                ref="subject"
-              ></fg-input>
+              <fg-input placeholder="제목" id="subject" v-model="subject" ref="subject"></fg-input>
             </div>
             <div class="regist-title ml-3">
               <label for="content" class="category">내용</label>
@@ -40,25 +30,24 @@
                 ></textarea>
               </div>
             </div>
-            <br />
-            <div class="input-group ml-3">
-              <input
-                type="file"
-                class="form-control"
-                id="inputGroupFile04"
-                aria-describedby="inputGroupFileAddon04"
-                aria-label="Upload"
-              />
+
+            <div class="regist-title">
+              <label for="subject" class="category ml-3">이미지</label>
+              <div class="input-group">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="inputGroupFile04"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                />
+              </div>
             </div>
           </div>
         </div>
       </card>
-      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3"
-        >등록</n-button
-      >
-      <n-button type="primary" round @click="moveList" class="btn-list ml-3"
-        >목록</n-button
-      >
+      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3">등록</n-button>
+      <n-button type="primary" round @click="moveList" class="btn-list ml-3">목록</n-button>
     </div>
   </div>
 </template>
@@ -90,20 +79,13 @@ export default {
       // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
       let err = true;
       let msg = "";
-      !this.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
+      !this.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
       err &&
         !this.subject &&
-        ((msg = "제목 입력해주세요"),
-        (err = false),
-        this.$refs.subject.focus());
+        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
       err &&
         !this.content &&
-        ((msg = "내용 입력해주세요"),
-        (err = false),
-        this.$refs.content.focus());
+        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
       // 만약, 내용이 다 입력되어 있다면 registArticle 호출
@@ -151,6 +133,7 @@ textarea.form-control {
 .regist-title {
   text-align: left;
   padding-left: 20px;
+  padding-right: 20px;
   margin-bottom: 20px;
 }
 </style>

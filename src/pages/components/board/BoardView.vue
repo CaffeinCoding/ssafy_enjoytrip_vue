@@ -1,102 +1,59 @@
 <template>
-  <!-- <div class="regist">
-    <h1 class="underline">SSAFY 글 상세보기</h1>
-    <div class="regist_form">
-      <label> 글번호</label>
-      <div class="view">{{ article.articleno }}</div>
-      <label> 글제목</label>
-      <div class="view">{{ article.subject }}</div>
-      <label> 작성자</label>
-      <div class="view">{{ article.userid }}</div>
-      <label> 조회수</label>
-      <div class="view">{{ article.hit }}</div>
-      <label> 작성시간</label>
-      <div class="view">{{ article.regtime }}</div>
-      <label> 내용</label>
-      <div class="view">{{ article.content }}</div>
-
-      <div style="padding-top: 15px">
-        <router-link
-          :to="{
-            name: 'boardmodify',
-            params: { articleno: article.articleno },
-          }"
-          class="btn"
-          >수정</router-link
-        >
-        <router-link
-          :to="{
-            name: 'boarddelete',
-            params: { articleno: article.articleno },
-          }"
-          class="btn"
-          >삭제</router-link
-        >
-        <router-link :to="{ name: 'boardlist' }" class="btn">목록</router-link>
-      </div>
-    </div>
-  </div> -->
-
   <div>
     <div class="row">
-      <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-        <p class="category">Tabs with Icons on Card</p>
+      <div class="col-md-10 ml-auto col-xl-6 mr-auto mt-3">
         <!-- Nav tabs -->
         <card>
           <tabs
             slot="raw-content"
             tab-content-classes="tab-content-padding text-center"
+            class="tabs-content"
           >
             <tab-pane>
-              <template slot="label">
-                <i class="now-ui-icons objects_umbrella-13"></i> 사진
-              </template>
-              <img src="@/assets/bg1.jpg" />
+              <template slot="label"> <i class="now-ui-icons media-1_album"></i> 사진 </template>
+              <div class="tab-content">
+                <img src="@/assets/bg3.jpg" />
+              </div>
             </tab-pane>
             <tab-pane>
-              <template slot="label">
-                <i class="now-ui-icons shopping_cart-simple"></i> 위치
-              </template>
-              <p>
-                I will be the leader of a company that ends up being worth
-                billions of dollars, because I got the answers. I understand
-                culture. I am the nucleus. I think that’s a responsibility that
-                I have, to push possibilities, to show people, this is the level
-                that things could be at. I think that’s a responsibility that I
-                have, to push possibilities, to show people, this is the level
-                that things could be at.
-              </p>
+              <template slot="label"> <i class="now-ui-icons objects_globe"></i> 위치 </template>
+              <div class="tab-content">
+                <p>지도가 들어갈 자리</p>
+              </div>
             </tab-pane>
           </tabs>
         </card>
       </div>
-      <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-        <p class="category">Tabs with Background on Card</p>
+      <div class="col-md-10 ml-auto col-xl-6 mr-auto mt-3">
         <!-- Tabs with Background on Card -->
         <div class="card">
           <div class="view">
-            <div class="regist_form">
-              <h3>{{ article.subject }}</h3>
+            <h3>{{ article.subject }}</h3>
 
-              <div class="post-info">
-                작성자 {{ article.userid }} | 조회수{{ article.hit }} | 작성시간
-                {{ article.regtime }}
-              </div>
-
-              <hr size="5" />
-
-              <div class="view">{{ article.content }}</div>
+            <div class="post-info">
+              작성자 {{ article.userid }} | 조회수{{ article.hit }} | 작성시간
+              {{ article.regtime }}
             </div>
+
+            <hr size="5" />
+
+            <div class="view">{{ article.content }}</div>
           </div>
         </div>
         <!-- End Tabs on plain Card -->
       </div>
     </div>
-    <n-button type="primary" round class="btn-modify mr-3">수정</n-button>
-    <n-button type="primary" round class="btn-delete">삭제</n-button>
-    <n-button type="primary" round @click="moveList" class="btn-list ml-3"
-      >목록</n-button
+
+    <router-link
+      :to="{
+        name: 'boardmodify',
+        params: { articleno: article.articleno },
+      }"
+      ><n-button type="primary" round class="btn-modify mr-3 mt-4">수정</n-button></router-link
     >
+
+    <n-button type="primary" round class="btn-delete mt-4">삭제</n-button>
+    <n-button type="primary" round @click="moveList" class="btn-list ml-3 mt-4">목록</n-button>
   </div>
 </template>
 
@@ -165,11 +122,25 @@ textarea.form-control {
   background-color: white;
 }
 .view {
-  padding-top: 25px;
+  padding-top: 50px;
   padding-bottom: 20px;
   color: black;
+  height: 614px;
 }
 .post-info {
   color: grey;
+}
+.tab-content {
+  height: 473px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tabs-content::v-deep .nav {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
 }
 </style>

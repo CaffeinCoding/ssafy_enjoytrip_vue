@@ -4,29 +4,19 @@
       <card>
         <div class="regist mt-3 mb-5">
           <div class="regist_form">
-            <h4 class="modify-title mb-4">글수정</h4>
+            <h4 class="modify-category mb-4">글수정</h4>
             <div class="regist-title">
-              <label for="userid" class="modify-title ml-3">작성자</label>
+              <label for="userid" class="modify-category ml-3">작성자</label>
 
-              <fg-input
-                placeholder="작성자"
-                id="userid"
-                v-model="userid"
-                ref="userid"
-              ></fg-input>
+              <fg-input placeholder="작성자" id="userid" v-model="userid" ref="userid"></fg-input>
             </div>
             <div class="regist-title">
-              <label for="subject" class="modify-title ml-3">제목</label>
+              <label for="subject" class="modify-category ml-3">제목</label>
 
-              <fg-input
-                placeholder="제목"
-                id="subject"
-                v-model="subject"
-                ref="subject"
-              ></fg-input>
+              <fg-input placeholder="제목" id="subject" v-model="subject" ref="subject"></fg-input>
             </div>
             <div class="regist-title ml-3">
-              <label for="content" class="modify-title">내용</label>
+              <label for="content" class="modify-category">내용</label>
               <br />
               <div class="textarea-container">
                 <textarea
@@ -40,25 +30,24 @@
                 ></textarea>
               </div>
             </div>
-            <br />
-            <div class="input-group ml-3">
-              <input
-                type="file"
-                class="form-control"
-                id="inputGroupFile04"
-                aria-describedby="inputGroupFileAddon04"
-                aria-label="Upload"
-              />
+
+            <div class="regist-title">
+              <label for="subject" class="modify-category ml-3">이미지</label>
+              <div class="input-group">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="inputGroupFile04"
+                  aria-describedby="inputGroupFileAddon04"
+                  aria-label="Upload"
+                />
+              </div>
             </div>
           </div>
         </div>
       </card>
-      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3"
-        >수정</n-button
-      >
-      <n-button type="primary" round @click="moveList" class="btn-list ml-3"
-        >목록</n-button
-      >
+      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3">등록</n-button>
+      <n-button type="primary" round @click="moveList" class="btn-list ml-3">목록</n-button>
     </div>
   </div>
 </template>
@@ -104,19 +93,13 @@ export default {
       let err = true;
       let msg = "";
       !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
+        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
       err &&
         !this.article.subject &&
-        ((msg = "제목 입력해주세요"),
-        (err = false),
-        this.$refs.subject.focus());
+        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
       err &&
         !this.article.content &&
-        ((msg = "내용 입력해주세요"),
-        (err = false),
-        this.$refs.content.focus());
+        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
       // 만약, 내용이 다 입력되어 있다면 registArticle 호출
@@ -142,8 +125,8 @@ export default {
 };
 </script>
 
-<style>
-.modify-title {
+<style scoped>
+.modify-category {
   text-transform: capitalize;
   font-weight: 700;
   color: #9a9a9a;
@@ -159,6 +142,7 @@ textarea.form-control {
 .regist-title {
   text-align: left;
   padding-left: 20px;
+  padding-right: 20px;
   margin-bottom: 20px;
 }
 </style>

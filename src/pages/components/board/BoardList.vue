@@ -6,24 +6,14 @@
       </div>
     </div>
     <div>
-      <ul
-        ref="notification-list"
-        class="list"
-        @scroll="handleNotificationListScroll"
-      >
+      <ul ref="notification-list" class="list" @scroll="handleNotificationListScroll">
         <masonry
           :cols="{ default: 3, 1000: 3, 700: 2, 400: 1 }"
           :gutter="{ default: '15px', 700: '5px' }"
           class="card-style"
         >
           <!-- <div v-for="(item, index) in 100" :key="index"> -->
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg1.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
+
           <router-link to="view/1">
             <card class="board-card">
               <img src="@/assets/bg3.jpg" />

@@ -11,6 +11,7 @@ import MainFooter from "./layout/MainFooter.vue";
 // EnjoyTrip
 import AppBoard from "@/pages/AppBoard";
 import AppTour from "@/pages/AppTour";
+import AppUser from "@/pages/AppUser";
 
 Vue.use(Router);
 
@@ -70,6 +71,28 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
+
+    {
+      path: "/user",
+      name: "user",
+      components: {
+        default: AppUser,
+        header: MainNavbar,
+        footer: MainFooter,
+      },
+      props: {
+        header: { colorOnScroll: 0 },
+        footer: { backgroundColor: "black" },
+      },
+      children: [
+        {
+          path: "forgot",
+          name: "forgotpw",
+          component: () => import("@/pages/components/user/ForgotPw"),
+        },
+      ],
+    },
+
     {
       path: "/board",
       name: "board",
@@ -136,7 +159,7 @@ export default new Router({
         },
         {
           path: "list",
-          name: "tourplaclist",
+          name: "tourplanlist",
           component: () => import("@/pages/components/tour/TourPlanList"),
         },
       ],

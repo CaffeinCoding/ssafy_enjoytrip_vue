@@ -306,6 +306,11 @@
   background-color: $black-color;
 }
 
+//enjoytrip
+[data-background-color="gray"] {
+  background-color: $dark-gray;
+}
+
 [data-background-color]:not([data-background-color="gray"]) {
   color: $white-color;
 
