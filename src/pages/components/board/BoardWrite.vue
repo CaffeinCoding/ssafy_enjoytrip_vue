@@ -6,14 +6,13 @@
           <div class="regist_form">
             <h4 class="category mb-4">글쓰기</h4>
             <div class="regist-title">
-              <label for="userid" class="category ml-3">작성자</label>
-
-              <fg-input placeholder="작성자" id="userid" v-model="userid" ref="userid"></fg-input>
+              <label for="userId" class="category ml-3">작성자</label>
+              <fg-input placeholder="작성자" id="userId" v-model="userId" ref="userId"></fg-input>
             </div>
             <div class="regist-title">
-              <label for="subject" class="category ml-3">제목</label>
+              <label for="title" class="category ml-3">제목</label>
 
-              <fg-input placeholder="제목" id="subject" v-model="subject" ref="subject"></fg-input>
+              <fg-input placeholder="제목" id="title" v-model="title" ref="title"></fg-input>
             </div>
             <div class="regist-title ml-3">
               <label for="content" class="category">내용</label>
@@ -21,18 +20,18 @@
               <div class="textarea-container">
                 <textarea
                   id="content"
-                  v-model="content"
                   class="form-control"
                   name="name"
                   rows="100"
                   cols="80"
                   placeholder="내용"
+                  v-model="content"
                 ></textarea>
               </div>
             </div>
 
             <div class="regist-title">
-              <label for="subject" class="category ml-3">이미지</label>
+              <label for="upfile" class="category ml-3">이미지</label>
               <div class="input-group">
                 <input
                   type="file"
@@ -40,6 +39,8 @@
                   id="inputGroupFile04"
                   aria-describedby="inputGroupFileAddon04"
                   aria-label="Upload"
+                  v-on:change="fileSelect()"
+                  ref="imagefile"
                 />
               </div>
             </div>
@@ -53,8 +54,8 @@
 </template>
 
 <script>
-// import http from "@/util/http-common";
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
+import { mapActions } from "vuex";
 
 export default {
   name: "BoardWrite",
@@ -67,50 +68,41 @@ export default {
   },
   data() {
     return {
-      userid: null,
-      subject: null,
-      content: null,
+      userId: "",
+      title: "",
+      content: "",
+      upfile: "",
     };
   },
   methods: {
-    // 입력값 체크하기 - 체크가 성공하면 registArticle 호출
+    ...mapActions(["registArticle"]),
     checkValue() {
-      // 사용자 입력값 체크하기
-      // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
       let err = true;
       let msg = "";
-      !this.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
-      err &&
-        !this.subject &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
-      err &&
-        !this.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      !this.userId && ((msg = "작성자 입력해주세요"), (err = false));
+      err && !this.title && ((msg = "제목 입력해주세요"), (err = false));
+      err && !this.content && ((msg = "내용 입력해주세요"), (err = false));
+      err && !this.upfile && ((msg = "이미지를 등록해주세요."), (err = false));
 
       if (!err) alert(msg);
-      // 만약, 내용이 다 입력되어 있다면 registArticle 호출
-      else this.registArticle();
-    },
-    registArticle() {
-      // 비동기
-      // TODO : 글번호에 해당하는 글정보 등록.
-      console.log("글작성 하러가자!!!!");
-      let article = {
-        userid: this.userid,
-        subject: this.subject,
-        content: this.content,
-      };
-      http.post("/board", article).then(({ data }) => {
-        let msg = "등록 처리 중 문제 발생!!!";
-        if (data === "success") msg = "등록 성공!!!";
-        alert(msg);
-        this.moveList();
-      });
+      else {
+        alert("등록되었습니다.");
+        let article = {
+          userId: this.userId,
+          title: this.title,
+          content: this.content,
+          upfile: this.upfile,
+        };
+        this.registArticle(article);
+        this.$router.push({ name: "boardlist" });
+      }
     },
 
     moveList() {
-      console.log("글목록 보러가자!!!");
       this.$router.push({ name: "boardlist" });
+    },
+    fileSelect() {
+      this.upfile = this.$refs.imagefile.files[0];
     },
   },
 };

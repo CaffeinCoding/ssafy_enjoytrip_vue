@@ -4,7 +4,7 @@ import Index from "./pages/Index.vue";
 import Landing from "./pages/Landing.vue";
 import Login from "./pages/Login.vue";
 import UserProfile from "./pages/components/user/UserProfile.vue";
-import SignupForm from "./pages/components/SignupForm.vue";
+import SignupForm from "./pages/components/user/Signup.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 

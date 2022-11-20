@@ -20,13 +20,22 @@
               class="no-border"
               placeholder="ID"
               addon-left-icon="now-ui-icons users_circle-08"
+              v-model="userId"
             >
             </fg-input>
 
             <fg-input
               class="no-border"
+              placeholder="Name"
+              addon-left-icon="now-ui-icons text_caps-small"
+              v-model="userName"
+            >
+            </fg-input>
+            <fg-input
+              class="no-border"
               placeholder="Password"
               addon-left-icon="now-ui-icons text_caps-small"
+              v-model="userPw"
             >
             </fg-input>
 
@@ -34,12 +43,15 @@
               class="no-border"
               placeholder="Email"
               addon-left-icon="now-ui-icons ui-1_email-85"
+              v-model="email"
             >
             </fg-input>
+
             <fg-input
               class="no-border"
               placeholder="Age"
               addon-left-icon="now-ui-icons ui-1_email-85"
+              v-model="userAge"
             >
             </fg-input>
 
@@ -58,7 +70,9 @@
           </template>
           <div class="card-footer text-center">
             <div class="row mx-1">
-              <a href="#pablo" class="col btn btn-neutral btn-round btn-lg btn-block">가입하기</a>
+              <a class="col btn btn-neutral btn-round btn-lg btn-block" @click="registUser"
+                >가입하기</a
+              >
               <div class="col-2 ml-2 btn btn-icon btn-round btn-neutral" id="btn-kakao-background">
                 <div id="btn-kakao">
                   <img v-lazy="'img/kakaotalk_logo_icon.png'" alt="" />
@@ -78,11 +92,18 @@
 </template>
 <script>
 import { Card, FormGroupInput, Button } from "@/components";
+import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
       windowHeight: window.innerHeight - 69,
+
+      userId: "",
+      userName: "",
+      userPw: "",
+      userAge: "",
+      email: "",
     };
   },
   mounted() {
@@ -96,8 +117,25 @@ export default {
   },
 
   methods: {
+    ...mapActions(["registUser"]),
     onResize() {
       this.windowHeight = window.innerHeight - 69;
+    },
+    registUser() {
+      const user = {
+        userId: this.userId,
+        userName: this.userName,
+        userPw: this.userPw,
+        userAge: this.userAge,
+        email: this.email,
+      };
+      console.log(user.userId + " " + user.userName);
+
+      this.registUser(this.user);
+
+      alert("가입되었습니다.");
+
+      this.$router.push({ name: "login" });
     },
   },
   components: {
@@ -155,5 +193,8 @@ export default {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+.emailForm {
+  float: left;
 }
 </style>

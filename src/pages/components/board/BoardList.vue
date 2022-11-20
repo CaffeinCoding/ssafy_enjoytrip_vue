@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { Button, Card } from "@/components";
 
 export default {
@@ -101,35 +102,10 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_URL,
     };
   },
-  created() {
-    // 비동기
-    // TODO : 글목록 얻기.
-    // http.get(`/board`).then(({ data }) => (this.articles = data));
-
-    this.articles = [
-      {
-        articleno: 10,
-        userid: "안효인",
-        subject: "안녕하세요",
-        hit: 10,
-        regtime: "2022-11-08 17:03:15",
-      },
-      {
-        articleno: 9,
-        userid: "kimssafy",
-        subject: "안녕하세요2",
-        hit: 102,
-        regtime: "2022-11-08 14:13:15",
-      },
-      {
-        articleno: 8,
-        userid: "parkssafy",
-        subject: "안녕하세요7",
-        hit: 24,
-        regtime: "2022-11-07 11:03:15",
-      },
-    ];
+  computed: {
+    ...mapState(["articles"]),
   },
+
   methods: {
     moveWrite() {
       console.log("글쓰러 가자!!!");

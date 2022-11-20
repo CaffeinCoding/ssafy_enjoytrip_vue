@@ -76,7 +76,6 @@
                     <img src="img/bg7.jpg" alt="" class="img-raised" />
                     <img src="img/bg6.jpg" class="img-raised" />
                   </div>
-                  <tour-plan-list></tour-plan-list>
                 </div>
               </div>
             </tab-pane>
@@ -140,7 +139,10 @@
         </div>
       </div>
       <template slot="footer">
-        <n-button>수정</n-button>
+        <div>
+          <n-button>수정</n-button>
+          <n-button class="ml-3">탈퇴</n-button>
+        </div>
         <n-button type="danger" @click.native="modals.classic = false">닫기</n-button>
       </template>
     </modal>
@@ -148,7 +150,6 @@
 </template>
 <script>
 import { Modal, Tabs, TabPane, Button, FormGroupInput } from "@/components";
-import { TourPlanList } from "@/pages/components/tour/TourPlanList";
 
 export default {
   name: "profile",
@@ -159,7 +160,6 @@ export default {
     Modal,
     Tabs,
     TabPane,
-    TourPlanList,
   },
   data() {
     return {
