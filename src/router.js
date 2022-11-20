@@ -137,7 +137,7 @@ export default new Router({
         {
           path: "list",
           name: "tourplaclist",
-          component: () => import("@/pages/components/tour/TourPlanList"),
+          component: () => import("@/pages/components/tour/TourList"),
         },
       ],
     },
