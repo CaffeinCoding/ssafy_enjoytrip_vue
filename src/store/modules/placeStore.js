@@ -52,3 +52,5 @@ const placeStore = {
     getArea: ({ commit }) => {},
   },
 };
+
+export default placeStore;

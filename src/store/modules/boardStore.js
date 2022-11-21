@@ -1,9 +1,14 @@
 import {
   registArticleBoard,
   getArticleBoard,
+  getArticleBoardList,
   modifyArticleBoard,
   deleteArticleBoard,
 } from "@/api/board.js";
+
+const errorCall = (error) => {
+  console.log(error);
+};
 
 const boardStore = {
   namespaced: true,
@@ -56,6 +61,12 @@ const boardStore = {
         }
       );
     },
+
+    async getArticleList({ commit }, id) {
+      await getArticleBoardList(({ data }) => {
+        commit("SET_ARTICLE_LIST", data);
+      }, errorCall);
+    },
     async modifyArticle({ commit }, article) {
       const formData = new FormData();
       formData.append("articleNo", article.articleNo);
@@ -91,3 +102,5 @@ const boardStore = {
     },
   },
 };
+
+export default boardStore;
