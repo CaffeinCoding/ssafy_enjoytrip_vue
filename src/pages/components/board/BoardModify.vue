@@ -4,35 +4,37 @@
       <card>
         <div class="regist mt-3 mb-5">
           <div class="regist_form">
-            <h4 class="modify-category mb-4">글수정</h4>
+            <h4 class="category mb-4">글수정</h4>
             <div class="regist-title">
-              <label for="userid" class="modify-category ml-3">작성자</label>
-
-              <fg-input placeholder="작성자" id="userid" v-model="userid" ref="userid"></fg-input>
+              <label for="userId" class="category ml-3">작성자</label>
+              <fg-input
+                id="userId"
+                ref="userId"
+                v-model="userId"
+                readonly
+              ></fg-input>
             </div>
             <div class="regist-title">
-              <label for="subject" class="modify-category ml-3">제목</label>
-
-              <fg-input placeholder="제목" id="subject" v-model="subject" ref="subject"></fg-input>
+              <label for="title" class="category ml-3">제목</label>
+              <fg-input id="title" v-model="title" ref="title"></fg-input>
             </div>
             <div class="regist-title ml-3">
-              <label for="content" class="modify-category">내용</label>
+              <label for="content" class="category">내용</label>
               <br />
               <div class="textarea-container">
                 <textarea
                   id="content"
-                  v-model="content"
                   class="form-control"
                   name="name"
                   rows="100"
                   cols="80"
-                  placeholder="내용"
+                  v-model="content"
                 ></textarea>
               </div>
             </div>
 
             <div class="regist-title">
-              <label for="subject" class="modify-category ml-3">이미지</label>
+              <label for="upfile" class="category ml-3">이미지</label>
               <div class="input-group">
                 <input
                   type="file"
@@ -40,24 +42,30 @@
                   id="inputGroupFile04"
                   aria-describedby="inputGroupFileAddon04"
                   aria-label="Upload"
+                  v-on:change="fileSelect()"
+                  ref="imagefile"
                 />
               </div>
             </div>
           </div>
         </div>
       </card>
-      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3">등록</n-button>
-      <n-button type="primary" round @click="moveList" class="btn-list ml-3">목록</n-button>
+      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3"
+        >완료</n-button
+      >
+      <n-button type="primary" round @click="moveList" class="btn-list ml-3"
+        >목록</n-button
+      >
     </div>
   </div>
 </template>
 
 <script>
-// import http from "@/util/http-common";
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "BoardModify",
+  name: "BoardWrite",
   components: {
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
@@ -67,66 +75,64 @@ export default {
   },
   data() {
     return {
-      article: Object,
+      articleNo: null,
+      userId: "",
+      title: "",
+      content: "",
+      upfile: "",
     };
   },
+  computed: { ...mapState(["article"]) },
   created() {
-    // 비동기
-    // TODO : 글번호에 해당하는 글정보 얻기.
-    // http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-    //   this.article = data;
-    // });
-    this.article = {
-      articleno: 10,
-      userid: "ssafy",
-      subject: "안녕하세요",
-      content: "안녕하세요!!!!",
-      hit: 10,
-      regtime: "2022-11-08 17:03:15",
-    };
+    console.log(this.article);
+    this.articleNo = this.article.articleNo;
+    this.userId = this.article.userId;
+    this.title = this.article.title;
+    this.content = this.article.content;
+    this.upfile = this.article.upfile;
   },
   methods: {
-    // 입력값 체크하기 - 체크가 성공하면 registArticle 호출
+    ...mapActions(["modifyArticle"]),
+
     checkValue() {
-      // 사용자 입력값 체크하기
-      // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
-      err &&
-        !this.article.subject &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
-      err &&
-        !this.article.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      !this.userId && ((msg = "작성자 입력해주세요"), (err = false));
+      err && !this.title && ((msg = "제목 입력해주세요"), (err = false));
+      err && !this.content && ((msg = "내용 입력해주세요"), (err = false));
+      err && !this.upfile && ((msg = "이미지를 등록해주세요."), (err = false));
 
       if (!err) alert(msg);
-      // 만약, 내용이 다 입력되어 있다면 registArticle 호출
-      else this.modifyArticle();
-    },
-    modifyArticle() {
-      console.log("글수정 하러가자!!!!");
-      // 비동기
-      // TODO : 글번호에 해당하는 글정보 수정.
-      //   http.put("/board", this.article).then(({ data }) => {
-      //     let msg = "수정 처리 중 문제 발생!!!";
-      //     if (data === "success") msg = "수정 성공!!!";
-      //     alert(msg);
-      //     this.moveList();
-      //   });
+      else {
+        alert("수정되었습니다.");
+        let tempArticle = {
+          articleNo: this.articleNo,
+          userId: this.userId,
+          title: this.title,
+          content: this.content,
+          upfile: this.upfile,
+          hit: this.article.hit,
+          registDate: this.article.registDate,
+          isNotice: this.article.isNotice,
+        };
+        this.modifyArticle(tempArticle);
+
+        this.$router.push({ name: "boardview" });
+      }
     },
 
     moveList() {
-      console.log("글목록 보러가자!!!");
       this.$router.push({ name: "boardlist" });
+    },
+    fileSelect() {
+      this.upfile = this.$refs.imagefile.files[0];
     },
   },
 };
 </script>
 
 <style scoped>
-.modify-category {
+.category {
   text-transform: capitalize;
   font-weight: 700;
   color: #9a9a9a;

@@ -7,12 +7,22 @@
             <h4 class="category mb-4">글쓰기</h4>
             <div class="regist-title">
               <label for="userId" class="category ml-3">작성자</label>
-              <fg-input placeholder="작성자" id="userId" v-model="userId" ref="userId"></fg-input>
+              <fg-input
+                placeholder="작성자"
+                id="userId"
+                v-model="userId"
+                ref="userId"
+              ></fg-input>
             </div>
             <div class="regist-title">
               <label for="title" class="category ml-3">제목</label>
 
-              <fg-input placeholder="제목" id="title" v-model="title" ref="title"></fg-input>
+              <fg-input
+                placeholder="제목"
+                id="title"
+                v-model="title"
+                ref="title"
+              ></fg-input>
             </div>
             <div class="regist-title ml-3">
               <label for="content" class="category">내용</label>
@@ -47,8 +57,12 @@
           </div>
         </div>
       </card>
-      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3">등록</n-button>
-      <n-button type="primary" round @click="moveList" class="btn-list ml-3">목록</n-button>
+      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3"
+        >등록</n-button
+      >
+      <n-button type="primary" round @click="moveList" class="btn-list ml-3"
+        >목록</n-button
+      >
     </div>
   </div>
 </template>
@@ -76,7 +90,7 @@ export default {
   },
   methods: {
     ...mapActions(["registArticle"]),
-    checkValue() {
+    async checkValue() {
       let err = true;
       let msg = "";
       !this.userId && ((msg = "작성자 입력해주세요"), (err = false));
@@ -93,7 +107,7 @@ export default {
           content: this.content,
           upfile: this.upfile,
         };
-        this.registArticle(article);
+        await this.registArticle(article);
         this.$router.push({ name: "boardlist" });
       }
     },

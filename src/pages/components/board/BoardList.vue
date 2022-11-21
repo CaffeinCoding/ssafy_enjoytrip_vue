@@ -6,79 +6,36 @@
       </div>
     </div>
     <div>
-      <ul ref="notification-list" class="list" @scroll="handleNotificationListScroll">
+      <ul
+        ref="notification-list"
+        class="list"
+        @scroll="handleNotificationListScroll"
+      >
         <masonry
           :cols="{ default: 3, 1000: 3, 700: 2, 400: 1 }"
           :gutter="{ default: '15px', 700: '5px' }"
           class="card-style"
         >
-          <!-- <div v-for="(item, index) in 100" :key="index"> -->
-
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg3.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/test1.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg4.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/test2.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg5.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg6.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg7.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg8.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-          <router-link to="view/1">
-            <card class="board-card">
-              <img src="@/assets/bg11.jpg" />
-              <h4 class="card-title">제목</h4>
-              <p class="card-text">내용</p>
-            </card>
-          </router-link>
-
-          <!-- </div> -->
+          <div
+            v-for="(article, index) in articles"
+            :key="index"
+            :article="article"
+          >
+            <div @click="moveView(article.articleNo)">
+              <card class="board-card">
+                <img
+                  :src="
+                    'http://localhost:1010/upload/file/' +
+                    article.fileInfos[0].saveFolder +
+                    '/' +
+                    article.fileInfos[0].saveFile
+                  "
+                />
+                <h4 class="card-title">{{ article.title }}</h4>
+                <p class="card-text">{{ article.content }}</p>
+              </card>
+            </div>
+          </div>
         </masonry>
       </ul>
     </div>
@@ -86,7 +43,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import { Button, Card } from "@/components";
 
 export default {
@@ -97,18 +54,29 @@ export default {
   },
   data() {
     return {
-      articles: [],
-      contents: null,
       baseUrl: process.env.VUE_APP_BASE_URL,
     };
   },
   computed: {
     ...mapState(["articles"]),
   },
+  async created() {
+    console.log("create");
+    this.CLEAR_ARTICLE_LIST();
+    await this.getArticleList();
+  },
 
   methods: {
+    ...mapActions(["getArticleList", "getArticle"]),
+    ...mapMutations(["CLEAR_ARTICLE_LIST"]),
+    async moveView(articleNo) {
+      await this.getArticle(articleNo);
+      this.$router.push({
+        name: "boardview",
+        params: { articleNo: articleNo },
+      });
+    },
     moveWrite() {
-      console.log("글쓰러 가자!!!");
       this.$router.push({ name: "boardwrite" });
     },
 
@@ -176,5 +144,8 @@ export default {
 .board-card::v-deep .card-body {
   padding: 0px;
   padding-bottom: 20px;
+}
+.card {
+  color: black;
 }
 </style>

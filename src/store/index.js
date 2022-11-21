@@ -34,6 +34,9 @@ export default new Vuex.Store({
       state.articles = [];
       state.article = null;
     },
+    CLEAR_ARTICLE(state) {
+      state.article = null;
+    },
   },
   actions: {
     //user
@@ -55,10 +58,11 @@ export default new Vuex.Store({
       http.post(`/user`, user);
     },
     //board
-    getArticleList({ commit }) {
-      http
+    async getArticleList({ commit }) {
+      await http
         .get(`/board`)
         .then(({ data }) => {
+          console.log(data);
           commit("SET_ARTICLE_LIST", data);
         })
         .catch((error) => {
@@ -66,7 +70,7 @@ export default new Vuex.Store({
         });
     },
     //board
-    registArticle({ commit }, article) {
+    async registArticle({ commit }, article) {
       const formData = new FormData();
       formData.append("userId", article.userId);
       formData.append("title", article.title);
@@ -76,22 +80,36 @@ export default new Vuex.Store({
       for (let key of formData.entries()) {
         console.log(`${key}`);
       }
-      axios({
+      await axios({
         method: "post",
         url: "http://localhost:1010/board",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
     },
-    getArticle({ commit }, id) {
-      http.get(`board/${id}`).then(({ data }) => {
+    async getArticle({ commit }, id) {
+      await http.get(`board/${id}`).then(({ data }) => {
         commit("SET_ARTICLE", data);
       });
     },
-    modifyArticle({ commit }, id) {
-      http.put(`board/${id}`).then(({ data }) => {
-        commit("SET_ARTICLE", data);
+    modifyArticle({ commit }, article) {
+      const formData = new FormData();
+      formData.append("articleNo", article.articleNo);
+      formData.append("userId", article.userId);
+      formData.append("title", article.title);
+      formData.append("content", article.content);
+      formData.append("upfile", article.upfile);
+
+      for (let key of formData.entries()) {
+        console.log(`${key}`);
+      }
+      axios({
+        method: "put",
+        url: "http://localhost:1010/board",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
       });
+      commit("SET_ARTICLE", article);
     },
     deleteArticle({ commit }, id) {
       http.delete(`board/${id}`);

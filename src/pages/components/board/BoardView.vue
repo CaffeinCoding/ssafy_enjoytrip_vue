@@ -10,13 +10,24 @@
             class="tabs-content"
           >
             <tab-pane>
-              <template slot="label"> <i class="now-ui-icons media-1_album"></i> 사진 </template>
+              <template slot="label">
+                <i class="now-ui-icons media-1_album"></i> 사진
+              </template>
               <div class="tab-content">
-                <img src="@/assets/bg3.jpg" />
+                <img
+                  :src="
+                    'http://localhost:1010/upload/file/' +
+                    article.fileInfos[0].saveFolder +
+                    '/' +
+                    article.fileInfos[0].saveFile
+                  "
+                />
               </div>
             </tab-pane>
             <tab-pane>
-              <template slot="label"> <i class="now-ui-icons objects_globe"></i> 위치 </template>
+              <template slot="label">
+                <i class="now-ui-icons objects_globe"></i> 위치
+              </template>
               <div class="tab-content">
                 <p>지도가 들어갈 자리</p>
               </div>
@@ -25,47 +36,55 @@
         </card>
       </div>
       <div class="col-md-10 ml-auto col-xl-6 mr-auto mt-3">
-        <!-- Tabs with Background on Card -->
         <div class="card">
           <div class="view">
-            <h3>{{ article.subject }}</h3>
+            <h3>{{ article.title }}</h3>
 
             <div class="post-info">
-              작성자 {{ article.userid }} | 조회수{{ article.hit }} | 작성시간
-              {{ article.regtime }}
+              작성자 {{ article.userId }} | 조회수 {{ article.hit }} | 작성시간
+              {{ article.registDate }}
             </div>
 
             <hr size="5" />
 
-            <div class="view">{{ article.content }}</div>
+            {{ article.content }}
           </div>
         </div>
-        <!-- End Tabs on plain Card -->
       </div>
     </div>
 
     <router-link
       :to="{
         name: 'boardmodify',
-        params: { articleno: article.articleno },
+        params: { articleNo: article.articleNo },
       }"
-      ><n-button type="primary" round class="btn-modify mr-3 mt-4">수정</n-button></router-link
+      ><n-button type="primary" round class="btn-modify mr-3 mt-4"
+        >수정</n-button
+      ></router-link
     >
 
-    <n-button type="primary" round class="btn-delete mt-4">삭제</n-button>
-    <n-button type="primary" round @click="moveList" class="btn-list ml-3 mt-4">목록</n-button>
+    <n-button
+      type="primary"
+      round
+      @click="removeArticle"
+      class="btn-delete mt-4"
+      >삭제</n-button
+    >
+    <n-button type="primary" round @click="moveList" class="ml-3 mt-4"
+      >목록</n-button
+    >
   </div>
 </template>
 
 <script>
-// import http from "@/util/http-common";
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "BoardView",
   data() {
     return {
-      article: Object,
+      articleNo: null,
     };
   },
   components: {
@@ -75,25 +94,20 @@ export default {
     [Tabs.name]: Tabs,
     [TabPane.name]: TabPane,
   },
-  created() {
-    // 비동기
-    // TODO : 글번호에 해당하는 글정보 얻기.
-    // http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-    //   this.article = data;
-    // });
-    this.article = {
-      articleno: 10,
-      userid: "안효인",
-      subject: "안녕하세요. 글제목입니다",
-      content: "안녕하세요!!!! 내용입니다.",
-      hit: 10,
-      regtime: "2022-11-08 17:03:15",
-    };
-  },
+  async created() {},
+  computed: { ...mapState(["article"]) },
+
   methods: {
+    ...mapActions(["getArticle", "deleteArticle"]),
+    ...mapMutations(["CLEAR_ARTICLE"]),
     moveList() {
-      console.log("글목록 보러가자!!!");
+      console.log(this.article);
       this.$router.push({ name: "boardlist" });
+    },
+    removeArticle() {
+      this.deleteArticle(this.article.articleNo);
+      alert("삭제되었습니다.");
+      this.moveList();
     },
   },
 };
