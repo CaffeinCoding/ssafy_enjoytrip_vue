@@ -80,6 +80,8 @@
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
 import { mapState, mapActions, mapMutations } from "vuex";
 
+const boardStore = "boardStore";
+
 export default {
   name: "BoardView",
   data() {
@@ -95,11 +97,11 @@ export default {
     [TabPane.name]: TabPane,
   },
   async created() {},
-  computed: { ...mapState(["article"]) },
+  computed: { ...mapState(boardStore, ["article"]) },
 
   methods: {
-    ...mapActions(["getArticle", "deleteArticle"]),
-    ...mapMutations(["CLEAR_ARTICLE"]),
+    ...mapActions(boardStore, ["getArticle", "deleteArticle"]),
+    ...mapMutations(boardStore, ["CLEAR_ARTICLE"]),
     moveList() {
       console.log(this.article);
       this.$router.push({ name: "boardlist" });

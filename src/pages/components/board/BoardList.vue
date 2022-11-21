@@ -46,6 +46,8 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 import { Button, Card } from "@/components";
 
+const boardStore = "boardStore";
+
 export default {
   name: "BoardList",
   components: {
@@ -58,7 +60,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["articles"]),
+    ...mapState(boardStore, ["articles"]),
   },
   async created() {
     console.log("create");
@@ -67,8 +69,8 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getArticleList", "getArticle"]),
-    ...mapMutations(["CLEAR_ARTICLE_LIST"]),
+    ...mapActions(boardStore, ["getArticleList", "getArticle"]),
+    ...mapMutations(boardStore, ["CLEAR_ARTICLE_LIST"]),
     async moveView(articleNo) {
       await this.getArticle(articleNo);
       this.$router.push({

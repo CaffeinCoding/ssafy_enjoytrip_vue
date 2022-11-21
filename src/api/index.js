@@ -11,9 +11,9 @@ function apiInstance() {
   return instance;
 }
 
-function fileInstance() {
+function fileInstance(direct) {
   const instance = axios.create({
-    baseURL: process.env.VUE_APP_API_BASE_URL+"board",
+    baseURL: process.env.VUE_APP_API_BASE_URL + direct,
     headers: {
       "Content-Type": "multipart/form-data",
     },
