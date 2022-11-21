@@ -4,6 +4,9 @@ import createPersistedState from "vuex-persistedstate";
 import http from "../api/http";
 import axios from "axios";
 
+import { registArticleBoard } from "../api/board";
+import { getUserInfo} from "../api/user";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -41,9 +44,9 @@ export default new Vuex.Store({
   actions: {
     //user
     getUser({ commit }, id) {
-      http.get(`/user/${id}`).then(({ data }) => {
+      getUserInfo(id, ({ data }) => {
         commit("SET_USER", data);
-      });
+      }, (error) => { console.log(error) });
     },
     deleteUser({ commit }, id) {
       http.delete(`/user/${id}`);
@@ -77,15 +80,9 @@ export default new Vuex.Store({
       formData.append("content", article.content);
       formData.append("upfile", article.upfile);
 
-      for (let key of formData.entries()) {
-        console.log(`${key}`);
-      }
-      await axios({
-        method: "post",
-        url: "http://localhost:1010/board",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await registArticleBoard(formData, ({ data }) => {
+        console.log(data)
+      }, (error) => {console.log(error)})
     },
     async getArticle({ commit }, id) {
       await http.get(`board/${id}`).then(({ data }) => {

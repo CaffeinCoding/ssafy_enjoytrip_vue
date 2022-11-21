@@ -11,4 +11,14 @@ function apiInstance() {
   return instance;
 }
 
-export { apiInstance };
+function fileInstance() {
+  const instance = axios.create({
+    baseURL: process.env.VUE_APP_API_BASE_URL+"board",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return instance;
+}
+
+export { apiInstance, fileInstance };
