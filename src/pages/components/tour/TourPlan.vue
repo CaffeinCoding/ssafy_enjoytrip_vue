@@ -25,11 +25,14 @@
             </div>
             <div class="row justify-content-center">
               <div class="w-100 px-1 my-2" id="add-place-list">
-                <tour-plan-item
-                  v-for="(place, index) in planItems"
-                  :key="index"
-                  :place="place"
-                ></tour-plan-item>
+                <draggable v-model="planItemList">
+                  <tour-plan-item
+                    v-for="(place, index) in planItemList"
+                    :key="index"
+                    :place="place"
+                    :index="index"
+                  ></tour-plan-item>
+                </draggable>
               </div>
               <button
                 type="button"
@@ -40,7 +43,6 @@
               </button>
             </div>
           </div>
-          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -49,8 +51,9 @@
 
 <script>
 import KakaoMap from "@/pages/components/tour/KakaoMap";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import TourPlanItem from "@/pages/components/tour/TourPlanItem";
+import draggable from "vuedraggable";
 
 const placeStore = "placeStore";
 
@@ -59,15 +62,30 @@ export default {
   components: {
     KakaoMap,
     TourPlanItem,
+    draggable,
   },
   created() {
     this.CLEAR_PLANITEM_LIST();
   },
   computed: {
     ...mapState(placeStore, ["planItems"]),
+    planItemList: {
+      get() {
+        return this.planItems;
+      },
+      set(value) {
+        this.setPlanItemList(value);
+      },
+    },
+    // planItems: {
+    //   set(value) {
+    //     this.setPlanItemList(value);
+    //   },
+    // },
   },
   methods: {
     ...mapMutations(placeStore, ["CLEAR_PLANITEM_LIST"]),
+    ...mapActions(placeStore, ["setPlanItemList"]),
   },
 };
 </script>

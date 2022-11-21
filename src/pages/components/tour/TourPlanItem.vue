@@ -19,7 +19,12 @@
               >상세보기</a
             >
           </div>
-          <button class="plan-item-remove-btn btn btn-danger">삭제</button>
+          <button
+            class="plan-item-remove-btn btn btn-danger"
+            @click="delPlanItem(index)"
+          >
+            삭제
+          </button>
         </div>
       </div>
     </div>
@@ -27,10 +32,15 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
+const placeStore = "placeStore";
+
 export default {
   name: "TourPlanItem",
   props: {
     place: Object,
+    index: Number,
   },
   data() {
     return {
@@ -50,6 +60,9 @@ export default {
         return this.img;
       }
     },
+  },
+  methods: {
+    ...mapActions(placeStore, ["delPlanItem"]),
   },
 };
 </script>

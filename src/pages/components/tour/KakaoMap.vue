@@ -92,6 +92,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 import { Switch } from "@/components";
+import _ from "lodash";
 
 const placeStore = "placeStore";
 
@@ -167,6 +168,7 @@ export default {
       "contents",
       "markerImg",
       "places",
+      "planItems",
     ]),
   },
   watch: {
@@ -264,7 +266,7 @@ export default {
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
             map.setCenter(
-              new kakao.maps.LatLng(coords.latitude, coords.longitude)
+              new kakao.maps.LatLng(coords.latitude, coords.longitude),
             );
           },
           (error) => {
@@ -274,7 +276,7 @@ export default {
             enableHighAccuracy: true,
             maximumAge: 0,
             timeout: Infinity,
-          }
+          },
         );
       }
     },
@@ -288,38 +290,58 @@ export default {
         averageCenter: true,
         minLevel: 7,
       });
-      this.places.forEach((place) => {
-        if (!this.searchMode) {
-          contentSet.add(place.contentType);
-        }
-        const pos = new kakao.maps.LatLng(
-          Number(place.mapY),
-          Number(place.mapX)
-        );
-        const marker = new kakao.maps.Marker({
-          position: pos,
-          title: place.title,
-          image: new kakao.maps.MarkerImage(
-            require("@/assets/marker/" +
-              this.locImage[place.contentType] +
-              ".png"),
-            new kakao.maps.Size(37, 37)
-          ),
-        });
-        marker.setMap(this.map);
-        this.makeInfoWindow(place, marker);
-        this.markerList.push(marker);
-        bounds.extend(marker.getPosition());
+      const placeItemList = _.differenceBy(
+        this.places,
+        this.planItems,
+        (place) => place.contentId,
+      );
+      const polyline = new kakao.maps.Polyline({
+        strokeWeight: 4,
+        strokeColor: "#fff",
+        strokeOpacity: 0.8,
+        strokeStyle: "solid",
+      });
+      const polyPath = [];
+      this.planItems.forEach((place) => {
+        this.makeMarker(place, contentSet, bounds, polyPath);
+      });
+      placeItemList.forEach((place) => {
+        this.makeMarker(place, contentSet, bounds);
       });
       if (!this.searchMode) {
         this.setContentList(contentSet);
       }
+      polyline.setPath(polyPath);
+      polyline.setMap(this.map);
       this.clusterer.addMarkers(this.markerList);
       this.map.setBounds(bounds);
     },
+    makeMarker(place, contentSet, bounds, polyPath) {
+      if (!this.searchMode) {
+        contentSet.add(place.contentType);
+      }
+      const pos = new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX));
+      const marker = new kakao.maps.Marker({
+        position: pos,
+        title: place.title,
+        image: new kakao.maps.MarkerImage(
+          require("@/assets/marker/" +
+            this.locImage[place.contentType] +
+            ".png"),
+          new kakao.maps.Size(37, 37),
+        ),
+      });
+      if (polyPath) {
+        polyPath.push(marker.getPosition());
+      }
+      marker.setMap(this.map);
+      this.makeInfoWindow(place, marker);
+      this.markerList.push(marker);
+      bounds.extend(marker.getPosition());
+    },
     setContentList(contentSet) {
       this.contentList = this.defaultContent.filter((obj) =>
-        contentSet.has(obj.contentType)
+        contentSet.has(obj.contentType),
       );
       this.setContents(this.contentList);
     },

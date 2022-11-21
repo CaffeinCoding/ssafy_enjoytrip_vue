@@ -13,6 +13,7 @@ const placeStore = {
     places: [],
     planItems: [],
     place: null,
+    polyLine: null,
   },
   getters: {},
   mutations: {
@@ -63,8 +64,14 @@ const placeStore = {
     SET_DETAIL_PLACE(state, place) {
       state.place = place;
     },
-    SET_PLANITEM_LIST(state, place) {
+    SET_PLANITEM(state, place) {
       state.planItems.push(place);
+    },
+    SET_PLANITEM_LIST(state, planList) {
+      state.planItems = planList;
+    },
+    DEL_PLANITEM(state, index) {
+      state.planItems.splice(index, 1);
     },
   },
   actions: {
@@ -80,7 +87,7 @@ const placeStore = {
         ({ data }) => {
           commit("SET_SIGUNGU_LIST", data);
         },
-        errorCall
+        errorCall,
       );
     },
     async getPlaces({ commit }, params) {
@@ -89,7 +96,7 @@ const placeStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall
+        errorCall,
       );
     },
     async getPlaceSearch({ commit }, word) {
@@ -98,14 +105,20 @@ const placeStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall
+        errorCall,
       );
     },
     setContents({ commit }, params) {
       commit("SET_CONTENT_LIST", params);
     },
     setPlanItem({ commit }, place) {
-      commit("SET_PLANITEM_LIST", place);
+      commit("SET_PLANITEM", place);
+    },
+    setPlanItemList({ commit }, planList) {
+      commit("SET_PLANITEM_LIST", planList);
+    },
+    delPlanItem({ commit }, index) {
+      commit("DEL_PLANITEM", index);
     },
   },
 };
