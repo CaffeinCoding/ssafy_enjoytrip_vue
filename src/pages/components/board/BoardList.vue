@@ -54,18 +54,13 @@ export default {
     [Button.name]: Button,
     [Card.name]: Card,
   },
-  data() {
-    return {
-      baseUrl: process.env.VUE_APP_BASE_URL,
-    };
-  },
   computed: {
     ...mapState(boardStore, ["articles"]),
   },
   async created() {
-    console.log("create");
     this.CLEAR_ARTICLE_LIST();
     await this.getArticleList();
+    console.log(this.articles);
   },
 
   methods: {

@@ -23,8 +23,8 @@ export default {
     return {
       articles: [
         {
-          articleno: 10,
-          userid: "안효인",
+          articleNo: 10,
+          userId: "안효인",
           subject: "안녕하세요",
           content: "안녕하세요!!!!",
           hit: 10,

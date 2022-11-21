@@ -1,14 +1,19 @@
 <template>
   <div>
     <div class="page-header clear-filter" filter-color="orange">
-      <parallax class="page-header-image" style="background-image: url('img/bg5.jpg')"> </parallax>
+      <parallax
+        class="page-header-image"
+        style="background-image: url('img/bg5.jpg')"
+      >
+      </parallax>
       <div class="container">
         <div class="photo-container">
           <img src="img/ryan.jpg" alt="" />
         </div>
         <h3 class="title">{{ user.user_name }}</h3>
         <p class="category">
-          {{ user.user_id }} | {{ user.email_id }}{{ user.email_domain }} | {{ user.user_age }}
+          {{ user.user_id }} | {{ user.email_id }}{{ user.email_domain }} |
+          {{ user.user_age }}
         </p>
 
         <div class="content">
@@ -104,15 +109,25 @@
       <div class="regist mt-3 mb-5">
         <div class="regist_form">
           <div class="regist-title">
-            <label for="userid" class="modify-category ml-3">이름</label>
+            <label for="userId" class="modify-category ml-3">이름</label>
 
-            <fg-input placeholder="이름" id="userid" v-model="userid" ref="userid"></fg-input>
+            <fg-input
+              placeholder="이름"
+              id="userId"
+              v-model="userId"
+              ref="userId"
+            ></fg-input>
           </div>
 
           <div class="regist-title">
             <label for="subject" class="modify-category ml-3">나이</label>
 
-            <fg-input placeholder="나이" id="subject" v-model="subject" ref="subject"></fg-input>
+            <fg-input
+              placeholder="나이"
+              id="subject"
+              v-model="subject"
+              ref="subject"
+            ></fg-input>
           </div>
           <div class="regist-title">
             <label for="subject" class="modify-category ml-3">비밀번호</label>
@@ -143,7 +158,9 @@
           <n-button>수정</n-button>
           <n-button class="ml-3">탈퇴</n-button>
         </div>
-        <n-button type="danger" @click.native="modals.classic = false">닫기</n-button>
+        <n-button type="danger" @click.native="modals.classic = false"
+          >닫기</n-button
+        >
       </template>
     </modal>
   </div>

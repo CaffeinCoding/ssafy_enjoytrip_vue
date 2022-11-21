@@ -57,7 +57,8 @@
 
             <div class="filebox">
               <label for="inputGroupFile04"
-                ><i class="now-ui-icons business_badge mr-2 ml-2"></i> 프로필 사진 업로드</label
+                ><i class="now-ui-icons business_badge mr-2 ml-2"></i> 프로필
+                사진 업로드</label
               >
               <input
                 type="file"
@@ -70,10 +71,15 @@
           </template>
           <div class="card-footer text-center">
             <div class="row mx-1">
-              <a class="col btn btn-neutral btn-round btn-lg btn-block" @click="registUser"
+              <a
+                class="col btn btn-neutral btn-round btn-lg btn-block"
+                @click="registUser"
                 >가입하기</a
               >
-              <div class="col-2 ml-2 btn btn-icon btn-round btn-neutral" id="btn-kakao-background">
+              <div
+                class="col-2 ml-2 btn btn-icon btn-round btn-neutral"
+                id="btn-kakao-background"
+              >
                 <div id="btn-kakao">
                   <img v-lazy="'img/kakaotalk_logo_icon.png'" alt="" />
                 </div>
@@ -83,7 +89,10 @@
         </card>
       </div>
       <div class="col text-center">
-        <router-link to="/login" class="btn btn-simple btn-round btn-white btn-lg">
+        <router-link
+          to="/user/login"
+          class="btn btn-simple btn-round btn-white btn-lg"
+        >
           View Login Page
         </router-link>
       </div>
@@ -93,6 +102,8 @@
 <script>
 import { Card, FormGroupInput, Button } from "@/components";
 import { mapActions } from "vuex";
+
+const userStore = "userStore";
 
 export default {
   data() {
@@ -117,7 +128,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["registUser"]),
+    ...mapActions(userStore, ["registUser"]),
     onResize() {
       this.windowHeight = window.innerHeight - 69;
     },

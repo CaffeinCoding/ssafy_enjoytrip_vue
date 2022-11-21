@@ -62,11 +62,12 @@ const boardStore = {
       );
     },
 
-    async getArticleList({ commit }, id) {
+    async getArticleList({ commit }) {
       await getArticleBoardList(({ data }) => {
         commit("SET_ARTICLE_LIST", data);
       }, errorCall);
     },
+
     async modifyArticle({ commit }, article) {
       const formData = new FormData();
       formData.append("articleNo", article.articleNo);
@@ -74,10 +75,6 @@ const boardStore = {
       formData.append("title", article.title);
       formData.append("content", article.content);
       formData.append("upfile", article.upfile);
-
-      for (let key of formData.entries()) {
-        console.log(`${key}`);
-      }
 
       await modifyArticleBoard(
         formData,

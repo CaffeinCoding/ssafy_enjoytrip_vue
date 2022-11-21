@@ -64,8 +64,10 @@
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
 import { mapActions, mapState } from "vuex";
 
+const boardStore = "boardStore";
+
 export default {
-  name: "BoardWrite",
+  name: "BoardModify",
   components: {
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
@@ -82,7 +84,7 @@ export default {
       upfile: "",
     };
   },
-  computed: { ...mapState(["article"]) },
+  computed: { ...mapState(boardStore, ["article"]) },
   created() {
     console.log(this.article);
     this.articleNo = this.article.articleNo;
@@ -92,7 +94,7 @@ export default {
     this.upfile = this.article.upfile;
   },
   methods: {
-    ...mapActions(["modifyArticle"]),
+    ...mapActions(boardStore, ["modifyArticle"]),
 
     checkValue() {
       let err = true;

@@ -71,6 +71,8 @@
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
 import { mapActions } from "vuex";
 
+const boardStore = "boardStore";
+
 export default {
   name: "BoardWrite",
   components: {
@@ -89,7 +91,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["registArticle"]),
+    ...mapActions(boardStore, ["registArticle"]),
     async checkValue() {
       let err = true;
       let msg = "";

@@ -21,9 +21,9 @@
         <tbody>
           <board-layout-item
             v-for="article in articles"
-            :key="article.articleno"
+            :key="article.articleNo"
             :article="article"
-            :link="`${baseLink}/${article.articleno}`"
+            :link="`${baseLink}/${article.articleNo}`"
           ></board-layout-item>
         </tbody>
       </table>

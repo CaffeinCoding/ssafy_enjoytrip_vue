@@ -9,13 +9,25 @@
               <h4 class="category mb-2">비밀번호 찾기</h4>
               <p>가입한 이메일을 입력해주세요.</p>
               <div class="title">
-                <label for="userid" class="category ml-3">이메일</label>
-                <fg-input placeholder="이메일" id="email" v-model="email" ref="email"></fg-input>
+                <label for="email" class="category ml-3">이메일</label>
+                <fg-input
+                  placeholder="이메일"
+                  id="email"
+                  v-model="email"
+                  ref="email"
+                ></fg-input>
               </div>
-              <n-button type="primary" round class="btn mb-5">인증번호 전송</n-button>
+              <n-button type="primary" round class="btn mb-5"
+                >인증번호 전송</n-button
+              >
               <div class="title">
-                <label for="userid" class="category ml-3">인증번호</label>
-                <fg-input placeholder="인증번호" id="num" v-model="num" ref="num"></fg-input>
+                <label for="num" class="category ml-3">인증번호</label>
+                <fg-input
+                  placeholder="인증번호"
+                  id="num"
+                  v-model="num"
+                  ref="num"
+                ></fg-input>
               </div>
               <div class="button-container" id="modals">
                 <div class="col-md-15 modal-buttons">
@@ -30,19 +42,32 @@
       </card>
     </div>
     <!-- Classic Modal -->
-    <modal :show.sync="modals.classic" headerClasses="justify-content-center" class="mt-5">
+    <modal
+      :show.sync="modals.classic"
+      headerClasses="justify-content-center"
+      class="mt-5"
+    >
       <h4 slot="header" class="title title-up">비밀번호 찾기</h4>
       <p>해당 계정의 비밀번호는 다음과 같습니다.</p>
       <p>1234</p>
       <template slot="footer">
         <n-button>Nice Button</n-button>
-        <n-button type="danger" @click.native="modals.classic = false">Close</n-button>
+        <n-button type="danger" @click.native="modals.classic = false"
+          >Close</n-button
+        >
       </template>
     </modal>
   </div>
 </template>
 <script>
-import { Button, FormGroupInput, Card, Tabs, TabPane, Modal } from "@/components";
+import {
+  Button,
+  FormGroupInput,
+  Card,
+  Tabs,
+  TabPane,
+  Modal,
+} from "@/components";
 
 export default {
   name: "forgot-password",

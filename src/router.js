@@ -2,20 +2,44 @@ import Vue from "vue";
 import Router from "vue-router";
 import Index from "./pages/Index.vue";
 import Landing from "./pages/Landing.vue";
-import Login from "./pages/Login.vue";
 import UserProfile from "./pages/components/user/UserProfile.vue";
 import SignupForm from "./pages/components/user/Signup.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 
 // EnjoyTrip
+import store from "@/store";
+
 import AppBoard from "@/pages/AppBoard";
 import AppTour from "@/pages/AppTour";
 import AppUser from "@/pages/AppUser";
 
+// User
+import UserLogin from "@/pages/components/user/UserLogin";
+
 Vue.use(Router);
 
-export default new Router({
+const onlyAuthUser = async (to, from, next) => {
+  console.log("check");
+  const checkUserInfo = store.getters["userStore/checkUserInfo"];
+  const checkToken = store.getters["userStore/checkToken"];
+  let token = sessionStorage.getItem("access-token");
+  console.log("로그인 처리 전", checkUserInfo, token);
+
+  if (checkUserInfo != null && token) {
+    console.log("토큰 유효성 체크하러 가자!!!!");
+    await store.dispatch("userStore/getUserInfo", token);
+  }
+  if (!checkToken || checkUserInfo === null) {
+    alert("로그인이 필요한 페이지입니다..");
+    // next({ name: "login" });
+    router.push({ name: "login" });
+  } else {
+    console.log("로그인 했다!!!!!!!!!!!!!.");
+    next();
+  }
+};
+const router = new Router({
   linkExactActiveClass: "active",
   mode: "history",
   routes: [
@@ -35,14 +59,6 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" },
-      },
-    },
-    {
-      path: "/login",
-      name: "login",
-      components: { default: Login, header: MainNavbar },
-      props: {
-        header: { colorOnScroll: 400 },
       },
     },
     {
@@ -71,7 +87,14 @@ export default new Router({
         footer: { backgroundColor: "black" },
       },
     },
-
+    {
+      path: "/login",
+      name: "login",
+      components: { default: UserLogin, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 400 },
+      },
+    },
     {
       path: "/user",
       name: "user",
@@ -115,6 +138,7 @@ export default new Router({
         {
           path: "write",
           name: "boardwrite",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/pages/components/board/BoardWrite"),
         },
         {
@@ -125,11 +149,13 @@ export default new Router({
         {
           path: "modify/:articleNo",
           name: "boardmodify",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/pages/components/board/BoardModify"),
         },
         {
           path: "delete/:articleNo",
           name: "boarddelete",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/pages/components/board/BoardDelete"),
         },
       ],
@@ -173,3 +199,5 @@ export default new Router({
     }
   },
 });
+
+export default router;
