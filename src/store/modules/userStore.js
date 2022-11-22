@@ -71,12 +71,11 @@ const userStore = {
             commit("SET_IS_VALID_TOKEN", false);
           }
         },
-        errorCall
+        errorCall,
       );
     },
     async getUserInfoLogin({ commit, dispatch }, token) {
       let decodeToken = jwtDecode(token);
-      console.log(decodeToken);
       await findById(
         decodeToken.userId,
         ({ data }) => {
@@ -90,18 +89,18 @@ const userStore = {
         async (error) => {
           console.log(
             "getUserInfoLogin() error code [토큰 만료되어 사용 불가능.] ::: ",
-            error.response.status
+            error.response.status,
           );
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
-        }
+        },
       );
     },
 
     async tokenRegeneration({ commit, state }) {
       console.log(
         "토큰 재발급 >> 기존 토큰 정보 : {}",
-        sessionStorage.getItem("access-token")
+        sessionStorage.getItem("access-token"),
       );
       await tokenRegeneration(
         JSON.stringify(state.userInfo),
@@ -136,10 +135,10 @@ const userStore = {
                 console.log(error);
                 commit("SET_IS_LOGIN", false);
                 commit("SET_USER_INFO", null);
-              }
+              },
             );
           }
-        }
+        },
       );
     },
     async userLogout({ commit }, userId) {
@@ -156,7 +155,7 @@ const userStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
 
@@ -169,7 +168,7 @@ const userStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     async modifyUser({ commit }, user) {
@@ -178,7 +177,7 @@ const userStore = {
         ({ data }) => {
           console.log(data);
         },
-        errorCall
+        errorCall,
       );
     },
     async deleteUser({ commit }, id) {
@@ -187,7 +186,7 @@ const userStore = {
         ({ data }) => {
           console.log(data);
         },
-        errorCall
+        errorCall,
       );
     },
 
@@ -198,7 +197,7 @@ const userStore = {
         ({ data }) => {
           console.log(data);
         },
-        errorCall
+        errorCall,
       );
     },
   },
