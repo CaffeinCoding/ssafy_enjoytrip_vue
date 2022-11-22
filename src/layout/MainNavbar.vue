@@ -62,8 +62,11 @@
         <nav-link to="/profile">
           <i class="now-ui-icons users_single-02"></i> Profile
         </nav-link>
-        <nav-link to="/logout">
-          <i class="now-ui-icons media-1_button-power"></i> Logout
+        <nav-link>
+          <n-button @click="logoutMethod">
+            <i class="now-ui-icons media-1_button-power"></i>
+            Logout
+          </n-button>
         </nav-link>
       </drop-down>
       <!-- <li class="nav-item">
@@ -134,6 +137,11 @@
 <script>
 import { DropDown, Navbar, NavLink } from "@/components";
 import { Popover } from "element-ui";
+
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "main-navbar",
   props: {
@@ -145,6 +153,17 @@ export default {
     Navbar,
     NavLink,
     [Popover.name]: Popover,
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
+  methods: {
+    ...mapActions(userStore, ["userLogout"]),
+    async logoutMethod() {
+      await this.userLogout(this.userInfo.userId);
+      alert("로그아웃되었습니다.");
+      this.$router.push({ name: "login" });
+    },
   },
 };
 </script>

@@ -86,7 +86,6 @@ export default {
   },
   computed: { ...mapState(boardStore, ["article"]) },
   created() {
-    console.log(this.article);
     this.articleNo = this.article.articleNo;
     this.userId = this.article.userId;
     this.title = this.article.title;

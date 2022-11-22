@@ -66,31 +66,23 @@
                 id="inputGroupFile04"
                 aria-describedby="inputGroupFileAddon04"
                 aria-label="Upload"
+                v-on:change="fileSelect()"
+                ref="imagefile"
               />
             </div>
           </template>
           <div class="card-footer text-center">
-            <div class="row mx-1">
-              <a
-                class="col btn btn-neutral btn-round btn-lg btn-block"
-                @click="registUser"
-                >가입하기</a
-              >
-              <div
-                class="col-2 ml-2 btn btn-icon btn-round btn-neutral"
-                id="btn-kakao-background"
-              >
-                <div id="btn-kakao">
-                  <img v-lazy="'img/kakaotalk_logo_icon.png'" alt="" />
-                </div>
-              </div>
-            </div>
+            <a
+              class="col btn btn-neutral btn-round btn-lg btn-block"
+              @click="checkValue"
+              >가입하기</a
+            >
           </div>
         </card>
       </div>
       <div class="col text-center">
         <router-link
-          to="/user/login"
+          to="/login"
           class="btn btn-simple btn-round btn-white btn-lg"
         >
           View Login Page
@@ -115,6 +107,7 @@ export default {
       userPw: "",
       userAge: "",
       email: "",
+      upfile: "",
     };
   },
   mounted() {
@@ -132,21 +125,35 @@ export default {
     onResize() {
       this.windowHeight = window.innerHeight - 69;
     },
-    registUser() {
-      const user = {
-        userId: this.userId,
-        userName: this.userName,
-        userPw: this.userPw,
-        userAge: this.userAge,
-        email: this.email,
-      };
-      console.log(user.userId + " " + user.userName);
+    async checkValue() {
+      let err = true;
+      let msg = "";
+      !this.userId && ((msg = "아이디를 입력해주세요"), (err = false));
+      err && !this.userName && ((msg = "이름을 입력해주세요"), (err = false));
+      err && !this.userPw && ((msg = "비밀번호를 입력해주세요"), (err = false));
+      err && !this.userAge && ((msg = "나이를 등록해주세요."), (err = false));
+      err && !this.email && ((msg = "이메일을 등록해주세요."), (err = false));
+      err &&
+        !this.upfile &&
+        ((msg = "프로필사진을 등록해주세요."), (err = false));
 
-      this.registUser(this.user);
-
-      alert("가입되었습니다.");
-
-      this.$router.push({ name: "login" });
+      if (!err) alert(msg);
+      else {
+        alert("가입되었습니다.");
+        let user = {
+          userId: this.userId,
+          userName: this.userName,
+          userPw: this.userPw,
+          userAge: this.userAge,
+          email: this.email,
+          upfile: this.upfile,
+        };
+        await this.registUser(user);
+        this.$router.push({ name: "login" });
+      }
+    },
+    fileSelect() {
+      this.upfile = this.$refs.imagefile.files[0];
     },
   },
   components: {

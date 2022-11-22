@@ -8,12 +8,20 @@
       </parallax>
       <div class="container">
         <div class="photo-container">
-          <img src="img/ryan.jpg" alt="" />
+          <img
+            :src="
+              'http://localhost:1010/upload/file/' +
+              user.fileInfos[0].saveFolder +
+              '/' +
+              user.fileInfos[0].saveFile
+            "
+            alt=""
+          />
         </div>
-        <h3 class="title">{{ user.user_name }}</h3>
+        <h3 class="title">{{ user.userName }}</h3>
         <p class="category">
-          {{ user.user_id }} | {{ user.email_id }}{{ user.email_domain }} |
-          {{ user.user_age }}
+          {{ user.userId }} | {{ user.email }}|
+          {{ user.userAge }}
         </p>
 
         <div class="content">
@@ -114,33 +122,35 @@
             <fg-input
               placeholder="이름"
               id="userId"
-              v-model="userId"
+              v-model="userName"
               ref="userId"
             ></fg-input>
           </div>
 
           <div class="regist-title">
-            <label for="subject" class="modify-category ml-3">나이</label>
+            <label for="userAge" class="modify-category ml-3">나이</label>
 
             <fg-input
               placeholder="나이"
-              id="subject"
-              v-model="subject"
-              ref="subject"
+              id="userAge"
+              v-model="userAge"
+              ref="userAge"
             ></fg-input>
           </div>
           <div class="regist-title">
-            <label for="subject" class="modify-category ml-3">비밀번호</label>
+            <label for="password" class="modify-category ml-3">비밀번호</label>
 
             <fg-input
               placeholder="비밀번호"
-              id="subject"
-              v-model="subject"
-              ref="subject"
+              id="password"
+              v-model="userPw"
+              ref="password"
             ></fg-input>
           </div>
           <div class="regist-title">
-            <label for="subject" class="modify-category ml-3">프로필사진</label>
+            <label for="imagefile" class="modify-category ml-3"
+              >프로필사진</label
+            >
             <div class="input-group">
               <input
                 type="file"
@@ -148,6 +158,8 @@
                 id="inputGroupFile04"
                 aria-describedby="inputGroupFileAddon04"
                 aria-label="Upload"
+                v-on:change="fileSelect()"
+                ref="imagefile"
               />
             </div>
           </div>
@@ -155,8 +167,8 @@
       </div>
       <template slot="footer">
         <div>
-          <n-button>수정</n-button>
-          <n-button class="ml-3">탈퇴</n-button>
+          <n-button @click="checkValue">수정</n-button>
+          <n-button class="ml-3" @click="withdrawal">탈퇴</n-button>
         </div>
         <n-button type="danger" @click.native="modals.classic = false"
           >닫기</n-button
@@ -167,6 +179,9 @@
 </template>
 <script>
 import { Modal, Tabs, TabPane, Button, FormGroupInput } from "@/components";
+
+import { mapState, mapActions } from "vuex";
+const userStore = "userStore";
 
 export default {
   name: "profile",
@@ -180,24 +195,72 @@ export default {
   },
   data() {
     return {
-      user: Object,
+      userId: "",
+      userName: "",
+      userPw: "",
+      userAge: "",
+      upfile: "",
+      email: "",
       modals: {
         classic: false,
       },
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo", "user"]),
+  },
   created() {
-    this.user = {
-      user_id: "ssafy",
-      user_name: "김싸피",
-      user_pw: "1234",
-      user_age: 25,
-      email_id: "ssafy",
-      email_domain: "@ssafy.com",
-      join_date: "",
-      profile_img: "",
-      is_manager: 0,
-    };
+    this.getUser(this.userInfo.userId);
+    this.userId = this.user.userId;
+    this.userName = this.user.userName;
+    this.userPw = this.user.userPw;
+    this.userAge = this.user.userAge;
+    this.email = this.user.email;
+    this.upfile = this.user.upfile;
+  },
+  methods: {
+    ...mapActions(userStore, [
+      "modifyUser",
+      "getUser",
+      "deleteUser",
+      "userLogout",
+    ]),
+    checkValue() {
+      let err = true;
+      let msg = "";
+      !this.userName && ((msg = "이름을 입력해주세요"), (err = false));
+      err &&
+        !this.userPw &&
+        ((msg = "변경할 비밀번호를 입력해주세요"), (err = false));
+      err && !this.userAge && ((msg = "나이를 입력해주세요"), (err = false));
+      err && !this.upfile && ((msg = "이미지를 등록해주세요."), (err = false));
+
+      if (!err) alert(msg);
+      else {
+        alert("수정되었습니다.");
+        let tempUser = {
+          userId: this.user.userId,
+          userName: this.userName,
+          userPw: this.userPw,
+          userAge: this.userAge,
+          email: this.email,
+          upfile: this.upfile,
+          joinDate: this.user.joinDate,
+          isManager: this.user.isManager,
+        };
+        this.modifyUser(tempUser);
+      }
+    },
+    fileSelect() {
+      this.upfile = this.$refs.imagefile.files[0];
+    },
+    async withdrawal() {
+      this.userId = this.userInfo.userId;
+      this.userLogout(this.userInfo.userId);
+      this.deleteUser(this.userId);
+      alert("탈퇴완료되었습니다.");
+      this.$router.push({ name: "index" });
+    },
   },
 };
 </script>

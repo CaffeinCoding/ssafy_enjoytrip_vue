@@ -101,9 +101,7 @@ export default {
 
   methods: {
     ...mapActions(boardStore, ["getArticle", "deleteArticle"]),
-    ...mapMutations(boardStore, ["CLEAR_ARTICLE"]),
     moveList() {
-      console.log(this.article);
       this.$router.push({ name: "boardlist" });
     },
     removeArticle() {
