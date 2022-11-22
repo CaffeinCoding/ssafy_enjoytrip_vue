@@ -7,14 +7,18 @@ function areaList(success, fail) {
 }
 
 function sigunguList(params, success, fail) {
-  api.get(`/content/getSigungu/`, { params: params }).then(success).catch(fail);
+  api.get(`/content/getSigungu/${params.areaCode}`).then(success).catch(fail);
 }
 
-function placeList(params, success, fail) {
-  api
+async function placeList(params, success, fail) {
+  await api
     .get(`/content/getPlace/${params.areaCode}/${params.sigunguCode}`)
     .then(success)
     .catch(fail);
 }
 
-export { sidoList, gugunList, houseList };
+async function placeListWord(word, success, fail) {
+  await api.get(`/content/searchPlace/${word}`).then(success).catch(fail);
+}
+
+export { areaList, sigunguList, placeList, placeListWord };

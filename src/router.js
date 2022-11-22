@@ -185,8 +185,8 @@ const router = new Router({
         },
         {
           path: "list",
-          name: "tourplanlist",
-          component: () => import("@/pages/components/tour/TourPlanList"),
+          name: "tourplaclist",
+          component: () => import("@/pages/components/tour/TourList"),
         },
       ],
     },

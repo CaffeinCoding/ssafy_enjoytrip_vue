@@ -16,6 +16,7 @@
     "eslint": "^7.3.1",
     "eslint-plugin-vue": "^6.2.2",
     "img": "^3.0.3",
+    "lodash": "^4.17.21",
     "nouislider": "^14.6.0",
     "vue": "^2.6.11",
     "vue-lazy-load": "^0.0.7",
@@ -23,6 +24,7 @@
     "vue-masonry-css": "^1.0.3",
     "vue-router": "^3.3.4",
     "vue2-transitions": "^0.3.0",
+    "vuedraggable": "^2.24.3",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0",
     "jwt-decode": "^3.1.2"

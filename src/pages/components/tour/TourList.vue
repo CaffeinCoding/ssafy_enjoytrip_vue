@@ -15,7 +15,7 @@
 <script>
 import BoardLayout from "@/layout/BoardLayout";
 export default {
-  name: "TourPlanList",
+  name: "TourList",
   components: {
     BoardLayout,
   },
