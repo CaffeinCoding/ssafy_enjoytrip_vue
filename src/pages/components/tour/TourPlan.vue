@@ -8,6 +8,7 @@
         <kakao-map
           style="width: 100%; height: 100%"
           displayMode="route"
+          ref="kakaoMap"
         ></kakao-map>
       </div>
       <div class="col-lg-3">
@@ -31,6 +32,7 @@
                     :key="index"
                     :place="place"
                     :index="index"
+                    @delMarker="delMarker"
                   ></tour-plan-item>
                 </draggable>
               </div>
@@ -55,7 +57,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import TourPlanItem from "@/pages/components/tour/TourPlanItem";
 import draggable from "vuedraggable";
 
-const placeStore = "placeStore";
+const tourStore = "tourStore";
 
 export default {
   name: "TourPlan",
@@ -68,24 +70,24 @@ export default {
     this.CLEAR_PLANITEM_LIST();
   },
   computed: {
-    ...mapState(placeStore, ["planItems"]),
+    ...mapState(tourStore, ["planItems"]),
     planItemList: {
       get() {
         return this.planItems;
       },
       set(value) {
         this.setPlanItemList(value);
+        this.setPolyLine();
       },
     },
-    // planItems: {
-    //   set(value) {
-    //     this.setPlanItemList(value);
-    //   },
-    // },
   },
   methods: {
-    ...mapMutations(placeStore, ["CLEAR_PLANITEM_LIST"]),
-    ...mapActions(placeStore, ["setPlanItemList"]),
+    ...mapMutations(tourStore, ["CLEAR_PLANITEM_LIST"]),
+    ...mapActions(tourStore, ["setPlanItemList"]),
+    delMarker() {
+      this.$refs.kakaoMap.delMarker();
+      this.$refs.kakaoMap.setPolyLine();
+    },
   },
 };
 </script>

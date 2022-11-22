@@ -90,11 +90,11 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 import { Switch } from "@/components";
 import _ from "lodash";
 
-const placeStore = "placeStore";
+const tourStore = "tourStore";
 
 export default {
   name: "KakaoMap",
@@ -142,10 +142,12 @@ export default {
         { contentType: 39, name: "음식점" },
       ],
       searchMode: false,
+      polyLine: null,
     };
   },
   created() {
     this.CLEAR_AREA_LIST();
+    this.CLEAR_PLANITEM_LIST();
     this.getAreas();
   },
   mounted() {
@@ -162,7 +164,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(placeStore, [
+    ...mapState(tourStore, [
       "areas",
       "sigungus",
       "contents",
@@ -170,6 +172,7 @@ export default {
       "places",
       "planItems",
     ]),
+    ...mapGetters(tourStore, ["getPlanMarkerList"]),
   },
   watch: {
     searchMode: {
@@ -188,7 +191,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(placeStore, [
+    ...mapActions(tourStore, [
       "getAreas",
       "getSigungus",
       "getPlaces",
@@ -196,11 +199,12 @@ export default {
       "getPlaceSearch",
       "setPlanItem",
     ]),
-    ...mapMutations(placeStore, [
+    ...mapMutations(tourStore, [
       "CLEAR_AREA_LIST",
       "CLEAR_SIGUNGU_LIST",
       "CLEAR_PLACE_LIST",
       "CLEAR_CONTENT_LIST",
+      "CLEAR_PLANITEM_LIST",
     ]),
     sigunguList() {
       this.contentDisabled = true;
@@ -214,6 +218,7 @@ export default {
     },
     async placeList() {
       this.contentDisabled = false;
+      this.contentCode = 1;
       this.CLEAR_PLACE_LIST();
       this.CLEAR_CONTENT_LIST();
       this.contentList = [];
@@ -224,6 +229,8 @@ export default {
         };
         await this.getPlaces(params);
       }
+      const data = this.getPlanMarkerList;
+      console.log(data);
 
       this.initMarker();
       this.setMarker();
@@ -231,6 +238,7 @@ export default {
     contentSelect() {
       this.mapDragEvent();
       this.clusterer.clear();
+
       this.places.forEach((place, index) => {
         if (this.markerList.length > 0) {
           if (place.contentType != this.contentCode && this.contentCode != 1) {
@@ -253,6 +261,13 @@ export default {
       kakao.maps.event.addListener(this.map, "drag", this.mapDragEvent);
       this.bounds = new kakao.maps.LatLngBounds();
       this.setInitCenter(this.map);
+      this.polyLine = new kakao.maps.Polyline({
+        strokeWeight: 7,
+        strokeColor: "#45b8ac",
+        strokeOpacity: 1,
+        strokeStyle: "solid",
+        endArrow: true,
+      });
     },
     initMarker() {
       if (this.clusterer) {
@@ -295,28 +310,19 @@ export default {
         this.planItems,
         (place) => place.contentId,
       );
-      const polyline = new kakao.maps.Polyline({
-        strokeWeight: 4,
-        strokeColor: "#fff",
-        strokeOpacity: 0.8,
-        strokeStyle: "solid",
-      });
-      const polyPath = [];
       this.planItems.forEach((place) => {
-        this.makeMarker(place, contentSet, bounds, polyPath);
+        this.makeMarker(place, contentSet, bounds, false);
       });
       placeItemList.forEach((place) => {
-        this.makeMarker(place, contentSet, bounds);
+        this.makeMarker(place, contentSet, bounds, true);
       });
       if (!this.searchMode) {
         this.setContentList(contentSet);
       }
-      polyline.setPath(polyPath);
-      polyline.setMap(this.map);
       this.clusterer.addMarkers(this.markerList);
       this.map.setBounds(bounds);
     },
-    makeMarker(place, contentSet, bounds, polyPath) {
+    makeMarker(place, contentSet, bounds, addCheck) {
       if (!this.searchMode) {
         contentSet.add(place.contentType);
       }
@@ -331,14 +337,26 @@ export default {
           new kakao.maps.Size(37, 37),
         ),
       });
-      if (polyPath) {
-        polyPath.push(marker.getPosition());
-      }
       marker.setMap(this.map);
       this.makeInfoWindow(place, marker);
-      this.markerList.push(marker);
+      if (addCheck) {
+        this.markerList.push(marker);
+      }
       bounds.extend(marker.getPosition());
     },
+
+    setPolyLine() {
+      this.polyLine.setMap(null);
+      const path = [];
+      this.planItems.forEach((place) => {
+        path.push(
+          new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX)),
+        );
+      });
+      this.polyLine.setPath(path);
+      this.polyLine.setMap(this.map);
+    },
+
     setContentList(contentSet) {
       this.contentList = this.defaultContent.filter((obj) =>
         contentSet.has(obj.contentType),
@@ -409,7 +427,10 @@ export default {
         AddBtn.className = "info-add-btn btn btn-primary";
         AddBtn.innerText = "추가";
         AddBtn.addEventListener("click", () => {
+          this.clusterer.removeMarker(marker);
+          marker.setMap(this.map);
           this.setPlanItem(item);
+          this.setPolyLine();
         });
         infoDesc.appendChild(AddBtn);
       }

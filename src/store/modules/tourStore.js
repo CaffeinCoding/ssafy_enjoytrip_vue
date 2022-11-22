@@ -4,7 +4,7 @@ const errorCall = (error) => {
   console.log(error);
 };
 
-const placeStore = {
+const tourStore = {
   namespaced: true,
   state: {
     areas: [{ value: null, text: "시/도 선택" }],
@@ -15,7 +15,23 @@ const placeStore = {
     place: null,
     polyLine: null,
   },
-  getters: {},
+  getters: {
+    getPlanMarkerList: function (state) {
+      const planMarkerList = [];
+      state.planItems.forEach((place) => {
+        planMarkerList.push(
+          new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(
+              Number(place.mapY),
+              Number(place.mapX),
+            ),
+            title: place.title,
+          }),
+        );
+      });
+      return planMarkerList;
+    },
+  },
   mutations: {
     CLEAR_AREA_LIST(state) {
       state.areas = [{ value: null, text: "시/도 선택" }];
@@ -123,4 +139,4 @@ const placeStore = {
   },
 };
 
-export default placeStore;
+export default tourStore;
