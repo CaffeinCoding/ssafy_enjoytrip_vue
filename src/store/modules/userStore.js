@@ -2,6 +2,7 @@ import jwtDecode from "jwt-decode";
 import router from "@/router";
 import {
   login,
+  kakaoLogin,
   logout,
   findById,
   tokenRegeneration,
@@ -56,6 +57,28 @@ const userStore = {
     async userConfirm({ commit }, user) {
       await login(
         user,
+        ({ data }) => {
+          if (data.message === "success") {
+            let accessToken = data["access-token"];
+            let refreshToken = data["refresh-token"];
+            // console.log("login success token created!!!! >> ", accessToken, refreshToken);
+            commit("SET_IS_LOGIN", true);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_IS_VALID_TOKEN", true);
+            sessionStorage.setItem("access-token", accessToken);
+            sessionStorage.setItem("refresh-token", refreshToken);
+          } else {
+            commit("SET_IS_LOGIN", false);
+            commit("SET_IS_LOGIN_ERROR", true);
+            commit("SET_IS_VALID_TOKEN", false);
+          }
+        },
+        errorCall,
+      );
+    },
+    async kakaoUserConfirm({ commit }, param) {
+      await kakaoLogin(
+        param,
         ({ data }) => {
           if (data.message === "success") {
             let accessToken = data["access-token"];

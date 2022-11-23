@@ -42,7 +42,11 @@
                     id="btn-kakao-background"
                   >
                     <div id="btn-kakao">
-                      <img v-lazy="'img/kakaotalk_logo_icon.png'" alt="" />
+                      <a
+                        href="https://kauth.kakao.com/oauth/authorize?client_id=af3cf7912cfcd3399b542b15ce6d6032&redirect_uri=http://localhost:8080&response_type=code"
+                      >
+                        <img v-lazy="'img/kakaotalk_logo_icon.png'" alt="" />
+                      </a>
                     </div>
                   </div>
                 </div>

@@ -21,4 +21,6 @@ function fileInstance(direct) {
   return instance;
 }
 
-export { apiInstance, fileInstance };
+
+
+export { apiInstance, fileInstance};

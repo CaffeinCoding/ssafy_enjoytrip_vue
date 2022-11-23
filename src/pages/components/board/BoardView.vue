@@ -139,7 +139,7 @@ textarea.form-control {
   padding-top: 50px;
   padding-bottom: 20px;
   color: black;
-  height: 614px;
+  min-height: 614px;
 }
 .post-info {
   color: grey;
@@ -147,9 +147,14 @@ textarea.form-control {
 .tab-content {
   height: 473px;
   color: black;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
+}
+.tab-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .tabs-content::v-deep .nav {
   display: flex !important;

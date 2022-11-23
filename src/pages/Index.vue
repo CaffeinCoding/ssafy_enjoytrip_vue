@@ -54,6 +54,11 @@ import SignupForm from "./components/SignupForm";
 import ExamplesSection from "./components/ExamplesSection";
 import DownloadSection from "./components/DownloadSection";
 
+// EnjoyTrip
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "index",
   bodyClass: "index-page",
@@ -71,6 +76,27 @@ export default {
     SignupForm,
     ExamplesSection,
     DownloadSection,
+  },
+  async created() {
+    let authorization_code = this.$route.query.code;
+    if (authorization_code) {
+      let params = {
+        code: authorization_code,
+        "redirect-url": document.location.href.split("?")[0],
+      };
+      await this.kakaoUserConfirm(params);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfoLogin(token);
+        this.$router.push({ name: "index" });
+      }
+    }
+  },
+  computed: {
+    ...mapState(userStore, ["isLogin", "isLoginError", "userInfo"]),
+  },
+  methods: {
+    ...mapActions(userStore, ["kakaoUserConfirm", "getUserInfoLogin"]),
   },
 };
 </script>

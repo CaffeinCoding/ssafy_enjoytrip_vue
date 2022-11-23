@@ -114,7 +114,8 @@ const router = new Router({
           name: "forgotpw",
           component: () => import("@/pages/components/user/ForgotPw"),
         },
-      ],
+
+      ], 
     },
 
     {
