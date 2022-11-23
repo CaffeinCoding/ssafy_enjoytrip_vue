@@ -8,11 +8,15 @@ async function registArticleBoard(params, success, fail) {
 }
 
 async function getArticleBoard(id, success, fail) {
-  await api.get(`board/${id}`).then(success).catch(fail);
+  await api.get(`board/view/${id}`).then(success).catch(fail);
 }
 
 async function getArticleBoardList(success, fail) {
   await api.get(`board/`).then(success).catch(fail);
+}
+
+async function getArticleBoardListById(id, success, fail) {
+  await api.get(`board/${id}`).then(success).catch(fail);
 }
 
 async function modifyArticleBoard(params, success, fail) {
@@ -27,6 +31,7 @@ export {
   registArticleBoard,
   getArticleBoard,
   getArticleBoardList,
+  getArticleBoardListById,
   modifyArticleBoard,
   deleteArticleBoard,
 };

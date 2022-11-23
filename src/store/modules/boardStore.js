@@ -2,6 +2,7 @@ import {
   registArticleBoard,
   getArticleBoard,
   getArticleBoardList,
+  getArticleBoardListById,
   modifyArticleBoard,
   deleteArticleBoard,
 } from "@/api/board.js";
@@ -66,6 +67,16 @@ const boardStore = {
       await getArticleBoardList(({ data }) => {
         commit("SET_ARTICLE_LIST", data);
       }, errorCall);
+    },
+
+    async getArticleListById({ commit }, id) {
+      await getArticleBoardListById(
+        id,
+        ({ data }) => {
+          commit("SET_ARTICLE_LIST", data);
+        },
+        errorCall
+      );
     },
 
     async modifyArticle({ commit }, article) {

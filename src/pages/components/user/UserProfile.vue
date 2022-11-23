@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div class="page-header clear-filter" filter-color="orange">
-      <parallax
-        class="page-header-image"
-        style="background-image: url('img/bg5.jpg')"
-      >
-      </parallax>
+    <div class="page-header clear-filter" filter-color="orange" style="color: white">
+      <parallax class="page-header-image" style="background-image: url('img/bg5.jpg')"> </parallax>
       <div class="container">
         <div class="photo-container">
           <img :src="profileImage" alt="" />
@@ -18,7 +14,7 @@
 
         <div class="content">
           <div class="social-description">
-            <h2>26</h2>
+            <h2>{{ articles.length }}</h2>
             <p>여행피드</p>
           </div>
           <div class="social-description">
@@ -55,15 +51,31 @@
           >
             <tab-pane title="Feed">
               <p>여행피드</p>
-              <div class="col-md-10 ml-auto mr-auto mt-4">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg6.jpg" class="img-raised" />
-                    <img src="img/bg11.jpg" alt="" class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg7.jpg" alt="" class="img-raised" />
-                    <img src="img/bg8.jpg" alt="" class="img-raised" />
+              <div class="feed-content">
+                <div class="col-md-10 ml-auto mr-auto mt-4">
+                  <div class="row collections">
+                    <masonry
+                      :cols="{ default: 3, 1000: 3, 700: 2, 400: 1 }"
+                      :gutter="{ default: '15px', 700: '5px' }"
+                      class="card-style"
+                    >
+                      <div v-for="(article, index) in articles" :key="index" :article="article">
+                        <div @click="moveView(article.articleNo)">
+                          <card class="board-card">
+                            <img
+                              :src="
+                                'http://localhost:1010/upload/file/' +
+                                article.fileInfos[0].saveFolder +
+                                '/' +
+                                article.fileInfos[0].saveFile
+                              "
+                            />
+                            <h4 class="card-title">{{ article.title }}</h4>
+                            <p class="card-text">{{ article.content }}</p>
+                          </card>
+                        </div>
+                      </div>
+                    </masonry>
                   </div>
                 </div>
               </div>
@@ -111,23 +123,13 @@
           <div class="regist-title">
             <label for="userId" class="modify-category ml-3">이름</label>
 
-            <fg-input
-              placeholder="이름"
-              id="userId"
-              v-model="userName"
-              ref="userId"
-            ></fg-input>
+            <fg-input placeholder="이름" id="userId" v-model="userName" ref="userId"></fg-input>
           </div>
 
           <div class="regist-title">
             <label for="userAge" class="modify-category ml-3">나이</label>
 
-            <fg-input
-              placeholder="나이"
-              id="userAge"
-              v-model="userAge"
-              ref="userAge"
-            ></fg-input>
+            <fg-input placeholder="나이" id="userAge" v-model="userAge" ref="userAge"></fg-input>
           </div>
           <div class="regist-title">
             <label for="password" class="modify-category ml-3">비밀번호</label>
@@ -140,9 +142,7 @@
             ></fg-input>
           </div>
           <div class="regist-title">
-            <label for="imagefile" class="modify-category ml-3"
-              >프로필사진</label
-            >
+            <label for="imagefile" class="modify-category ml-3">프로필사진</label>
             <div class="input-group">
               <input
                 type="file"
@@ -162,18 +162,17 @@
           <n-button @click="checkValue">수정</n-button>
           <n-button class="ml-3" @click="withdrawal">탈퇴</n-button>
         </div>
-        <n-button type="danger" @click.native="modals.classic = false"
-          >닫기</n-button
-        >
+        <n-button type="danger" @click.native="modals.classic = false">닫기</n-button>
       </template>
     </modal>
   </div>
 </template>
 <script>
-import { Modal, Tabs, TabPane, Button, FormGroupInput } from "@/components";
+import { Modal, Tabs, TabPane, Button, FormGroupInput, Card } from "@/components";
 
 import { mapState, mapActions } from "vuex";
 const userStore = "userStore";
+const boardStore = "boardStore";
 
 export default {
   name: "profile",
@@ -184,6 +183,7 @@ export default {
     Modal,
     Tabs,
     TabPane,
+    [Card.name]: Card,
   },
   data() {
     return {
@@ -202,6 +202,7 @@ export default {
 
   computed: {
     ...mapState(userStore, ["userInfo", "user"]),
+    ...mapState(boardStore, ["articles"]),
   },
   async created() {
     await this.getUser(this.userInfo.userId);
@@ -221,22 +222,19 @@ export default {
     } else {
       this.profileImage = require(`@/assets/default_img.jpg`);
     }
+
+    await this.getArticleListById(this.userId);
   },
+
   methods: {
-    ...mapActions(userStore, [
-      "modifyUser",
-      "getUser",
-      "deleteUser",
-      "userLogout",
-    ]),
+    ...mapActions(userStore, ["modifyUser", "getUser", "deleteUser", "userLogout"]),
+    ...mapActions(boardStore, ["getArticleListById", "getArticle"]),
 
     checkValue() {
       let err = true;
       let msg = "";
       !this.userName && ((msg = "이름을 입력해주세요"), (err = false));
-      err &&
-        !this.userPw &&
-        ((msg = "변경할 비밀번호를 입력해주세요"), (err = false));
+      err && !this.userPw && ((msg = "변경할 비밀번호를 입력해주세요"), (err = false));
       err && !this.userAge && ((msg = "나이를 입력해주세요"), (err = false));
       err && !this.upfile && ((msg = "이미지를 등록해주세요."), (err = false));
 
@@ -266,6 +264,13 @@ export default {
       alert("탈퇴완료되었습니다.");
       this.$router.push({ name: "index" });
     },
+    async moveView(articleNo) {
+      await this.getArticle(articleNo);
+      this.$router.push({
+        name: "boardview",
+        params: { articleNo: articleNo },
+      });
+    },
   },
 };
 </script>
@@ -277,6 +282,18 @@ export default {
   text-transform: capitalize;
   font-weight: 700;
   color: #9a9a9a;
+}
+.row {
+  justify-content: center;
+}
+
+.card-style > div > div {
+  border-radius: 5px;
+  margin: 0 0 5px 0;
+}
+
+.card-style > div > div > img {
+  width: 100%;
 }
 </style>
 
