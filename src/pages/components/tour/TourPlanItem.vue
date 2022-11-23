@@ -21,7 +21,7 @@
           </div>
           <button
             class="plan-item-remove-btn btn btn-danger"
-            @click="delPlanItem(index)"
+            @click="delPlanPlace(index)"
           >
             삭제
           </button>
@@ -34,7 +34,7 @@
 <script>
 import { mapActions } from "vuex";
 
-const placeStore = "placeStore";
+const tourStore = "tourStore";
 
 export default {
   name: "TourPlanItem",
@@ -62,7 +62,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(placeStore, ["delPlanItem"]),
+    ...mapActions(tourStore, ["delPlanItem"]),
+    delPlanPlace(index) {
+      this.delPlanItem(index);
+      this.$emit("delMarker");
+    },
   },
 };
 </script>

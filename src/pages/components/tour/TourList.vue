@@ -8,30 +8,31 @@
         >여행계획 작성</router-link
       >
     </div>
-    <board-layout :articles="articles"></board-layout>
+    <board-layout :articles="planList" baseLink="/plan/view"></board-layout>
   </div>
 </template>
 
 <script>
 import BoardLayout from "@/layout/BoardLayout";
+import { mapState, mapActions, mapMutations } from "vuex";
+
+const tourStore = "tourStore";
+
 export default {
   name: "TourList",
   components: {
     BoardLayout,
   },
-  data() {
-    return {
-      articles: [
-        {
-          articleNo: 10,
-          userId: "안효인",
-          subject: "안녕하세요",
-          content: "안녕하세요!!!!",
-          hit: 10,
-          regtime: "2022-11-08 17:03:15",
-        },
-      ],
-    };
+  created() {
+    this.CLEAR_PLAN_LIST();
+    this.setPlanList();
+  },
+  computed: {
+    ...mapState(tourStore, ["planList"]),
+  },
+  methods: {
+    ...mapActions(tourStore, ["setPlanList"]),
+    ...mapMutations(tourStore, ["CLEAR_PLAN_LIST"]),
   },
 };
 </script>
