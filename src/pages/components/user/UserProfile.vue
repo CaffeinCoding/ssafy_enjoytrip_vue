@@ -69,19 +69,13 @@
               </div>
             </tab-pane>
 
-            <tab-pane title="Plan">
+            <tab-pane title="Plan" class="tab-panel-plan">
               <p>여행계획</p>
               <div class="col-md-10 ml-auto mr-auto mt-4">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg3.jpg" alt="" class="img-raised" />
-                    <img src="img/bg8.jpg" alt="" class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg7.jpg" alt="" class="img-raised" />
-                    <img src="img/bg6.jpg" class="img-raised" />
-                  </div>
-                </div>
+                <board-layout
+                  :articles="planList"
+                  baseLink="/plan/view"
+                ></board-layout>
               </div>
             </tab-pane>
 
@@ -171,9 +165,11 @@
 </template>
 <script>
 import { Modal, Tabs, TabPane, Button, FormGroupInput } from "@/components";
+import BoardLayout from "@/layout/BoardLayout";
 
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 const userStore = "userStore";
+const tourStore = "tourStore";
 
 export default {
   name: "profile",
@@ -184,6 +180,7 @@ export default {
     Modal,
     Tabs,
     TabPane,
+    BoardLayout,
   },
   data() {
     return {
@@ -202,6 +199,7 @@ export default {
 
   computed: {
     ...mapState(userStore, ["userInfo", "user"]),
+    ...mapState(tourStore, ["planList"]),
   },
   async created() {
     await this.getUser(this.userInfo.userId);
@@ -221,6 +219,9 @@ export default {
     } else {
       this.profileImage = require(`@/assets/default_img.jpg`);
     }
+
+    this.CLEAR_PLAN_LIST();
+    this.setUserPlanList(this.userId);
   },
   methods: {
     ...mapActions(userStore, [
@@ -229,6 +230,8 @@ export default {
       "deleteUser",
       "userLogout",
     ]),
+    ...mapActions(tourStore, ["setUserPlanList"]),
+    ...mapMutations(tourStore, ["CLEAR_PLAN_LIST"]),
 
     checkValue() {
       let err = true;
@@ -277,6 +280,9 @@ export default {
   text-transform: capitalize;
   font-weight: 700;
   color: #9a9a9a;
+}
+.tab-panel-plan {
+  width: 98vw;
 }
 </style>
 

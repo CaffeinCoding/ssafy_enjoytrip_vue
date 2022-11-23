@@ -23,9 +23,9 @@ export default {
   components: {
     BoardLayout,
   },
-  created() {
+  async created() {
     this.CLEAR_PLAN_LIST();
-    this.setPlanList();
+    await this.setPlanList();
   },
   computed: {
     ...mapState(tourStore, ["planList"]),

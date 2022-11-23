@@ -5,6 +5,7 @@ import {
   placeListWord,
   registPlanData,
   getPlanList,
+  getUserPlanList,
 } from "@/api/tour.js";
 
 const errorCall = (error) => {
@@ -147,6 +148,15 @@ const tourStore = {
       await getPlanList(({ data }) => {
         commit("SET_PLAN_LIST", data);
       }, errorCall);
+    },
+    async setUserPlanList({ commit }, userId) {
+      await getUserPlanList(
+        userId,
+        ({ data }) => {
+          commit("SET_PLAN_LIST", data);
+        },
+        errorCall
+      );
     },
     setPlanItem({ commit }, place) {
       commit("SET_PLANITEM", place);
