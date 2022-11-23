@@ -14,23 +14,7 @@ const tourStore = {
     planItems: [],
     place: null,
     polyLine: null,
-  },
-  getters: {
-    getPlanMarkerList: function (state) {
-      const planMarkerList = [];
-      state.planItems.forEach((place) => {
-        planMarkerList.push(
-          new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(
-              Number(place.mapY),
-              Number(place.mapX),
-            ),
-            title: place.title,
-          }),
-        );
-      });
-      return planMarkerList;
-    },
+    saveDrawerOn: false,
   },
   mutations: {
     CLEAR_AREA_LIST(state) {
@@ -47,6 +31,9 @@ const tourStore = {
     },
     CLEAR_PLANITEM_LIST(state) {
       state.planItems = [];
+    },
+    CLEAR_SAVE_DRAWER(state) {
+      state.saveDrawerOn = false;
     },
     SET_AREA_LIST(state, areas) {
       areas.forEach((area) => {
@@ -88,6 +75,9 @@ const tourStore = {
     },
     DEL_PLANITEM(state, index) {
       state.planItems.splice(index, 1);
+    },
+    SET_SAVE_DRAWER(state, param) {
+      state.saveDrawerOn = param;
     },
   },
   actions: {
@@ -135,6 +125,9 @@ const tourStore = {
     },
     delPlanItem({ commit }, index) {
       commit("DEL_PLANITEM", index);
+    },
+    setSaveDrawerOn({ commit }, param) {
+      commit("SET_SAVE_DRAWER", param);
     },
   },
 };

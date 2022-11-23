@@ -111,7 +111,6 @@ export default {
     return {
       searchWord: "",
       map: null,
-      bounds: null,
       areaCode: null,
       sigunguDisabled: true,
       sigunguCode: null,
@@ -121,6 +120,7 @@ export default {
       markerList: [],
       infoList: [],
       contentList: [],
+      contentSet: null,
       locImage: {
         12: "tour",
         14: "culture",
@@ -143,12 +143,15 @@ export default {
       ],
       searchMode: false,
       polyLine: null,
+      bounds: null,
+      planMarker: [],
     };
   },
   created() {
     this.CLEAR_AREA_LIST();
     this.CLEAR_PLANITEM_LIST();
     this.getAreas();
+    this.contentSet = new Set();
   },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
@@ -172,7 +175,6 @@ export default {
       "places",
       "planItems",
     ]),
-    ...mapGetters(tourStore, ["getPlanMarkerList"]),
   },
   watch: {
     searchMode: {
@@ -206,6 +208,7 @@ export default {
       "CLEAR_CONTENT_LIST",
       "CLEAR_PLANITEM_LIST",
     ]),
+
     sigunguList() {
       this.contentDisabled = true;
       this.contentCode = 1;
@@ -216,11 +219,13 @@ export default {
         this.getSigungus(this.areaCode);
       }
     },
+
     async placeList() {
       this.contentDisabled = false;
       this.contentCode = 1;
       this.CLEAR_PLACE_LIST();
       this.CLEAR_CONTENT_LIST();
+      this.contentSet.clear();
       this.contentList = [];
       if (this.areaCode && this.sigunguCode) {
         const params = {
@@ -229,12 +234,11 @@ export default {
         };
         await this.getPlaces(params);
       }
-      const data = this.getPlanMarkerList;
-      console.log(data);
 
       this.initMarker();
       this.setMarker();
     },
+
     contentSelect() {
       this.mapDragEvent();
       this.clusterer.clear();
@@ -250,6 +254,7 @@ export default {
         }
       });
     },
+
     initMap() {
       const container = document.getElementById("map");
       const mapOptions = {
@@ -259,7 +264,6 @@ export default {
 
       this.map = new kakao.maps.Map(container, mapOptions);
       kakao.maps.event.addListener(this.map, "drag", this.mapDragEvent);
-      this.bounds = new kakao.maps.LatLngBounds();
       this.setInitCenter(this.map);
       this.polyLine = new kakao.maps.Polyline({
         strokeWeight: 7,
@@ -269,13 +273,19 @@ export default {
         endArrow: true,
       });
     },
+
     initMarker() {
       if (this.clusterer) {
         this.clusterer.clear();
       }
+      this.bounds = new kakao.maps.LatLngBounds();
+      this.markerList.forEach((marker) => {
+        marker.setMap(null);
+      });
       this.markerList = [];
       this.infoList = [];
     },
+
     setInitCenter(map) {
       if (map) {
         navigator.geolocation.getCurrentPosition(
@@ -296,10 +306,6 @@ export default {
       }
     },
     setMarker() {
-      if (!this.searchMode) {
-        var contentSet = new Set();
-      }
-      const bounds = new kakao.maps.LatLngBounds();
       this.clusterer = new kakao.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
@@ -310,21 +316,20 @@ export default {
         this.planItems,
         (place) => place.contentId,
       );
-      this.planItems.forEach((place) => {
-        this.makeMarker(place, contentSet, bounds, false);
-      });
+      this.refreshMarker();
       placeItemList.forEach((place) => {
-        this.makeMarker(place, contentSet, bounds, true);
+        this.makeMarker(place, true);
       });
       if (!this.searchMode) {
-        this.setContentList(contentSet);
+        this.setContentList();
       }
       this.clusterer.addMarkers(this.markerList);
-      this.map.setBounds(bounds);
+      this.map.setBounds(this.bounds);
     },
-    makeMarker(place, contentSet, bounds, addCheck) {
+
+    makeMarker(place, addCheck) {
       if (!this.searchMode) {
-        contentSet.add(place.contentType);
+        this.contentSet.add(place.contentType);
       }
       const pos = new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX));
       const marker = new kakao.maps.Marker({
@@ -337,12 +342,14 @@ export default {
           new kakao.maps.Size(37, 37),
         ),
       });
+      this.bounds.extend(pos);
       marker.setMap(this.map);
       this.makeInfoWindow(place, marker);
       if (addCheck) {
         this.markerList.push(marker);
+      } else {
+        this.planMarker.push(marker);
       }
-      bounds.extend(marker.getPosition());
     },
 
     setPolyLine() {
@@ -357,12 +364,13 @@ export default {
       this.polyLine.setMap(this.map);
     },
 
-    setContentList(contentSet) {
+    setContentList() {
       this.contentList = this.defaultContent.filter((obj) =>
-        contentSet.has(obj.contentType),
+        this.contentSet.has(obj.contentType),
       );
       this.setContents(this.contentList);
     },
+
     makeInfoWindow(item, marker) {
       let img = encodeURI(item.placeImg);
       let link = "http://data.visitkorea.or.kr/resource/" + item.contentId;
@@ -467,6 +475,18 @@ export default {
       }
       this.initMarker();
       this.setMarker();
+    },
+
+    refreshMarker() {
+      this.planMarker.forEach((marker) => {
+        marker.setMap(null);
+        marker = null;
+      });
+      this.planMarker = [];
+      this.planItems.forEach((place) => {
+        this.makeMarker(place, false);
+      });
+      this.setPolyLine();
     },
   },
 };

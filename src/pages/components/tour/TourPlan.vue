@@ -40,6 +40,7 @@
                 type="button"
                 class="btn btn-primary my-2"
                 id="save-plan-btn"
+                @click="setSaveDrawerOn(true)"
               >
                 저장
               </button>
@@ -77,22 +78,21 @@ export default {
       },
       set(value) {
         this.setPlanItemList(value);
-        this.setPolyLine();
+        this.delMarker();
       },
     },
   },
   methods: {
     ...mapMutations(tourStore, ["CLEAR_PLANITEM_LIST"]),
-    ...mapActions(tourStore, ["setPlanItemList"]),
+    ...mapActions(tourStore, ["setPlanItemList", "setSaveDrawerOn"]),
     delMarker() {
-      this.$refs.kakaoMap.delMarker();
-      this.$refs.kakaoMap.setPolyLine();
+      this.$refs.kakaoMap.refreshMarker();
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 .sidebar {
   position: relative;
   padding: 30px 0;
