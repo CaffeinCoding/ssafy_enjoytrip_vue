@@ -20,9 +20,14 @@
         </thead>
         <tbody>
           <board-layout-item
-            v-for="article in articles"
-            :key="article.articleNo"
+            v-for="(article, index) in articles"
+            :key="index"
             :article="article"
+            :articleNo="index + 1"
+            :title="article.title"
+            :userId="article.userId"
+            :hit="article.hit"
+            :registDate="article.registerDate.split(' ')[0]"
             :link="`${baseLink}/${article.articleNo}`"
           ></board-layout-item>
         </tbody>
