@@ -1,14 +1,14 @@
 <template>
   <tr>
-    <td>{{ article.articleNo }}</td>
+    <td>{{ articleNo }}</td>
     <td>
       <router-link :to="link">
-        {{ article.subject }}
+        {{ title }}
       </router-link>
     </td>
-    <td>{{ article.userId }}</td>
-    <td>{{ article.hit }}</td>
-    <td>{{ article.regtime }}</td>
+    <td>{{ userId }}</td>
+    <td>{{ hit }}</td>
+    <td>{{ registDate }}</td>
   </tr>
 </template>
 
@@ -17,6 +17,11 @@ export default {
   name: "BoardLayoutItem",
   props: {
     article: Object,
+    articleNo: Number,
+    title: String,
+    userId: String,
+    hit: Number,
+    registDate: String,
     link: String,
   },
 };

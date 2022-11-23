@@ -1,21 +1,31 @@
-import { areaList, sigunguList, placeList, placeListWord } from "@/api/tour.js";
+import {
+  areaList,
+  sigunguList,
+  placeList,
+  placeListWord,
+  registPlanData,
+  getPlanList,
+} from "@/api/tour.js";
 
 const errorCall = (error) => {
   console.log(error);
 };
 
-const placeStore = {
+const tourStore = {
   namespaced: true,
   state: {
     areas: [{ value: null, text: "시/도 선택" }],
     sigungus: [{ value: null, text: "구/군 선택" }],
     contents: [{ value: 1, text: "전체" }],
     places: [],
+    planList: [],
     planItems: [],
     place: null,
     polyLine: null,
+    saveDrawerOn: false,
+    dateStart: "",
+    dateEnd: "",
   },
-  getters: {},
   mutations: {
     CLEAR_AREA_LIST(state) {
       state.areas = [{ value: null, text: "시/도 선택" }];
@@ -29,8 +39,18 @@ const placeStore = {
     CLEAR_CONTENT_LIST(state) {
       state.contents = [{ value: 1, text: "전체" }];
     },
+    CLEAR_PLAN_LIST(state) {
+      state.planList = [];
+    },
     CLEAR_PLANITEM_LIST(state) {
       state.planItems = [];
+    },
+    CLEAR_SAVE_DRAWER(state) {
+      state.saveDrawerOn = false;
+    },
+    CLEAR_DATE_RANGE(state) {
+      state.dateStart = "";
+      state.dateEnd = "";
     },
     SET_AREA_LIST(state, areas) {
       areas.forEach((area) => {
@@ -64,6 +84,9 @@ const placeStore = {
     SET_DETAIL_PLACE(state, place) {
       state.place = place;
     },
+    SET_PLAN_LIST(state, plans) {
+      state.planList = plans;
+    },
     SET_PLANITEM(state, place) {
       state.planItems.push(place);
     },
@@ -72,6 +95,15 @@ const placeStore = {
     },
     DEL_PLANITEM(state, index) {
       state.planItems.splice(index, 1);
+    },
+    SET_SAVE_DRAWER(state, param) {
+      state.saveDrawerOn = param;
+    },
+    SET_START_DATE(state, startDate) {
+      state.dateStart = startDate;
+    },
+    SET_END_DATE(state, endDate) {
+      state.dateEnd = endDate;
     },
   },
   actions: {
@@ -87,7 +119,7 @@ const placeStore = {
         ({ data }) => {
           commit("SET_SIGUNGU_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     async getPlaces({ commit }, params) {
@@ -96,7 +128,7 @@ const placeStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     async getPlaceSearch({ commit }, word) {
@@ -105,11 +137,16 @@ const placeStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     setContents({ commit }, params) {
       commit("SET_CONTENT_LIST", params);
+    },
+    async setPlanList({ commit }) {
+      await getPlanList(({ data }) => {
+        commit("SET_PLAN_LIST", data);
+      }, errorCall);
     },
     setPlanItem({ commit }, place) {
       commit("SET_PLANITEM", place);
@@ -120,7 +157,25 @@ const placeStore = {
     delPlanItem({ commit }, index) {
       commit("DEL_PLANITEM", index);
     },
+    setSaveDrawerOn({ commit }, param) {
+      commit("SET_SAVE_DRAWER", param);
+    },
+    setStartDate({ commit }, startDate) {
+      commit("SET_START_DATE", startDate);
+    },
+    setEndDate({ commit }, endDate) {
+      commit("SET_END_DATE", endDate);
+    },
+    async registPlan({ commit }, planData) {
+      await registPlanData(
+        planData,
+        ({ data }) => {
+          console.log(data);
+        },
+        errorCall
+      );
+    },
   },
 };
 
-export default placeStore;
+export default tourStore;

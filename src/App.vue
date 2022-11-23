@@ -8,5 +8,14 @@
   </div>
 </template>
 <script>
-export default {};
+import { mapMutations } from "vuex";
+
+export default {
+  created() {
+    this.CLEAR_SAVE_DRAWER();
+  },
+  methods: {
+    ...mapMutations("tourStore", ["CLEAR_SAVE_DRAWER"]),
+  },
+};
 </script>

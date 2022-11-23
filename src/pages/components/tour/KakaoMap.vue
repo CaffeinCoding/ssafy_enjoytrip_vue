@@ -90,11 +90,11 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 import { Switch } from "@/components";
 import _ from "lodash";
 
-const placeStore = "placeStore";
+const tourStore = "tourStore";
 
 export default {
   name: "KakaoMap",
@@ -111,7 +111,6 @@ export default {
     return {
       searchWord: "",
       map: null,
-      bounds: null,
       areaCode: null,
       sigunguDisabled: true,
       sigunguCode: null,
@@ -121,6 +120,7 @@ export default {
       markerList: [],
       infoList: [],
       contentList: [],
+      contentSet: null,
       locImage: {
         12: "tour",
         14: "culture",
@@ -142,11 +142,16 @@ export default {
         { contentType: 39, name: "음식점" },
       ],
       searchMode: false,
+      polyLine: null,
+      bounds: null,
+      planMarker: [],
     };
   },
   created() {
     this.CLEAR_AREA_LIST();
+    this.CLEAR_PLANITEM_LIST();
     this.getAreas();
+    this.contentSet = new Set();
   },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
@@ -162,7 +167,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(placeStore, [
+    ...mapState(tourStore, [
       "areas",
       "sigungus",
       "contents",
@@ -188,7 +193,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(placeStore, [
+    ...mapActions(tourStore, [
       "getAreas",
       "getSigungus",
       "getPlaces",
@@ -196,12 +201,14 @@ export default {
       "getPlaceSearch",
       "setPlanItem",
     ]),
-    ...mapMutations(placeStore, [
+    ...mapMutations(tourStore, [
       "CLEAR_AREA_LIST",
       "CLEAR_SIGUNGU_LIST",
       "CLEAR_PLACE_LIST",
       "CLEAR_CONTENT_LIST",
+      "CLEAR_PLANITEM_LIST",
     ]),
+
     sigunguList() {
       this.contentDisabled = true;
       this.contentCode = 1;
@@ -212,10 +219,13 @@ export default {
         this.getSigungus(this.areaCode);
       }
     },
+
     async placeList() {
       this.contentDisabled = false;
+      this.contentCode = 1;
       this.CLEAR_PLACE_LIST();
       this.CLEAR_CONTENT_LIST();
+      this.contentSet.clear();
       this.contentList = [];
       if (this.areaCode && this.sigunguCode) {
         const params = {
@@ -228,9 +238,11 @@ export default {
       this.initMarker();
       this.setMarker();
     },
+
     contentSelect() {
       this.mapDragEvent();
       this.clusterer.clear();
+
       this.places.forEach((place, index) => {
         if (this.markerList.length > 0) {
           if (place.contentType != this.contentCode && this.contentCode != 1) {
@@ -242,6 +254,7 @@ export default {
         }
       });
     },
+
     initMap() {
       const container = document.getElementById("map");
       const mapOptions = {
@@ -251,16 +264,28 @@ export default {
 
       this.map = new kakao.maps.Map(container, mapOptions);
       kakao.maps.event.addListener(this.map, "drag", this.mapDragEvent);
-      this.bounds = new kakao.maps.LatLngBounds();
       this.setInitCenter(this.map);
+      this.polyLine = new kakao.maps.Polyline({
+        strokeWeight: 7,
+        strokeColor: "#45b8ac",
+        strokeOpacity: 1,
+        strokeStyle: "solid",
+        endArrow: true,
+      });
     },
+
     initMarker() {
       if (this.clusterer) {
         this.clusterer.clear();
       }
+      this.bounds = new kakao.maps.LatLngBounds();
+      this.markerList.forEach((marker) => {
+        marker.setMap(null);
+      });
       this.markerList = [];
       this.infoList = [];
     },
+
     setInitCenter(map) {
       if (map) {
         navigator.geolocation.getCurrentPosition(
@@ -281,10 +306,6 @@ export default {
       }
     },
     setMarker() {
-      if (!this.searchMode) {
-        var contentSet = new Set();
-      }
-      const bounds = new kakao.maps.LatLngBounds();
       this.clusterer = new kakao.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
@@ -295,30 +316,20 @@ export default {
         this.planItems,
         (place) => place.contentId,
       );
-      const polyline = new kakao.maps.Polyline({
-        strokeWeight: 4,
-        strokeColor: "#fff",
-        strokeOpacity: 0.8,
-        strokeStyle: "solid",
-      });
-      const polyPath = [];
-      this.planItems.forEach((place) => {
-        this.makeMarker(place, contentSet, bounds, polyPath);
-      });
+      this.refreshMarker();
       placeItemList.forEach((place) => {
-        this.makeMarker(place, contentSet, bounds);
+        this.makeMarker(place, true);
       });
       if (!this.searchMode) {
-        this.setContentList(contentSet);
+        this.setContentList();
       }
-      polyline.setPath(polyPath);
-      polyline.setMap(this.map);
       this.clusterer.addMarkers(this.markerList);
-      this.map.setBounds(bounds);
+      this.map.setBounds(this.bounds);
     },
-    makeMarker(place, contentSet, bounds, polyPath) {
+
+    makeMarker(place, addCheck) {
       if (!this.searchMode) {
-        contentSet.add(place.contentType);
+        this.contentSet.add(place.contentType);
       }
       const pos = new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX));
       const marker = new kakao.maps.Marker({
@@ -331,20 +342,35 @@ export default {
           new kakao.maps.Size(37, 37),
         ),
       });
-      if (polyPath) {
-        polyPath.push(marker.getPosition());
-      }
+      this.bounds.extend(pos);
       marker.setMap(this.map);
       this.makeInfoWindow(place, marker);
-      this.markerList.push(marker);
-      bounds.extend(marker.getPosition());
+      if (addCheck) {
+        this.markerList.push(marker);
+      } else {
+        this.planMarker.push(marker);
+      }
     },
-    setContentList(contentSet) {
+
+    setPolyLine() {
+      this.polyLine.setMap(null);
+      const path = [];
+      this.planItems.forEach((place) => {
+        path.push(
+          new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX)),
+        );
+      });
+      this.polyLine.setPath(path);
+      this.polyLine.setMap(this.map);
+    },
+
+    setContentList() {
       this.contentList = this.defaultContent.filter((obj) =>
-        contentSet.has(obj.contentType),
+        this.contentSet.has(obj.contentType),
       );
       this.setContents(this.contentList);
     },
+
     makeInfoWindow(item, marker) {
       let img = encodeURI(item.placeImg);
       let link = "http://data.visitkorea.or.kr/resource/" + item.contentId;
@@ -409,7 +435,10 @@ export default {
         AddBtn.className = "info-add-btn btn btn-primary";
         AddBtn.innerText = "추가";
         AddBtn.addEventListener("click", () => {
+          this.clusterer.removeMarker(marker);
+          marker.setMap(this.map);
           this.setPlanItem(item);
+          this.setPolyLine();
         });
         infoDesc.appendChild(AddBtn);
       }
@@ -446,6 +475,18 @@ export default {
       }
       this.initMarker();
       this.setMarker();
+    },
+
+    refreshMarker() {
+      this.planMarker.forEach((marker) => {
+        marker.setMap(null);
+        marker = null;
+      });
+      this.planMarker = [];
+      this.planItems.forEach((place) => {
+        this.makeMarker(place, false);
+      });
+      this.setPolyLine();
     },
   },
 };
