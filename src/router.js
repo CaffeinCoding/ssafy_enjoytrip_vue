@@ -26,10 +26,10 @@ const onlyAuthUser = async (to, from, next) => {
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo, token);
 
-  if (checkUserInfo != null && token) {
-    console.log("토큰 유효성 체크하러 가자!!!!");
-    await store.dispatch("userStore/getUserInfo", token);
-  }
+  // if (checkUserInfo != null && token) {
+  //   console.log("토큰 유효성 체크하러 가자!!!!");
+  //   await store.dispatch("userStore/getUserInfoLogin", token);
+  // }
   if (!checkToken || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다..");
     // next({ name: "login" });

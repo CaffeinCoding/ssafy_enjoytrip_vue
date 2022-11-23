@@ -240,6 +240,8 @@ const userStore = {
       formData.append("email", user.email);
       formData.append("upfile", user.upfile);
 
+      console.log(user.upfile);
+
       await registUserInfo(
         formData,
         ({ data }) => {

@@ -8,10 +8,10 @@
             <div class="regist-title">
               <label for="userId" class="category ml-3">작성자</label>
               <fg-input
-                placeholder="작성자"
-                id="userId"
                 v-model="userId"
+                id="userId"
                 ref="userId"
+                readonly
               ></fg-input>
             </div>
             <div class="regist-title">
@@ -69,9 +69,10 @@
 
 <script>
 import { Button, FormGroupInput, Card, Tabs, TabPane } from "@/components";
-import { mapActions } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 const boardStore = "boardStore";
+const userStore = "userStore";
 
 export default {
   name: "BoardWrite",
@@ -89,6 +90,13 @@ export default {
       content: "",
       upfile: "",
     };
+  },
+  created() {
+    this.userId = this.userInfo.userId;
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+    ...mapGetters(userStore, ["checkUserInfo"]),
   },
   methods: {
     ...mapActions(boardStore, ["registArticle"]),

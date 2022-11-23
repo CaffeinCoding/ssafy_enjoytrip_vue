@@ -8,15 +8,7 @@
       </parallax>
       <div class="container">
         <div class="photo-container">
-          <img
-            :src="
-              'http://localhost:1010/upload/file/' +
-              user.fileInfos[0].saveFolder +
-              '/' +
-              user.fileInfos[0].saveFile
-            "
-            alt=""
-          />
+          <img :src="profileImage" alt="" />
         </div>
         <h3 class="title">{{ user.userName }}</h3>
         <p class="category">
@@ -201,15 +193,17 @@ export default {
       userAge: "",
       upfile: "",
       email: "",
+      profileImage: "",
       modals: {
         classic: false,
       },
     };
   },
+
   computed: {
     ...mapState(userStore, ["userInfo", "user"]),
   },
-  created() {
+  async created() {
     this.getUser(this.userInfo.userId);
     this.userId = this.user.userId;
     this.userName = this.user.userName;
@@ -217,6 +211,16 @@ export default {
     this.userAge = this.user.userAge;
     this.email = this.user.email;
     this.upfile = this.user.upfile;
+
+    if (this.user.fileInfos[0]) {
+      this.profileImage =
+        "http://localhost:1010/upload/file/" +
+        this.user.fileInfos[0].saveFolder +
+        "/" +
+        this.user.fileInfos[0].saveFile;
+    } else {
+      this.profileImage = require(`@/assets/default_img.jpg`);
+    }
   },
   methods: {
     ...mapActions(userStore, [
@@ -225,6 +229,7 @@ export default {
       "deleteUser",
       "userLogout",
     ]),
+
     checkValue() {
       let err = true;
       let msg = "";
