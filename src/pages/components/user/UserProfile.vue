@@ -204,7 +204,7 @@ export default {
     ...mapState(userStore, ["userInfo", "user"]),
   },
   async created() {
-    this.getUser(this.userInfo.userId);
+    await this.getUser(this.userInfo.userId);
     this.userId = this.user.userId;
     this.userName = this.user.userName;
     this.userPw = this.user.userPw;
