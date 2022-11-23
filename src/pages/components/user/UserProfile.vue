@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="page-header clear-filter" filter-color="orange">
+    <div
+      class="page-header clear-filter"
+      filter-color="orange"
+      style="color: white"
+    >
       <parallax
         class="page-header-image"
         style="background-image: url('img/bg5.jpg')"
@@ -18,7 +22,7 @@
 
         <div class="content">
           <div class="social-description">
-            <h2>26</h2>
+            <h2>{{ articles.length }}</h2>
             <p>여행피드</p>
           </div>
           <div class="social-description">
@@ -55,15 +59,35 @@
           >
             <tab-pane title="Feed">
               <p>여행피드</p>
-              <div class="col-md-10 ml-auto mr-auto mt-4">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg6.jpg" class="img-raised" />
-                    <img src="img/bg11.jpg" alt="" class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg7.jpg" alt="" class="img-raised" />
-                    <img src="img/bg8.jpg" alt="" class="img-raised" />
+              <div class="feed-content">
+                <div class="col-md-10 ml-auto mr-auto mt-4">
+                  <div class="row collections">
+                    <masonry
+                      :cols="{ default: 3, 1000: 3, 700: 2, 400: 1 }"
+                      :gutter="{ default: '15px', 700: '5px' }"
+                      class="card-style"
+                    >
+                      <div
+                        v-for="(article, index) in articles"
+                        :key="index"
+                        :article="article"
+                      >
+                        <div @click="moveView(article.articleNo)">
+                          <card class="board-card">
+                            <img
+                              :src="
+                                'http://localhost:1010/upload/file/' +
+                                article.fileInfos[0].saveFolder +
+                                '/' +
+                                article.fileInfos[0].saveFile
+                              "
+                            />
+                            <h4 class="card-title">{{ article.title }}</h4>
+                            <p class="card-text">{{ article.content }}</p>
+                          </card>
+                        </div>
+                      </div>
+                    </masonry>
                   </div>
                 </div>
               </div>
@@ -164,12 +188,20 @@
   </div>
 </template>
 <script>
-import { Modal, Tabs, TabPane, Button, FormGroupInput } from "@/components";
+import {
+  Modal,
+  Tabs,
+  TabPane,
+  Button,
+  FormGroupInput,
+  Card,
+} from "@/components";
 import BoardLayout from "@/layout/BoardLayout";
 
 import { mapState, mapActions, mapMutations } from "vuex";
 const userStore = "userStore";
 const tourStore = "tourStore";
+const boardStore = "boardStore";
 
 export default {
   name: "profile",
@@ -181,6 +213,7 @@ export default {
     Tabs,
     TabPane,
     BoardLayout,
+    [Card.name]: Card,
   },
   data() {
     return {
@@ -200,6 +233,7 @@ export default {
   computed: {
     ...mapState(userStore, ["userInfo", "user"]),
     ...mapState(tourStore, ["planList"]),
+    ...mapState(boardStore, ["articles"]),
   },
   async created() {
     await this.getUser(this.userInfo.userId);
@@ -222,7 +256,9 @@ export default {
 
     this.CLEAR_PLAN_LIST();
     this.setUserPlanList(this.userId);
+    await this.getArticleListById(this.userId);
   },
+
   methods: {
     ...mapActions(userStore, [
       "modifyUser",
@@ -230,6 +266,7 @@ export default {
       "deleteUser",
       "userLogout",
     ]),
+    ...mapActions(boardStore, ["getArticleListById", "getArticle"]),
     ...mapActions(tourStore, ["setUserPlanList"]),
     ...mapMutations(tourStore, ["CLEAR_PLAN_LIST"]),
 
@@ -269,6 +306,13 @@ export default {
       alert("탈퇴완료되었습니다.");
       this.$router.push({ name: "index" });
     },
+    async moveView(articleNo) {
+      await this.getArticle(articleNo);
+      this.$router.push({
+        name: "boardview",
+        params: { articleNo: articleNo },
+      });
+    },
   },
 };
 </script>
@@ -280,6 +324,18 @@ export default {
   text-transform: capitalize;
   font-weight: 700;
   color: #9a9a9a;
+}
+.row {
+  justify-content: center;
+}
+
+.card-style > div > div {
+  border-radius: 5px;
+  margin: 0 0 5px 0;
+}
+
+.card-style > div > div > img {
+  width: 100%;
 }
 .tab-panel-plan {
   width: 98vw;
