@@ -37,10 +37,11 @@ const userStore = {
       state.user = user;
     },
     SET_USER_INFO(state, user) {
-      state.isLogin = true;
+      // state.isLogin = true;
       state.userInfo = user;
     },
     SET_IS_LOGIN(state, isLogin) {
+  
       state.isLogin = isLogin;
     },
     SET_IS_LOGIN_ERROR(state, isLoginError) {
@@ -80,13 +81,14 @@ const userStore = {
         decodeToken.userId,
         ({ data }) => {
           if (data.message === "success") {
+            commit("SET_IS_LOGIN", true);
             commit("SET_USER_INFO", data.userInfo);
             // console.log("3. getUserInfo data >> ", data);
           } else {
             console.log("유저 정보 없음!!!!");
           }
         },
-        async (error) => {
+        async (error) => {  
           console.log(
             "getUserInfoLogin() error code [토큰 만료되어 사용 불가능.] ::: ",
             error.response.status,
@@ -128,6 +130,7 @@ const userStore = {
                 alert("RefreshToken 기간 만료!!! 다시 로그인해 주세요.");
                 commit("SET_IS_LOGIN", false);
                 commit("SET_USER_INFO", null);
+                commit("SET_USER", null);
                 commit("SET_IS_VALID_TOKEN", false);
                 router.push({ name: "login" });
               },
@@ -135,6 +138,7 @@ const userStore = {
                 console.log(error);
                 commit("SET_IS_LOGIN", false);
                 commit("SET_USER_INFO", null);
+                commit("SET_USER", null);
               },
             );
           }
@@ -148,6 +152,7 @@ const userStore = {
           if (data.message === "success") {
             commit("SET_IS_LOGIN", false);
             commit("SET_USER_INFO", null);
+            commit("SET_USER", null);
             commit("SET_IS_VALID_TOKEN", false);
           } else {
             console.log("유저 정보 없음!!!!");
@@ -172,19 +177,31 @@ const userStore = {
       );
     },
     async modifyUser({ commit }, user) {
+      const formData = new FormData();
+      formData.append("userId", user.userId);
+      formData.append("userName", user.userName);
+      formData.append("userPw", user.userPw);
+      formData.append("userAge", user.userAge);
+      formData.append("email", user.email);
+      formData.append("joinDate", user.joinDate);
+      formData.append("isManager", user.isManager);
+      formData.append("upfile", user.upfile);
+
       await modifyUserInfo(
-        user,
+        formData,
         ({ data }) => {
-          console.log(data);
+          commit("SET_USER", data);
         },
         errorCall,
       );
     },
     async deleteUser({ commit }, id) {
+
       await deleteUserInfo(
         id,
         ({ data }) => {
           console.log(data);
+
         },
         errorCall,
       );
@@ -192,8 +209,16 @@ const userStore = {
 
     // 유저 등록
     async registUser({ commit }, user) {
+      const formData = new FormData();
+      formData.append("userId", user.userId);
+      formData.append("userName", user.userName);
+      formData.append("userPw", user.userPw);
+      formData.append("userAge", user.userAge);
+      formData.append("email", user.email);
+      formData.append("upfile", user.upfile);
+
       await registUserInfo(
-        user,
+        formData,
         ({ data }) => {
           console.log(data);
         },

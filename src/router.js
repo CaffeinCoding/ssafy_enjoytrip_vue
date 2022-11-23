@@ -20,7 +20,7 @@ import UserLogin from "@/pages/components/user/UserLogin";
 Vue.use(Router);
 
 const onlyAuthUser = async (to, from, next) => {
-  console.log("check");
+ 
   const checkUserInfo = store.getters["userStore/checkUserInfo"];
   const checkToken = store.getters["userStore/checkToken"];
   let token = sessionStorage.getItem("access-token");
@@ -64,6 +64,7 @@ const router = new Router({
     {
       path: "/profile",
       name: "profile",
+      beforeEnter: onlyAuthUser,
       components: {
         default: UserProfile,
         header: MainNavbar,
