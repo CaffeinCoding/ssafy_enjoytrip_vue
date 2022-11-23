@@ -10,6 +10,8 @@ import {
   registUserInfo,
   modifyUserInfo,
   deleteUserInfo,
+  emailConfirm,
+  findPwByEmail,
 } from "@/api/user.js";
 
 const errorCall = (error) => {
@@ -24,6 +26,8 @@ const userStore = {
     userInfo: null,
     isValidToken: false,
     user: null,
+    code: null,
+    password: null,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -42,7 +46,6 @@ const userStore = {
       state.userInfo = user;
     },
     SET_IS_LOGIN(state, isLogin) {
-  
       state.isLogin = isLogin;
     },
     SET_IS_LOGIN_ERROR(state, isLoginError) {
@@ -50,6 +53,12 @@ const userStore = {
     },
     SET_IS_VALID_TOKEN(state, isValidToken) {
       state.isValidToken = isValidToken;
+    },
+    SET_CODE(state, code) {
+      state.code = code;
+    },
+    SET_PASSWORD(state, password) {
+      state.password = password;
     },
   },
   actions: {
@@ -73,7 +82,7 @@ const userStore = {
             commit("SET_IS_VALID_TOKEN", false);
           }
         },
-        errorCall,
+        errorCall
       );
     },
     async kakaoUserConfirm({ commit }, param) {
@@ -95,7 +104,7 @@ const userStore = {
             commit("SET_IS_VALID_TOKEN", false);
           }
         },
-        errorCall,
+        errorCall
       );
     },
     async getUserInfoLogin({ commit, dispatch }, token) {
@@ -111,22 +120,19 @@ const userStore = {
             console.log("유저 정보 없음!!!!");
           }
         },
-        async (error) => {  
+        async (error) => {
           console.log(
             "getUserInfoLogin() error code [토큰 만료되어 사용 불가능.] ::: ",
-            error.response.status,
+            error.response.status
           );
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
-        },
+        }
       );
     },
 
     async tokenRegeneration({ commit, state }) {
-      console.log(
-        "토큰 재발급 >> 기존 토큰 정보 : {}",
-        sessionStorage.getItem("access-token"),
-      );
+      console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("access-token"));
       await tokenRegeneration(
         JSON.stringify(state.userInfo),
         ({ data }) => {
@@ -162,10 +168,10 @@ const userStore = {
                 commit("SET_IS_LOGIN", false);
                 commit("SET_USER_INFO", null);
                 commit("SET_USER", null);
-              },
+              }
             );
           }
-        },
+        }
       );
     },
     async userLogout({ commit }, userId) {
@@ -183,7 +189,7 @@ const userStore = {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
 
@@ -196,7 +202,7 @@ const userStore = {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
     async modifyUser({ commit }, user) {
@@ -215,18 +221,16 @@ const userStore = {
         ({ data }) => {
           commit("SET_USER", data);
         },
-        errorCall,
+        errorCall
       );
     },
     async deleteUser({ commit }, id) {
-
       await deleteUserInfo(
         id,
         ({ data }) => {
           console.log(data);
-
         },
-        errorCall,
+        errorCall
       );
     },
 
@@ -247,7 +251,29 @@ const userStore = {
         ({ data }) => {
           console.log(data);
         },
-        errorCall,
+        errorCall
+      );
+    },
+
+    // 메일 보내기
+    async sendMail({ commit }, email) {
+      await emailConfirm(
+        email,
+        ({ data }) => {
+          commit("SET_CODE", data);
+        },
+        errorCall
+      );
+    },
+
+    //비밀번호 받기
+    async finePw({ commit }, email) {
+      await findPwByEmail(
+        email,
+        ({ data }) => {
+          commit("SET_PASSWORD", data);
+        },
+        errorCall
       );
     },
   },

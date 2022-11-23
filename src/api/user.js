@@ -1,4 +1,4 @@
-import { apiInstance, fileInstance} from "./index.js";
+import { apiInstance, fileInstance } from "./index.js";
 
 const api = apiInstance();
 const fileApi = fileInstance("user");
@@ -21,8 +21,7 @@ async function findById(userId, success, fail) {
 }
 
 async function tokenRegeneration(user, success, fail) {
-  api.defaults.headers["refresh-token"] =
-    sessionStorage.getItem("refresh-token");
+  api.defaults.headers["refresh-token"] = sessionStorage.getItem("refresh-token");
   await api.post(`/user/refresh`, user).then(success).catch(fail);
 }
 
@@ -42,6 +41,14 @@ async function deleteUserInfo(id, success, fail) {
   await api.delete(`user/${id}`).then(success).catch(fail);
 }
 
+async function emailConfirm(email, success, fail) {
+  await api.post(`user/confirm`, email).then(success).catch(fail);
+}
+
+async function findPwByEmail(email, success, fail) {
+  await api.get(`user/find/pw/${email}`).then(success).catch(fail);
+}
+
 export {
   login,
   kakaoLogin,
@@ -52,4 +59,6 @@ export {
   registUserInfo,
   modifyUserInfo,
   deleteUserInfo,
+  emailConfirm,
+  findPwByEmail,
 };

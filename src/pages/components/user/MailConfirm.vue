@@ -10,28 +10,18 @@
               <p>가입한 이메일을 입력해주세요.</p>
               <div class="title">
                 <label for="email" class="category ml-3">이메일</label>
-                <fg-input
-                  placeholder="이메일"
-                  id="email"
-                  v-model="email"
-                  ref="email"
-                ></fg-input>
+                <fg-input placeholder="이메일" id="email" v-model="email" ref="email"></fg-input>
               </div>
-              <n-button type="primary" round class="btn mb-5"
+              <n-button type="primary" round class="btn mb-5" @click="send()"
                 >인증번호 전송</n-button
               >
               <div class="title">
                 <label for="num" class="category ml-3">인증번호</label>
-                <fg-input
-                  placeholder="인증번호"
-                  id="num"
-                  v-model="num"
-                  ref="num"
-                ></fg-input>
+                <fg-input placeholder="인증번호" id="num" v-model="input" ref="input"></fg-input>
               </div>
               <div class="button-container" id="modals">
                 <div class="col-md-15 modal-buttons">
-                  <n-button type="primary" round @click="checkValue" class="btn"
+                  <n-button type="primary" round @click="chkEmailConfirm" class="btn"
                     >인증번호 확인</n-button
                   >
                 </div>
@@ -42,35 +32,26 @@
       </card>
     </div>
     <!-- Classic Modal -->
-    <modal
-      :show.sync="modals.classic"
-      headerClasses="justify-content-center"
-      class="mt-5"
-    >
+    <modal :show.sync="modals.classic" headerClasses="justify-content-center" class="confirm mt-5">
       <h4 slot="header" class="title title-up">비밀번호 찾기</h4>
       <p>해당 계정의 비밀번호는 다음과 같습니다.</p>
-      <p>1234</p>
+      <p>{{ password }}</p>
       <template slot="footer">
-        <n-button>Nice Button</n-button>
-        <n-button type="danger" @click.native="modals.classic = false"
-          >Close</n-button
-        >
+        <router-link to="/login">
+          <n-button>확인</n-button>
+        </router-link>
       </template>
     </modal>
   </div>
 </template>
 <script>
-import {
-  Button,
-  FormGroupInput,
-  Card,
-  Tabs,
-  TabPane,
-  Modal,
-} from "@/components";
+import { Button, FormGroupInput, Card, Tabs, TabPane, Modal } from "@/components";
+import { mapActions, mapState } from "vuex";
+
+const userStore = "userStore";
 
 export default {
-  name: "forgot-password",
+  name: "mail-confirm",
   components: {
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
@@ -79,50 +60,38 @@ export default {
     [TabPane.name]: TabPane,
     Modal,
   },
+  computed: { ...mapState(userStore, ["code", "password"]) },
   data() {
     return {
-      user: Object,
+      email: "",
+      input: "",
       modals: {
         classic: false,
       },
     };
   },
   methods: {
-    // 입력값 체크하기 - 체크가 성공하면 registArticle 호출
-    checkValue() {
-      this.modals.classic = true;
-      this.modifyArticle();
+    ...mapActions(userStore, ["sendMail", "finePw"]),
+    async send() {
+      let err = true;
+      !this.email && ((msg = "이메일을 입력해주세요"), (err = false));
+      if (!err) alert(msg);
+      else {
+        await this.sendMail(this.email);
+        console.log(this.password);
+        alert("해당 이메일로 인증번호 발송이 완료되었습니다.");
+      }
     },
-    modifyArticle() {
-      console.log("글수정 하러가자!!!!");
-      // 비동기
-      // TODO : 글번호에 해당하는 글정보 수정.
-      //   http.put("/board", this.article).then(({ data }) => {
-      //     let msg = "수정 처리 중 문제 발생!!!";
-      //     if (data === "success") msg = "수정 성공!!!";
-      //     alert(msg);
-      //     this.moveList();
-      //   });
-    },
-
-    moveList() {
-      console.log("글목록 보러가자!!!");
-      this.$router.push({ name: "boardlist" });
+    async chkEmailConfirm() {
+      if (this.input == this.code) {
+        await this.finePw(this.email);
+        this.modals.classic = true;
+      } else {
+        alert("인증번호가 틀렸습니다. 다시 입력해주세요.");
+      }
     },
   },
-  created() {
-    this.user = {
-      user_id: "ssafy",
-      user_name: "김싸피",
-      user_pw: "1234",
-      user_age: 25,
-      email_id: "ssafy",
-      email_domain: "@ssafy.com",
-      join_date: "",
-      profile_img: "",
-      is_manager: 0,
-    };
-  },
+  created() {},
 };
 </script>
 <style scoped>
@@ -164,6 +133,9 @@ textarea.form-control {
   font-size: 30px;
   font-weight: 500;
   margin-bottom: 30px;
+}
+.confirm::v-deep .modal-footer {
+  justify-content: center;
 }
 </style>
 <style lang="scss">

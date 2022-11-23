@@ -44,7 +44,7 @@
                 </router-link>
               </div>
               <div class="pull-right mt-1">
-                <router-link to="/user/forgot">
+                <router-link to="/user/mailconfirm">
                   <h6>
                     <a class="link footer-link">Forgot your password</a>
                   </h6>

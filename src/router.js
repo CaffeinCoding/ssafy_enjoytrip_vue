@@ -20,7 +20,6 @@ import UserLogin from "@/pages/components/user/UserLogin";
 Vue.use(Router);
 
 const onlyAuthUser = async (to, from, next) => {
- 
   const checkUserInfo = store.getters["userStore/checkUserInfo"];
   const checkToken = store.getters["userStore/checkToken"];
   let token = sessionStorage.getItem("access-token");
@@ -110,12 +109,11 @@ const router = new Router({
       },
       children: [
         {
-          path: "forgot",
-          name: "forgotpw",
-          component: () => import("@/pages/components/user/ForgotPw"),
+          path: "mailconfirm",
+          name: "mailconfirm",
+          component: () => import("@/pages/components/user/MailConfirm"),
         },
-
-      ], 
+      ],
     },
 
     {
