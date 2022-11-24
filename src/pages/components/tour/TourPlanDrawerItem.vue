@@ -39,7 +39,7 @@
           @change="setPlanItemData"
           v-if="!isPlanView"
         ></textarea>
-        <div>{{ planSaveItems[index].memo }}</div>
+        <div v-else>{{ planSaveItems[index].memo }}</div>
       </div>
     </div>
   </el-card>

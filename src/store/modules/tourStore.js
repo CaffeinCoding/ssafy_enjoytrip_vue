@@ -8,6 +8,7 @@ import {
   getUserPlanList,
   getPlanItemList,
   getRandomPlaceList,
+  deletePlanItem,
 } from "@/api/tour.js";
 
 const errorCall = (error) => {
@@ -146,7 +147,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_SIGUNGU_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     async getPlaces({ commit }, params) {
@@ -155,7 +156,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     async getRandomPlaces({ commit }) {
@@ -169,7 +170,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     setContents({ commit }, params) {
@@ -186,7 +187,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_PLAN_LIST", data);
         },
-        errorCall,
+        errorCall
       );
     },
     async setPlanItemView({ commit }, articleNo) {
@@ -196,7 +197,7 @@ const tourStore = {
           commit("SET_PLANITEM_LIST", data.placeList);
           commit("SET_PLAN_SAVE_ITEM_LIST", data.planItems);
         },
-        errorCall,
+        errorCall
       );
     },
     setPlan({ commit }, plan) {
@@ -226,11 +227,21 @@ const tourStore = {
         ({ data }) => {
           console.log(data);
         },
-        errorCall,
+        errorCall
       );
     },
     setIsPlanView({ commit }, check) {
       commit("SET_IS_PLANVIEW", check);
+    },
+    async deletePlan({ commit }, articleNo) {
+      await deletePlanItem(
+        articleNo,
+        ({ data }) => {
+          commit("SET_PLANITEM_LIST", data.placeList);
+          commit("SET_PLAN_SAVE_ITEM_LIST", data.planItems);
+        },
+        errorCall
+      );
     },
   },
 };

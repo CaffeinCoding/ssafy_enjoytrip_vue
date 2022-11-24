@@ -24,14 +24,27 @@
                   displayMode="view"
                 ></tour-plan-item>
               </div>
-              <button
-                type="button"
-                class="btn btn-primary my-2"
-                id="save-plan-btn"
-                @click="setSaveDrawerOn(true)"
-              >
-                상세보기
-              </button>
+              <div class="row">
+                <button
+                  type="button"
+                  class="btn btn-primary my-2"
+                  id="save-plan-btn"
+                  @click="setSaveDrawerOn(true)"
+                >
+                  상세보기
+                </button>
+                <button type="button" class="btn my-2" @click="movePlanList">
+                  목록
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger my-2"
+                  @click="deletePlanItem"
+                  v-if="checkUser"
+                >
+                  삭제
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -46,6 +59,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 import TourPlanItem from "@/pages/components/tour/TourPlanItem";
 
 const tourStore = "tourStore";
+const userStore = "userStore";
 
 export default {
   name: "TourPlanView",
@@ -66,7 +80,18 @@ export default {
     await this.setPlanItemView(this.articleNo);
   },
   computed: {
-    ...mapState(tourStore, ["planItems"]),
+    ...mapState(tourStore, ["planItems", "plan"]),
+    ...mapState(userStore, ["userInfo"]),
+    checkUser: {
+      get() {
+        if (this.userInfo != null) {
+          if (this.plan.userId == this.userInfo.userId) {
+            return true;
+          }
+        }
+        return false;
+      },
+    },
   },
   methods: {
     ...mapMutations(tourStore, [
@@ -78,7 +103,18 @@ export default {
       "setSaveDrawerOn",
       "setPlanItemView",
       "setIsPlanView",
+      "deletePlan",
     ]),
+    movePlanList() {
+      this.$router.push({ name: "tourplanlist" });
+    },
+    async deletePlanItem() {
+      if (confirm("여행 일정을 삭제하시겠습니까?")) {
+        await this.deletePlan(this.articleNo);
+        alert("삭제되었습니다");
+        this.movePlanList();
+      }
+    },
   },
 };
 </script>

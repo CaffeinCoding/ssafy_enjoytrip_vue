@@ -206,15 +206,6 @@ export default {
         }
       },
     },
-    // randomPlaces: {
-    //   handler(val) {
-    //     if (this.displayMode == "main") {
-    //       if (val) {
-    //         this.setMainMapAnimation();
-    //       }
-    //     }
-    //   },
-    // },
   },
   methods: {
     ...mapActions(tourStore, [
@@ -321,7 +312,7 @@ export default {
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
             map.setCenter(
-              new kakao.maps.LatLng(coords.latitude, coords.longitude),
+              new kakao.maps.LatLng(coords.latitude, coords.longitude)
             );
           },
           (error) => {
@@ -331,7 +322,7 @@ export default {
             enableHighAccuracy: true,
             maximumAge: 0,
             timeout: Infinity,
-          },
+          }
         );
       }
     },
@@ -344,7 +335,7 @@ export default {
       const placeItemList = _.differenceBy(
         this.places,
         this.planItems,
-        (place) => place.contentId,
+        (place) => place.contentId
       );
       this.refreshMarker();
       placeItemList.forEach((place) => {
@@ -369,7 +360,7 @@ export default {
           require("@/assets/marker/" +
             this.locImage[place.contentType] +
             ".png"),
-          new kakao.maps.Size(37, 37),
+          new kakao.maps.Size(37, 37)
         ),
       });
       if (this.displayMode != "main") {
@@ -389,7 +380,7 @@ export default {
       const path = [];
       this.planItems.forEach((place) => {
         path.push(
-          new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX)),
+          new kakao.maps.LatLng(Number(place.mapY), Number(place.mapX))
         );
       });
       this.polyLine.setPath(path);
@@ -398,7 +389,7 @@ export default {
 
     setContentList() {
       this.contentList = this.defaultContent.filter((obj) =>
-        this.contentSet.has(obj.contentType),
+        this.contentSet.has(obj.contentType)
       );
       this.setContents(this.contentList);
     },
@@ -534,7 +525,7 @@ export default {
     },
 
     setMainMapAnimation() {
-      if (this.interval) {
+      if (this.interval == null) {
         clearInterval(this.interval);
       }
       this.map.setDraggable(false);

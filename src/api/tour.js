@@ -43,6 +43,10 @@ async function getRandomPlaceList(success, fail) {
   await api.get(`content/place/random`).then(success).catch(fail);
 }
 
+async function deletePlanItem(articleNo, success, fail) {
+  await api.delete(`content/plan/${articleNo}`).then(success).catch(fail);
+}
+
 export {
   areaList,
   sigunguList,
@@ -53,4 +57,5 @@ export {
   getUserPlanList,
   getPlanItemList,
   getRandomPlaceList,
+  deletePlanItem,
 };
