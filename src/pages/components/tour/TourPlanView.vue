@@ -4,7 +4,7 @@
       <div class="col-lg-9">
         <kakao-map
           style="width: 100%; height: 100%"
-          displayMode="route"
+          displayMode="view"
           ref="kakaoMap"
         ></kakao-map>
       </div>
@@ -16,15 +16,13 @@
             <div class="my-2">여행 계획</div>
             <div class="row justify-content-center">
               <div class="w-100 px-1 my-2" id="add-place-list">
-                <draggable v-model="planItemList">
-                  <tour-plan-item
-                    v-for="(place, index) in planItemList"
-                    :key="index"
-                    :place="place"
-                    :index="index"
-                    @delMarker="delMarker"
-                  ></tour-plan-item>
-                </draggable>
+                <tour-plan-item
+                  v-for="(place, index) in planItems"
+                  :key="index"
+                  :place="place"
+                  :index="index"
+                  displayMode="view"
+                ></tour-plan-item>
               </div>
               <button
                 type="button"
@@ -32,7 +30,7 @@
                 id="save-plan-btn"
                 @click="setSaveDrawerOn(true)"
               >
-                저장
+                상세보기
               </button>
             </div>
           </div>
@@ -46,44 +44,41 @@
 import KakaoMap from "@/pages/components/tour/KakaoMap";
 import { mapState, mapMutations, mapActions } from "vuex";
 import TourPlanItem from "@/pages/components/tour/TourPlanItem";
-import draggable from "vuedraggable";
 
 const tourStore = "tourStore";
 
 export default {
-  name: "TourPlan",
+  name: "TourPlanView",
   components: {
     KakaoMap,
     TourPlanItem,
-    draggable,
   },
-  created() {
+  data() {
+    return {
+      articleNo: null,
+    };
+  },
+  async created() {
+    this.articleNo = this.$route.params.articleNo;
     this.CLEAR_PLANITEM_LIST();
-    this.CLEAR_PLAN();
-    this.setIsPlanView(false);
+    this.CLEAR_PLAN_SAVE_ITEM_LIST();
+    this.setIsPlanView(true);
+    await this.setPlanItemView(this.articleNo);
   },
   computed: {
     ...mapState(tourStore, ["planItems"]),
-    planItemList: {
-      get() {
-        return this.planItems;
-      },
-      set(value) {
-        this.setPlanItemList(value);
-        this.delMarker();
-      },
-    },
   },
   methods: {
-    ...mapMutations(tourStore, ["CLEAR_PLANITEM_LIST", "CLEAR_PLAN"]),
+    ...mapMutations(tourStore, [
+      "CLEAR_PLANITEM_LIST",
+      "CLEAR_PLAN_SAVE_ITEM_LIST",
+    ]),
     ...mapActions(tourStore, [
       "setPlanItemList",
       "setSaveDrawerOn",
+      "setPlanItemView",
       "setIsPlanView",
     ]),
-    delMarker() {
-      this.$refs.kakaoMap.refreshMarker();
-    },
   },
 };
 </script>
@@ -94,6 +89,10 @@ export default {
   padding: 30px 0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   border-radius: 15px;
+}
+.view-name {
+  font-weight: bold;
+  font-size: 1.7rem;
 }
 #add-place-list {
   height: 600px;

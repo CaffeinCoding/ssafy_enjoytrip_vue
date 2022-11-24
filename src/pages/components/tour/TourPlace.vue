@@ -9,11 +9,18 @@
 
 <script>
 import KakaoMap from "@/pages/components/tour/KakaoMap";
+import { mapActions } from "vuex";
 
 export default {
   name: "TourPlace",
   components: {
     KakaoMap,
+  },
+  created() {
+    this.setIsPlanView(false);
+  },
+  methods: {
+    ...mapActions("tourStore", ["setIsPlanView"]),
   },
 };
 </script>

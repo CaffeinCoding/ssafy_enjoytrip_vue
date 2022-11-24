@@ -2,9 +2,9 @@
   <tr>
     <td>{{ articleNo }}</td>
     <td>
-      <router-link :to="link">
+      <div @click="moveView">
         {{ title }}
-      </router-link>
+      </div>
     </td>
     <td>{{ userId }}</td>
     <td>{{ hit }}</td>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "BoardLayoutItem",
   props: {
@@ -23,6 +24,13 @@ export default {
     hit: Number,
     registDate: String,
     link: String,
+  },
+  methods: {
+    ...mapActions("tourStore", ["setPlan"]),
+    moveView() {
+      this.setPlan(this.article);
+      this.$router.push(this.link);
+    },
   },
 };
 </script>

@@ -35,6 +35,10 @@ async function getUserPlanList(userId, success, fail) {
   await api.get(`content/plan/list/${userId}`).then(success).catch(fail);
 }
 
+async function getPlanItemList(articleNo, success, fail) {
+  await api.get(`content/plan/view/${articleNo}`).then(success).catch(fail);
+}
+
 export {
   areaList,
   sigunguList,
@@ -43,4 +47,5 @@ export {
   registPlanData,
   getPlanList,
   getUserPlanList,
+  getPlanItemList,
 };

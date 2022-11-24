@@ -22,6 +22,7 @@
           <button
             class="plan-item-remove-btn btn btn-danger"
             @click="delPlanPlace(index)"
+            v-if="displayMode != 'view'"
           >
             삭제
           </button>
@@ -41,11 +42,14 @@ export default {
   props: {
     place: Object,
     index: Number,
+    displayMode: {
+      type: String,
+      default: "search",
+    },
   },
   data() {
     return {
       link: "http://data.visitkorea.or.kr/resource/",
-      img: "../img/no_img.jpg",
     };
   },
   computed: {
@@ -57,7 +61,8 @@ export default {
       if (imgUrl != "null") {
         return imgUrl;
       } else {
-        return this.img;
+        let img = require(`@/assets/no_img.jpg`);
+        return img;
       }
     },
   },

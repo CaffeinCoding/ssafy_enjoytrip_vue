@@ -6,6 +6,7 @@ import {
   registPlanData,
   getPlanList,
   getUserPlanList,
+  getPlanItemList,
 } from "@/api/tour.js";
 
 const errorCall = (error) => {
@@ -21,11 +22,13 @@ const tourStore = {
     places: [],
     planList: [],
     planItems: [],
+    planSaveItems: [],
+    plan: null,
     place: null,
-    polyLine: null,
     saveDrawerOn: false,
     dateStart: "",
     dateEnd: "",
+    isPlanView: false,
   },
   mutations: {
     CLEAR_AREA_LIST(state) {
@@ -40,11 +43,17 @@ const tourStore = {
     CLEAR_CONTENT_LIST(state) {
       state.contents = [{ value: 1, text: "전체" }];
     },
+    CLEAR_PLAN(state) {
+      state.plan = null;
+    },
     CLEAR_PLAN_LIST(state) {
       state.planList = [];
     },
     CLEAR_PLANITEM_LIST(state) {
       state.planItems = [];
+    },
+    CLEAR_PLAN_SAVE_ITEM_LIST(state) {
+      state.planSaveItems = [];
     },
     CLEAR_SAVE_DRAWER(state) {
       state.saveDrawerOn = false;
@@ -85,6 +94,9 @@ const tourStore = {
     SET_DETAIL_PLACE(state, place) {
       state.place = place;
     },
+    SET_PLAN(state, plan) {
+      state.plan = plan;
+    },
     SET_PLAN_LIST(state, plans) {
       state.planList = plans;
     },
@@ -93,6 +105,9 @@ const tourStore = {
     },
     SET_PLANITEM_LIST(state, planList) {
       state.planItems = planList;
+    },
+    SET_PLAN_SAVE_ITEM_LIST(state, planSaveItems) {
+      state.planSaveItems = planSaveItems;
     },
     DEL_PLANITEM(state, index) {
       state.planItems.splice(index, 1);
@@ -105,6 +120,9 @@ const tourStore = {
     },
     SET_END_DATE(state, endDate) {
       state.dateEnd = endDate;
+    },
+    SET_IS_PLANVIEW(state, check) {
+      state.isPlanView = check;
     },
   },
   actions: {
@@ -120,7 +138,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_SIGUNGU_LIST", data);
         },
-        errorCall
+        errorCall,
       );
     },
     async getPlaces({ commit }, params) {
@@ -129,7 +147,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall
+        errorCall,
       );
     },
     async getPlaceSearch({ commit }, word) {
@@ -138,7 +156,7 @@ const tourStore = {
         ({ data }) => {
           commit("SET_PLACE_LIST", data);
         },
-        errorCall
+        errorCall,
       );
     },
     setContents({ commit }, params) {
@@ -155,8 +173,21 @@ const tourStore = {
         ({ data }) => {
           commit("SET_PLAN_LIST", data);
         },
-        errorCall
+        errorCall,
       );
+    },
+    async setPlanItemView({ commit }, articleNo) {
+      await getPlanItemList(
+        articleNo,
+        ({ data }) => {
+          commit("SET_PLANITEM_LIST", data.placeList);
+          commit("SET_PLAN_SAVE_ITEM_LIST", data.planItems);
+        },
+        errorCall,
+      );
+    },
+    setPlan({ commit }, plan) {
+      commit("SET_PLAN", plan);
     },
     setPlanItem({ commit }, place) {
       commit("SET_PLANITEM", place);
@@ -182,8 +213,11 @@ const tourStore = {
         ({ data }) => {
           console.log(data);
         },
-        errorCall
+        errorCall,
       );
+    },
+    setIsPlanView({ commit }, check) {
+      commit("SET_IS_PLANVIEW", check);
     },
   },
 };

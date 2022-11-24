@@ -14,7 +14,11 @@
         value-format="yyyy-MM-dd"
         :picker-options="pickerOptions"
         @change="setPlanItemData"
+        v-if="!isPlanView"
       ></el-date-picker>
+      <div class="place-date-picker" v-else>
+        여행날짜 : {{ planSaveItems[index].planDate }}
+      </div>
     </div>
     <div class="row">
       <img :src="itemImg" class="place-card-img" />
@@ -33,7 +37,9 @@
           v-model="memo"
           placeholder="간단메모 (최대 200자)"
           @change="setPlanItemData"
+          v-if="!isPlanView"
         ></textarea>
+        <div>{{ planSaveItems[index].memo }}</div>
       </div>
     </div>
   </el-card>
@@ -63,12 +69,17 @@ export default {
     };
   },
   computed: {
-    ...mapState("tourStore", ["dateStart", "dateEnd"]),
+    ...mapState("tourStore", [
+      "dateStart",
+      "dateEnd",
+      "planSaveItems",
+      "isPlanView",
+    ]),
     itemImg: {
       get() {
         let img = encodeURI(this.place.placeImg);
         if (img == "null") {
-          img = "../img/no_img.jpg";
+          img = require(`@/assets/no_img.jpg`);
         }
         return img;
       },
