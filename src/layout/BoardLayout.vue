@@ -26,7 +26,7 @@
             :articleNo="index + 1"
             :title="article.title"
             :userId="article.userId"
-            :hit="article.hit"
+            :hit="article.hit == null ? 0 : article.hit"
             :registDate="article.registerDate.split(' ')[0]"
             :link="`${baseLink}/${article.articleNo}`"
           ></board-layout-item>

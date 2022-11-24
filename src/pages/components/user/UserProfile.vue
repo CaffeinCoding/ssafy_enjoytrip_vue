@@ -26,7 +26,7 @@
             <p>여행피드</p>
           </div>
           <div class="social-description">
-            <h2>26</h2>
+            <h2>{{ planList.length }}</h2>
             <p>여행계획</p>
           </div>
           <div class="social-description">

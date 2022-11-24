@@ -538,6 +538,7 @@ export default {
         clearInterval(this.interval);
       }
       this.map.setDraggable(false);
+      this.map.setZoomable(false);
       this.markerList = [];
       this.infoList = [];
       this.randomPlaces.forEach((place) => {

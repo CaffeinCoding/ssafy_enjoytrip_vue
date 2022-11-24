@@ -11,37 +11,9 @@
       </div> -->
     <weather></weather>
     <card-widget-list></card-widget-list>
-
-    <basic-elements></basic-elements>
     <div class="section">
       <kakao-map style="height: 50vh" displayMode="main"></kakao-map>
     </div>
-    <navigation></navigation>
-    <tabs-section></tabs-section>
-    <progress-pagination></progress-pagination>
-    <notifications></notifications>
-    <typography></typography>
-    <javascript-components></javascript-components>
-    <carousel-section></carousel-section>
-    <nucleo-icons-section></nucleo-icons-section>
-    <div class="section">
-      <div class="container text-center">
-        <div class="row justify-content-md-center">
-          <div class="col-md-12 col-lg-8">
-            <h2 class="title">Completed with examples</h2>
-            <h5 class="description">
-              The kit comes with three pre-built pages to help you get started
-              faster. You can change the text and images and you're good to go.
-              More importantly, looking at them will give you a picture of what
-              you can built with this powerful Bootstrap 4 ui kit.
-            </h5>
-          </div>
-        </div>
-      </div>
-    </div>
-    <signup-form></signup-form>
-    <examples-section></examples-section>
-    <download-section></download-section>
   </div>
 </template>
 <script>
@@ -74,18 +46,18 @@ export default {
   components: {
     KakaoMap,
     // Parallax,
-    BasicElements,
-    Navigation,
-    TabsSection,
-    ProgressPagination,
-    Notifications,
-    Typography,
-    JavascriptComponents,
+    // BasicElements,
+    // Navigation,
+    // TabsSection,
+    // ProgressPagination,
+    // Notifications,
+    // Typography,
+    // JavascriptComponents,
     CarouselSection,
-    NucleoIconsSection,
-    SignupForm,
-    ExamplesSection,
-    DownloadSection,
+    // NucleoIconsSection,
+    // SignupForm,
+    // ExamplesSection,
+    // DownloadSection,
     CardWidgetList,
     Weather,
   },
