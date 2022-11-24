@@ -11,6 +11,9 @@
       </div> -->
 
     <basic-elements></basic-elements>
+    <div class="section">
+      <kakao-map style="height: 50vh" displayMode="main"></kakao-map>
+    </div>
     <navigation></navigation>
     <tabs-section></tabs-section>
     <progress-pagination></progress-pagination>
@@ -55,14 +58,17 @@ import ExamplesSection from "./components/ExamplesSection";
 import DownloadSection from "./components/DownloadSection";
 
 // EnjoyTrip
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
+import KakaoMap from "@/pages/components/tour/KakaoMap";
 
 const userStore = "userStore";
+const tourStore = "tourStore";
 
 export default {
   name: "index",
   bodyClass: "index-page",
   components: {
+    KakaoMap,
     // Parallax,
     BasicElements,
     Navigation,
@@ -78,6 +84,8 @@ export default {
     DownloadSection,
   },
   async created() {
+    this.CLEAR_RANDOM_PLACE();
+    await this.getRandomPlaces();
     let authorization_code = this.$route.query.code;
     if (authorization_code) {
       let params = {
@@ -97,6 +105,8 @@ export default {
   },
   methods: {
     ...mapActions(userStore, ["kakaoUserConfirm", "getUserInfoLogin"]),
+    ...mapActions(tourStore, ["getRandomPlaces"]),
+    ...mapMutations(tourStore, ["CLEAR_RANDOM_PLACE"]),
   },
 };
 </script>

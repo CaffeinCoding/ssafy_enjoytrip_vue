@@ -39,6 +39,10 @@ async function getPlanItemList(articleNo, success, fail) {
   await api.get(`content/plan/view/${articleNo}`).then(success).catch(fail);
 }
 
+async function getRandomPlaceList(success, fail) {
+  await api.get(`content/place/random`).then(success).catch(fail);
+}
+
 export {
   areaList,
   sigunguList,
@@ -48,4 +52,5 @@ export {
   getPlanList,
   getUserPlanList,
   getPlanItemList,
+  getRandomPlaceList,
 };

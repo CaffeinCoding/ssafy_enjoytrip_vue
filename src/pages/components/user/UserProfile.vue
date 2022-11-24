@@ -98,7 +98,7 @@
               <div class="col-md-10 ml-auto mr-auto mt-4">
                 <board-layout
                   :articles="planList"
-                  baseLink="/plan/view"
+                  baseLink="/tour/view"
                 ></board-layout>
               </div>
             </tab-pane>

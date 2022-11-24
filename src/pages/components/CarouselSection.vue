@@ -8,7 +8,7 @@
             style="background-image: url('img/bg1.jpg')"
           >
             <div class="carousel-item-caption d-none d-md-block">
-              <h5>Nature, United States</h5>
+              <div style="font-size: 100px">EnjoyTrip!</div>
             </div>
           </el-carousel-item>
           <el-carousel-item
@@ -16,7 +16,7 @@
             style="background-image: url('img/bg3.jpg')"
           >
             <div class="carousel-item-caption d-none d-md-block">
-              <h5>Somewhere Beyond, United States</h5>
+              <h1>싸우지 마시고</h1>
             </div>
           </el-carousel-item>
           <el-carousel-item
@@ -24,7 +24,7 @@
             style="background-image: url('img/bg4.jpg')"
           >
             <div class="carousel-item-caption d-none d-md-block">
-              <h2>Yellowstone National Park, United States</h2>
+              <h1>즐거운 여행되세요</h1>
             </div>
           </el-carousel-item>
         </el-carousel>

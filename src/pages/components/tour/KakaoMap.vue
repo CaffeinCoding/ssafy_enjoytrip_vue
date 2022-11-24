@@ -3,7 +3,7 @@
     <div
       class="row justify-content-end"
       id="info-bar"
-      v-if="displayMode != 'view'"
+      v-if="displayMode != 'view' && displayMode != 'main'"
     >
       <div class="searchToggle">
         <n-switch v-model="searchMode"></n-switch>
@@ -145,6 +145,8 @@ export default {
       polyLine: null,
       bounds: null,
       planMarker: [],
+      idx: 0,
+      interval: null,
     };
   },
   created() {
@@ -177,6 +179,7 @@ export default {
       "places",
       "planItems",
       "isPlanView",
+      "randomPlaces",
     ]),
   },
   watch: {
@@ -203,6 +206,15 @@ export default {
         }
       },
     },
+    // randomPlaces: {
+    //   handler(val) {
+    //     if (this.displayMode == "main") {
+    //       if (val) {
+    //         this.setMainMapAnimation();
+    //       }
+    //     }
+    //   },
+    // },
   },
   methods: {
     ...mapActions(tourStore, [
@@ -286,6 +298,10 @@ export default {
         strokeStyle: "solid",
         endArrow: true,
       });
+
+      if (this.displayMode == "main") {
+        this.setMainMapAnimation();
+      }
     },
 
     initMarker() {
@@ -356,7 +372,9 @@ export default {
           new kakao.maps.Size(37, 37),
         ),
       });
-      this.bounds.extend(pos);
+      if (this.displayMode != "main") {
+        this.bounds.extend(pos);
+      }
       marker.setMap(this.map);
       this.makeInfoWindow(place, marker);
       if (addCheck) {
@@ -501,6 +519,31 @@ export default {
         this.makeMarker(place, false);
       });
       this.setPolyLine();
+    },
+
+    updateMainMapMarker() {
+      if (this.markerList == null) {
+        clearInterval(this.interval);
+      }
+      this.map.panTo(this.markerList[this.idx].getPosition());
+      this.infoList[this.idx].setMap(this.map);
+      this.idx += 1;
+      if (this.idx >= this.randomPlaces.length) {
+        this.idx = 0;
+      }
+    },
+
+    setMainMapAnimation() {
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+      this.map.setDraggable(false);
+      this.markerList = [];
+      this.infoList = [];
+      this.randomPlaces.forEach((place) => {
+        this.makeMarker(place, true);
+      });
+      this.interval = setInterval(this.updateMainMapMarker, 3000);
     },
   },
 };

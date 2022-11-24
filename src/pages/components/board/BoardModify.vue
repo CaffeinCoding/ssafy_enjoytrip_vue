@@ -7,7 +7,12 @@
             <h4 class="category mb-4">글수정</h4>
             <div class="regist-title">
               <label for="userId" class="category ml-3">작성자</label>
-              <fg-input id="userId" ref="userId" v-model="userId" readonly></fg-input>
+              <fg-input
+                id="userId"
+                ref="userId"
+                v-model="userId"
+                readonly
+              ></fg-input>
             </div>
             <div class="regist-title">
               <label for="title" class="category ml-3">제목</label>
@@ -45,8 +50,12 @@
           </div>
         </div>
       </card>
-      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3">완료</n-button>
-      <n-button type="primary" round @click="moveList" class="btn-list ml-3">목록</n-button>
+      <n-button type="primary" round @click="checkValue" class="btn-regist mr-3"
+        >완료</n-button
+      >
+      <n-button type="primary" round @click="moveList" class="btn-list ml-3"
+        >목록</n-button
+      >
     </div>
   </div>
 </template>
@@ -84,9 +93,9 @@ export default {
     this.upfile = this.article.upfile;
   },
   methods: {
-    ...mapActions(boardStore, ["modifyArticle"]),
+    ...mapActions(boardStore, ["modifyArticle", "getArticle"]),
 
-    checkValue() {
+    async checkValue() {
       let err = true;
       let msg = "";
       !this.userId && ((msg = "작성자를 입력해주세요"), (err = false));
@@ -107,9 +116,15 @@ export default {
           registDate: this.article.registDate,
           isNotice: this.article.isNotice,
         };
-        this.modifyArticle(tempArticle);
+        await this.modifyArticle(tempArticle);
+        await this.getArticle(this.articleNo);
 
-        this.$router.push({ name: "boardview" });
+        this.$router.push({
+          name: "boardview",
+          params: {
+            articleNo: this.articleNo,
+          },
+        });
       }
     },
 

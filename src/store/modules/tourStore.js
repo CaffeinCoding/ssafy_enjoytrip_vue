@@ -7,6 +7,7 @@ import {
   getPlanList,
   getUserPlanList,
   getPlanItemList,
+  getRandomPlaceList,
 } from "@/api/tour.js";
 
 const errorCall = (error) => {
@@ -20,6 +21,7 @@ const tourStore = {
     sigungus: [{ value: null, text: "구/군 선택" }],
     contents: [{ value: 1, text: "전체" }],
     places: [],
+    randomPlaces: [],
     planList: [],
     planItems: [],
     planSaveItems: [],
@@ -36,6 +38,9 @@ const tourStore = {
     },
     CLEAR_SIGUNGU_LIST(state) {
       state.sigungus = [{ value: null, text: "구/군 선택" }];
+    },
+    CLEAR_RANDOM_PLACE(state) {
+      state.randomPlaces = [];
     },
     CLEAR_PLACE_LIST(state) {
       state.places = [];
@@ -90,6 +95,9 @@ const tourStore = {
     },
     SET_PLACE_LIST(state, places) {
       state.places = places;
+    },
+    SET_RANDOM_PLACE(state, places) {
+      state.randomPlaces = places;
     },
     SET_DETAIL_PLACE(state, place) {
       state.place = place;
@@ -149,6 +157,11 @@ const tourStore = {
         },
         errorCall,
       );
+    },
+    async getRandomPlaces({ commit }) {
+      await getRandomPlaceList(({ data }) => {
+        commit("SET_RANDOM_PLACE", data);
+      }, errorCall);
     },
     async getPlaceSearch({ commit }, word) {
       await placeListWord(
