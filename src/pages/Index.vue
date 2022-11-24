@@ -1,14 +1,6 @@
 <template>
   <div>
     <carousel-section></carousel-section>
-
-    <!-- <div class="container">
-        <div class="content-center brand">
-          <img class="n-logo" src="img/now-logo.png" alt="" />
-          <h1 class="h1-seo">Now UI Kit.</h1>
-          <h3>A beautiful Bootstrap 4 UI kit. Yours free.</h3>
-        </div>
-      </div> -->
     <weather></weather>
     <card-widget-list></card-widget-list>
     <div class="section">
@@ -17,19 +9,7 @@
   </div>
 </template>
 <script>
-// import { Parallax } from "@/components";
-import BasicElements from "./components/BasicElementsSection";
-import Navigation from "./components/Navigation";
-import TabsSection from "./components/Tabs";
-import ProgressPagination from "./components/ProgressPagination";
-import Notifications from "./components/Notifications";
-import Typography from "./components/Typography";
-import JavascriptComponents from "./components/JavascriptComponents";
 import CarouselSection from "./components/CarouselSection";
-import NucleoIconsSection from "./components/NucleoIconsSection";
-import SignupForm from "./components/SignupForm";
-import ExamplesSection from "./components/ExamplesSection";
-import DownloadSection from "./components/DownloadSection";
 import CardWidgetList from "./components/widget/CardWidgetList";
 import Weather from "./components/widget/Weather";
 
@@ -45,24 +25,11 @@ export default {
   bodyClass: "index-page",
   components: {
     KakaoMap,
-    // Parallax,
-    // BasicElements,
-    // Navigation,
-    // TabsSection,
-    // ProgressPagination,
-    // Notifications,
-    // Typography,
-    // JavascriptComponents,
     CarouselSection,
-    // NucleoIconsSection,
-    // SignupForm,
-    // ExamplesSection,
-    // DownloadSection,
     CardWidgetList,
     Weather,
   },
   async created() {
-    this.CLEAR_RANDOM_PLACE();
     await this.getRandomPlaces();
     let authorization_code = this.$route.query.code;
     if (authorization_code) {

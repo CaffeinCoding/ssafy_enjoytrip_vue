@@ -16,7 +16,8 @@
             style="background-image: url('img/bg3.jpg')"
           >
             <div class="carousel-item-caption d-none d-md-block">
-              <h1>싸우지 마시고</h1>
+              <h1>여행은 정신을</h1>
+              <h1>다시 젊어지게 하는 샘이다</h1>
             </div>
           </el-carousel-item>
           <el-carousel-item
@@ -80,6 +81,7 @@ export default {
 <style scoped>
 #carousel {
   margin-top: -80px;
+  padding-bottom: 0;
 }
 
 #carousel-item {

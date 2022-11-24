@@ -147,6 +147,7 @@ export default {
       planMarker: [],
       idx: 0,
       interval: null,
+      mainPageUrl: null,
     };
   },
   created() {
@@ -284,13 +285,15 @@ export default {
       this.setInitCenter(this.map);
       this.polyLine = new kakao.maps.Polyline({
         strokeWeight: 7,
-        strokeColor: "#45b8ac",
+        strokeColor: "#e95e38",
         strokeOpacity: 1,
         strokeStyle: "solid",
         endArrow: true,
       });
 
       if (this.displayMode == "main") {
+        this.markerList = [];
+        this.infoList = [];
         this.setMainMapAnimation();
       }
     },
@@ -444,6 +447,7 @@ export default {
       infoDesc.appendChild(infoAddress);
 
       const infoLinkDiv = document.createElement("div");
+      infoLinkDiv.className = "info-link-div";
       infoDesc.appendChild(infoLinkDiv);
 
       const infoLink = document.createElement("a");
@@ -513,8 +517,11 @@ export default {
     },
 
     updateMainMapMarker() {
-      if (this.markerList == null) {
+      if (window.location.href != this.mainPageUrl) {
         clearInterval(this.interval);
+        this.markerList = [];
+        this.infoList = [];
+        this.interval = null;
       }
       this.map.panTo(this.markerList[this.idx].getPosition());
       this.infoList[this.idx].setMap(this.map);
@@ -525,17 +532,15 @@ export default {
     },
 
     setMainMapAnimation() {
-      if (this.interval == null) {
-        clearInterval(this.interval);
-      }
+      this.mainPageUrl = window.location.href;
       this.map.setDraggable(false);
       this.map.setZoomable(false);
-      this.markerList = [];
-      this.infoList = [];
+      // this.markerList = [];
+      // this.infoList = [];
       this.randomPlaces.forEach((place) => {
         this.makeMarker(place, true);
       });
-      this.interval = setInterval(this.updateMainMapMarker, 3000);
+      this.interval = setInterval(this.updateMainMapMarker, 4000);
     },
   },
 };
@@ -609,12 +614,13 @@ export default {
 #map::v-deep .info-content .info-title-div {
   padding: 5px 0 0 10px;
   height: 30px;
-  background: #eee;
+  background: #e95e38;
   border-bottom: 1px solid #ddd;
 }
 #map::v-deep .info-title-div .info-title {
   width: 250px;
   font-size: 18px;
+  color: white;
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -651,6 +657,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+#map::v-deep .info-desc .info-link-div {
+  position: absolute;
+  bottom: 10px;
 }
 #map::v-deep .info-content .info-img {
   position: absolute;
