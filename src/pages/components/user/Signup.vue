@@ -33,6 +33,7 @@
             </fg-input>
             <fg-input
               class="no-border"
+              type="password"
               placeholder="Password"
               addon-left-icon="now-ui-icons text_caps-small"
               v-model="userPw"

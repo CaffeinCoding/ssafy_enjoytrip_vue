@@ -23,6 +23,7 @@
             <fg-input
               class="no-border input-lg"
               v-model="user.userPw"
+              type="password"
               addon-left-icon="now-ui-icons text_caps-small"
               placeholder="Password"
             >

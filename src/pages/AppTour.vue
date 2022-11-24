@@ -204,8 +204,6 @@ export default {
           contentList: contentList,
         };
 
-        console.log(contentList[0]);
-
         this.registPlan(planData);
 
         alert("등록이 완료되었습니다");
