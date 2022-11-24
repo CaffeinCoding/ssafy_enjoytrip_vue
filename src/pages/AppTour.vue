@@ -204,18 +204,20 @@ export default {
           contentList: contentList,
         };
 
+        console.log(contentList[0]);
+
         this.registPlan(planData);
 
-        // alert("등록이 완료되었습니다");
+        alert("등록이 완료되었습니다");
 
-        // this.CLEAR_DATE_RANGE();
-        // this.planTitle = "";
-        // this.planItemDates = [];
-        // this.planItemMemos = [];
+        this.CLEAR_DATE_RANGE();
+        this.planTitle = "";
+        this.planItemDates = [];
+        this.planItemMemos = [];
 
-        // this.$refs.saveDrawer.closeDrawer();
+        this.$refs.saveDrawer.closeDrawer();
 
-        // this.$router.push({ name: "tourplanlist" });
+        this.$router.push({ name: "tourplanlist" });
       }
     },
     setPlanItemData(data) {
