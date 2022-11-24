@@ -1,6 +1,9 @@
 <template>
   <div class="page-header clear-filter" filter-color="orange">
-    <div class="page-header-image" style="background-image: url('/img/login.jpg')"></div>
+    <div
+      class="page-header-image"
+      style="background-image: url('/img/login.jpg')"
+    ></div>
     <div class="content">
       <div class="container">
         <div class="col-md-5 ml-auto mr-auto">
@@ -28,10 +31,16 @@
             <template slot="raw-content">
               <div class="card-footer text-center">
                 <div class="row mx-1">
-                  <button class="col btn btn-primary btn-round btn-lg btn-block" @click="confirm">
+                  <button
+                    class="col btn btn-primary btn-round btn-lg btn-block"
+                    @click="confirm"
+                  >
                     로그인
                   </button>
-                  <div class="col-2 ml-2 btn btn-icon btn-round" id="btn-kakao-background">
+                  <div
+                    class="col-2 ml-2 btn btn-icon btn-round"
+                    id="btn-kakao-background"
+                  >
                     <div id="btn-kakao">
                       <a
                         href="https://kauth.kakao.com/oauth/authorize?client_id=af3cf7912cfcd3399b542b15ce6d6032&redirect_uri=http://localhost:8080&response_type=code"
@@ -100,6 +109,7 @@ export default {
       let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
         await this.getUserInfoLogin(token);
+        alert(`${this.userInfo.userName}님 안녕하세요.`);
         this.$router.push({ name: "index" });
       }
     },

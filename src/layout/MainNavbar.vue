@@ -24,6 +24,7 @@
       <li class="nav-item">
         <router-link to="/tour/place">
           <a class="nav-link" target="_blank">
+            <i class="now-ui-icons location_map-big"></i>
             <p>장소검색</p>
           </a>
         </router-link>
@@ -32,6 +33,7 @@
       <li class="nav-item">
         <router-link to="/tour/list">
           <a class="nav-link" target="_blank">
+            <i class="now-ui-icons ui-1_calendar-60"></i>
             <p>여행계획</p>
           </a>
         </router-link>
@@ -46,7 +48,7 @@
           <i class="now-ui-icons users_single-02"></i> Profile
         </nav-link>
         <nav-link to="/signup" v-else>
-          <i class="now-ui-icons users_circle-08"></i> Sign Up
+          <i class="now-ui-icons users_circle-08"></i> 회원가입
         </nav-link>
         <nav-link v-if="userInfo">
           <n-button @click="logoutMethod">
@@ -55,7 +57,7 @@
           </n-button>
         </nav-link>
         <nav-link to="/login" v-else>
-          <i class="now-ui-icons ui-1_lock-circle-open"></i> Sign In
+          <i class="now-ui-icons ui-1_lock-circle-open"></i> 로그인
         </nav-link>
       </drop-down>
     </template>

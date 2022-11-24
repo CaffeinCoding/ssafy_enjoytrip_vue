@@ -27,11 +27,11 @@ Vue.use(NowUiKit);
 
 // EnjoyTrip
 import VueMasonry from "vue-masonry-css";
-import CoolLightBox from "vue-cool-lightbox";
-import "vue-cool-lightbox/dist/vue-cool-lightbox.min.css";
+
+import VueWeather from "vue-weather-widget";
 
 Vue.use(VueMasonry);
-Vue.use(CoolLightBox);
+Vue.use(VueWeather);
 
 new Vue({
   router,

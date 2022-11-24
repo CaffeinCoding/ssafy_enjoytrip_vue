@@ -294,6 +294,7 @@ export default {
           isManager: this.user.isManager,
         };
         this.modifyUser(tempUser);
+        window.location.reload(true);
       }
     },
     fileSelect() {

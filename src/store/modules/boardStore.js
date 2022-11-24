@@ -5,6 +5,7 @@ import {
   getArticleBoardListById,
   modifyArticleBoard,
   deleteArticleBoard,
+  listOrderByHit,
 } from "@/api/board.js";
 
 const errorCall = (error) => {
@@ -65,6 +66,11 @@ const boardStore = {
 
     async getArticleList({ commit }) {
       await getArticleBoardList(({ data }) => {
+        commit("SET_ARTICLE_LIST", data);
+      }, errorCall);
+    },
+    async getArticleListOrderByHit({ commit }) {
+      await listOrderByHit(({ data }) => {
         commit("SET_ARTICLE_LIST", data);
       }, errorCall);
     },

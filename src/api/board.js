@@ -26,6 +26,9 @@ async function modifyArticleBoard(params, success, fail) {
 async function deleteArticleBoard(id, success, fail) {
   await api.delete(`board/${id}`).then(success).catch(fail);
 }
+async function listOrderByHit(success, fail) {
+  await api.get(`board/list/orderbyhit`).then(success).catch(fail);
+}
 
 export {
   registArticleBoard,
@@ -34,4 +37,5 @@ export {
   getArticleBoardListById,
   modifyArticleBoard,
   deleteArticleBoard,
+  listOrderByHit
 };
