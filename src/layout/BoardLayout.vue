@@ -20,10 +20,10 @@
         </thead>
         <tbody>
           <board-layout-item
-            v-for="(article, index) in articles"
+            v-for="(article, index) in articleData"
             :key="index"
             :article="article"
-            :articleNo="index + 1"
+            :articleNo="index + 1 + startIndex"
             :title="article.title"
             :userId="article.userId"
             :hit="article.hit == null ? 0 : article.hit"
@@ -32,6 +32,16 @@
           ></board-layout-item>
         </tbody>
       </table>
+      <div class="row justify-content-center">
+        <div
+          v-for="index in maxPageNo"
+          :class="index - 1 == pageNo ? 'btn btn-primary deactive' : 'btn'"
+          :key="index"
+          @click="setPageNo(index - 1)"
+        >
+          {{ index }}
+        </div>
+      </div>
     </div>
     <div class="text-center" v-else>게시글이 없습니다.</div>
   </div>
@@ -48,6 +58,33 @@ export default {
     articles: Array,
     baseLink: String,
   },
+  data() {
+    return {
+      pageNo: 0,
+      startIndex: 0,
+      endIndex: 10,
+      defaultNum: 10,
+    };
+  },
+  computed: {
+    maxPageNo: {
+      get() {
+        return parseInt(this.articles.length / 10) + 1;
+      },
+    },
+    articleData: {
+      get() {
+        return this.articles.slice(this.startIndex, this.endIndex);
+      },
+    },
+  },
+  methods: {
+    setPageNo(index) {
+      this.pageNo = index;
+      this.startIndex = index * this.defaultNum;
+      this.endIndex = this.startIndex + this.defaultNum;
+    },
+  },
 };
 </script>
 
@@ -59,5 +96,8 @@ export default {
 }
 .thead-light th {
   border-bottom-color: gray;
+}
+.deactive {
+  pointer-events: none;
 }
 </style>

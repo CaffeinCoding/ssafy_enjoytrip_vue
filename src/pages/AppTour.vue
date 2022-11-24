@@ -72,7 +72,7 @@
         ></el-date-picker>
       </div>
       <div class="row mx-4 detail-date-div" v-else>
-        <div class="col-sm-2 detail-date-label">기간 :</div>
+        <div class="col-sm-2 detail-date-label">여행기간 :</div>
         <div class="col-sm-3 detail-date-label">{{ setDateRange }}</div>
       </div>
       <tour-plan-drawer-item
@@ -172,7 +172,7 @@ export default {
       }
 
       const checkPlanItemDates = this.planItemDates.filter(
-        (item) => item !== null && item !== undefined && item !== "",
+        (item) => item !== null && item !== undefined && item !== ""
       );
 
       if (this.planTitle == "") {
@@ -206,11 +206,16 @@ export default {
 
         this.registPlan(planData);
 
-        alert("등록이 완료되었습니다");
+        // alert("등록이 완료되었습니다");
 
-        this.$refs.saveDrawer.closeDrawer();
+        // this.CLEAR_DATE_RANGE();
+        // this.planTitle = "";
+        // this.planItemDates = [];
+        // this.planItemMemos = [];
 
-        this.$router.push({ name: "tourplanlist" });
+        // this.$refs.saveDrawer.closeDrawer();
+
+        // this.$router.push({ name: "tourplanlist" });
       }
     },
     setPlanItemData(data) {
