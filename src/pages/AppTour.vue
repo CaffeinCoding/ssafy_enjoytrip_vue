@@ -14,15 +14,33 @@
       :close-on-press-escape="false"
     >
       <div class="row detail-header">
-        <div class="col-sm-auto detail-header-title">여행계획 상세설정</div>
+        <div class="col-sm-auto detail-header-title" v-if="!isPlanView">
+          여행계획 상세설정
+        </div>
+        <div class="col-sm-auto mt-4 detail-header-title" v-else>
+          여행계획 상세정보
+        </div>
         <div class="row col-sm-2 detail-btn-div">
-          <button class="btn btn-primary" @click="planDataCheck">저장</button>
-          <button class="btn" @click="$refs.saveDrawer.closeDrawer()">
+          <button
+            class="btn btn-primary"
+            @click="planDataCheck"
+            v-if="!isPlanView"
+          >
+            저장
+          </button>
+          <button
+            class="btn close-btn"
+            @click="$refs.saveDrawer.closeDrawer()"
+            v-if="isPlanView"
+          >
+            닫기
+          </button>
+          <button class="btn" @click="$refs.saveDrawer.closeDrawer()" v-else>
             취소
           </button>
         </div>
       </div>
-      <div class="row mx-4 mb-4 detail-title-div">
+      <div class="row mx-4 mb-4 detail-title-div" v-if="!isPlanView">
         <label for="detail-title" class="col-sm-1 detail-title-label"
           >제목</label
         >
@@ -33,7 +51,10 @@
           v-model="planTitle"
         />
       </div>
-      <div class="row mx-4 detail-date-div">
+      <div class="mx-4 mb-4 detail-title-label plan-view" v-else>
+        {{ plan.title }}
+      </div>
+      <div class="row mx-4 detail-date-div" v-if="!isPlanView">
         <label for="detail-date" class="col-sm-2 detail-date-label"
           >날짜 설정</label
         >
@@ -49,6 +70,10 @@
           value-format="yyyy-MM-dd"
           :picker-options="pickerOptions"
         ></el-date-picker>
+      </div>
+      <div class="row mx-4 detail-date-div" v-else>
+        <div class="col-sm-2 detail-date-label">기간 :</div>
+        <div class="col-sm-3 detail-date-label">{{ setDateRange }}</div>
       </div>
       <tour-plan-drawer-item
         v-for="(place, index) in planItems"
@@ -96,6 +121,9 @@ export default {
       "planItems",
       "dateStart",
       "dateEnd",
+      "isPlanView",
+      "planSaveItems",
+      "plan",
     ]),
     ...mapGetters("userStore", ["checkUserInfo"]),
     saveDrawerShow: {
@@ -115,6 +143,18 @@ export default {
         this.setEndDate(value[1]);
       },
     },
+    setDateRange: {
+      get() {
+        let range = "";
+        range += this.plan.startDate + " ~ ";
+        if (this.plan.endDate == null) {
+          range += this.plan.startDate;
+        } else {
+          range += this.plan.endDate;
+        }
+        return range;
+      },
+    },
   },
   methods: {
     ...mapActions(tourStore, [
@@ -132,7 +172,7 @@ export default {
       }
 
       const checkPlanItemDates = this.planItemDates.filter(
-        (item) => item !== null && item !== undefined && item !== ""
+        (item) => item !== null && item !== undefined && item !== "",
       );
 
       if (this.planTitle == "") {
@@ -160,13 +200,15 @@ export default {
           userId: checkUserInfo.userId,
           title: this.planTitle,
           startDate: this.dateStart,
-          endDate: this.endDate,
+          endDate: this.dateEnd,
           contentList: contentList,
         };
 
         this.registPlan(planData);
 
         alert("등록이 완료되었습니다");
+
+        this.$refs.saveDrawer.closeDrawer();
 
         this.$router.push({ name: "tourplanlist" });
       }
@@ -185,7 +227,7 @@ export default {
 }
 .page-header > .container {
   padding-bottom: 0;
-  padding-top: 8vh;
+  padding-top: 10vh;
 }
 .tour-router-view {
   color: black;
@@ -209,7 +251,16 @@ export default {
   margin-bottom: 0;
   align-self: center;
 }
+.plan-view {
+  font-size: 20px;
+  font-weight: bold;
+}
 #detail-title {
   font-size: 20px;
+}
+.close-btn {
+  position: absolute;
+  right: 40px;
+  top: 5px;
 }
 </style>

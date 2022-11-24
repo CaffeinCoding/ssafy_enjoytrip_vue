@@ -188,6 +188,11 @@ const router = new Router({
           name: "tourplanlist",
           component: () => import("@/pages/components/tour/TourList"),
         },
+        {
+          path: "view/:articleNo",
+          name: "tourview",
+          component: () => import("@/pages/components/tour/TourPlanView"),
+        },
       ],
     },
   ],

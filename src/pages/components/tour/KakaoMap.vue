@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import { Switch } from "@/components";
 import _ from "lodash";
 
@@ -149,7 +149,9 @@ export default {
   },
   created() {
     this.CLEAR_AREA_LIST();
-    this.CLEAR_PLANITEM_LIST();
+    if (this.displayMode != "view") {
+      this.CLEAR_PLANITEM_LIST();
+    }
     this.getAreas();
     this.contentSet = new Set();
   },
@@ -174,6 +176,7 @@ export default {
       "markerImg",
       "places",
       "planItems",
+      "isPlanView",
     ]),
   },
   watch: {
@@ -188,6 +191,15 @@ export default {
           this.contentCode = 1;
         } else {
           this.searchWord = "";
+        }
+      },
+    },
+    planItems: {
+      handler(val) {
+        if (this.displayMode == "view") {
+          if (val) {
+            this.placeList();
+          }
         }
       },
     },
@@ -227,12 +239,14 @@ export default {
       this.CLEAR_CONTENT_LIST();
       this.contentSet.clear();
       this.contentList = [];
-      if (this.areaCode && this.sigunguCode) {
-        const params = {
-          areaCode: this.areaCode,
-          sigunguCode: this.sigunguCode,
-        };
-        await this.getPlaces(params);
+      if (this.displayMode != "view") {
+        if (this.areaCode && this.sigunguCode) {
+          const params = {
+            areaCode: this.areaCode,
+            sigunguCode: this.sigunguCode,
+          };
+          await this.getPlaces(params);
+        }
       }
 
       this.initMarker();

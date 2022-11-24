@@ -8,7 +8,7 @@
         >여행계획 작성</router-link
       >
     </div>
-    <board-layout :articles="planList" baseLink="/plan/view"></board-layout>
+    <board-layout :articles="planList" baseLink="/tour/view"></board-layout>
   </div>
 </template>
 
