@@ -9,6 +9,8 @@
           <h3>A beautiful Bootstrap 4 UI kit. Yours free.</h3>
         </div>
       </div> -->
+    <weather></weather>
+    <card-widget-list></card-widget-list>
 
     <basic-elements></basic-elements>
     <div class="section">
@@ -56,6 +58,8 @@ import NucleoIconsSection from "./components/NucleoIconsSection";
 import SignupForm from "./components/SignupForm";
 import ExamplesSection from "./components/ExamplesSection";
 import DownloadSection from "./components/DownloadSection";
+import CardWidgetList from "./components/widget/CardWidgetList";
+import Weather from "./components/widget/Weather";
 
 // EnjoyTrip
 import { mapState, mapActions, mapMutations } from "vuex";
@@ -82,6 +86,8 @@ export default {
     SignupForm,
     ExamplesSection,
     DownloadSection,
+    CardWidgetList,
+    Weather,
   },
   async created() {
     this.CLEAR_RANDOM_PLACE();
